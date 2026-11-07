@@ -64,7 +64,7 @@ export default function Navbar() {
               alt="Inspiring Furni"
               width={240}
               height={40}
-              className="h-8 sm:h-10 w-auto object-contain transition-opacity duration-200 group-hover:opacity-90"
+              className="h-6 sm:h-9 md:h-10 w-auto max-w-[140px] xs:max-w-[160px] sm:max-w-none object-contain transition-opacity duration-200 group-hover:opacity-90"
               priority
             />
           </Link>
