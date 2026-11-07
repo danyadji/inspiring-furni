@@ -301,7 +301,7 @@ export default function CartView({ waNumber }: CartViewProps) {
         </div>
 
         {/* Right: Checkout Form & WhatsApp Action */}
-        <div className="lg:col-span-5">
+        <div className="lg:col-span-5 font-[family-name:var(--font-dm-sans)]">
           <div className="border border-[var(--color-line)] bg-[var(--color-surface)] p-6 sm:p-8 space-y-6">
             <h2 className="text-sm font-mono uppercase tracking-wider text-[var(--color-ink)] border-b border-[var(--color-line)] pb-3">
               {t("checkoutButton")}
@@ -322,7 +322,7 @@ export default function CartView({ waNumber }: CartViewProps) {
                   value={customerName}
                   onChange={(e) => setCustomerName(e.target.value)}
                   placeholder={t("namePlaceholder")}
-                  className="w-full px-3.5 py-2.5 text-xs font-mono bg-[var(--color-paper)] border border-[var(--color-line)] text-[var(--color-ink)] focus:outline-none focus:border-[var(--color-ink)]"
+                  className="w-full px-3.5 py-2.5 text-xs sm:text-sm font-[family-name:var(--font-dm-sans)] bg-[var(--color-paper)] border border-[var(--color-line)] text-[var(--color-ink)] focus:outline-none focus:border-[var(--color-ink)]"
                 />
               </div>
 
@@ -340,7 +340,7 @@ export default function CartView({ waNumber }: CartViewProps) {
                   value={customerAddress}
                   onChange={(e) => setCustomerAddress(e.target.value)}
                   placeholder={t("addressPlaceholder")}
-                  className="w-full px-3.5 py-2.5 text-xs font-mono bg-[var(--color-paper)] border border-[var(--color-line)] text-[var(--color-ink)] focus:outline-none focus:border-[var(--color-ink)]"
+                  className="w-full px-3.5 py-2.5 text-xs sm:text-sm font-[family-name:var(--font-dm-sans)] bg-[var(--color-paper)] border border-[var(--color-line)] text-[var(--color-ink)] focus:outline-none focus:border-[var(--color-ink)]"
                 />
               </div>
 
@@ -363,7 +363,7 @@ export default function CartView({ waNumber }: CartViewProps) {
               </div>
 
               {errorMessage && (
-                <div role="alert" className="p-3 bg-red-50 text-red-700 text-xs font-mono border border-red-200">
+                <div role="alert" className="p-3 bg-red-50 text-red-700 text-xs font-[family-name:var(--font-dm-sans)] border border-red-200">
                   {errorMessage}
                 </div>
               )}
@@ -371,13 +371,13 @@ export default function CartView({ waNumber }: CartViewProps) {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full inline-flex items-center justify-center min-h-[48px] px-6 py-3.5 bg-[var(--color-whatsapp)] text-[var(--color-ink)] font-bold text-xs uppercase tracking-wider hover:brightness-95 transition-all gap-2"
+                className="w-full inline-flex items-center justify-center min-h-[48px] px-6 py-3.5 bg-[var(--color-ink)] text-white hover:bg-stone-800 font-semibold text-xs uppercase tracking-wider transition-colors gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed font-[family-name:var(--font-dm-sans)]"
               >
                 {isSubmitting ? (
                   <span>{t("preparing")}</span>
                 ) : (
                   <>
-                    <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                    <svg className="w-5 h-5 flex-shrink-0 text-[var(--color-whatsapp)]" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.586-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.861.174.086.275.072.376-.044.101-.116.433-.506.549-.68.116-.173.231-.144.39-.086s1.011.477 1.184.564.289.13.332.203c.044.072.044.419-.1 1.024z" />
                     </svg>
                     {t("checkoutButton")}
@@ -385,7 +385,7 @@ export default function CartView({ waNumber }: CartViewProps) {
                 )}
               </button>
 
-              <p className="text-[11px] font-mono text-[var(--color-muted)] text-center leading-normal">
+              <p className="text-[11px] font-[family-name:var(--font-dm-sans)] text-[var(--color-muted)] text-center leading-normal">
                 {t("shippingNote")}
               </p>
             </form>
