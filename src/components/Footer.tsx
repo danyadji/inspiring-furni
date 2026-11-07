@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 
@@ -14,9 +15,20 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
           {/* Col 1: Identity */}
           <div className="md:col-span-5 space-y-4">
-            <span className="text-lg sm:text-xl font-bold tracking-tight text-white uppercase font-[family-name:var(--font-dm-sans)]">
-              Inspiring Furni
-            </span>
+            <div className="flex items-center gap-3">
+              <div className="relative w-8 h-8 shrink-0 overflow-hidden rounded">
+                <Image
+                  src="/images/logo/logo.svg"
+                  alt="Inspiring Furni Logo"
+                  width={32}
+                  height={32}
+                  className="object-contain w-full h-full"
+                />
+              </div>
+              <span className="text-lg sm:text-xl font-bold tracking-tight text-white uppercase font-[family-name:var(--font-dm-sans)]">
+                Inspiring Furni
+              </span>
+            </div>
             <p className="text-xs sm:text-sm text-stone-400 leading-relaxed max-w-sm">
               {t("description")}
             </p>
