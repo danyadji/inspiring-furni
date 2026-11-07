@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/routing";
-import { getProducts, getCategories } from "@/lib/products";
+import { getProducts } from "@/lib/products";
 import ProductCard from "@/components/ProductCard";
 
 export const revalidate = 15;
@@ -18,15 +18,9 @@ export default async function HomePage({
   const t = await getTranslations({ locale, namespace: "Home" });
   const tWa = await getTranslations({ locale, namespace: "WhatsApp" });
 
-  const [products, categories] = await Promise.all([
-    getProducts(locale),
-    getCategories(locale),
-  ]);
+  const products = await getProducts(locale);
 
   const waNumber = process.env.NEXT_PUBLIC_WA_NUMBER || "6289518906727";
-
-  // 2 main categories for tiles
-  const mainCategories = categories.slice(0, 2);
 
   // Terlaris: 4 products
   const bestSellers = products.slice(0, 4);
@@ -82,77 +76,7 @@ export default async function HomePage({
         </div>
       </section>
 
-      {/* 4. DUA TILE KATEGORI BERDAMPINGAN */}
-      <section className="max-w-[1280px] mx-auto px-4 sm:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-          {mainCategories.map((cat, idx) => (
-            <Link
-              key={cat.id}
-              href={`/produk?category=${cat.id}`}
-              className="group relative aspect-[16/10] bg-[var(--color-surface)] border border-[var(--color-line)] overflow-hidden flex flex-col justify-end p-6 sm:p-10"
-            >
-              <div className="absolute inset-0 z-0">
-                <Image
-                  src="/images/placeholder-product.svg"
-                  alt={`Kategori ${cat.name}`}
-                  fill
-                  className="object-contain p-8 group-hover:scale-105 transition-transform duration-500 opacity-60"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-ink)]/70 via-transparent to-transparent" />
-              </div>
-
-              <div className="relative z-10 text-white">
-                <span className="text-[11px] font-mono uppercase tracking-widest text-stone-300">
-                  {t("categoryBadge", { number: `0${idx + 1}` })}
-                </span>
-                <h2 className="text-xl sm:text-2xl font-light tracking-tight mt-1 group-hover:underline">
-                  {cat.name}
-                </h2>
-                <span className="inline-block mt-3 text-xs font-mono uppercase tracking-wider text-stone-200">
-                  {t("categoryViewCollection")} &rarr;
-                </span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* 5. BANNER KAMPANYE LEBAR PENUH */}
-      <section className="max-w-[1280px] mx-auto px-4 sm:px-8">
-        <div className="relative aspect-[4/5] sm:aspect-[21/9] bg-[var(--color-surface)] border border-[var(--color-line)] overflow-hidden flex items-center justify-center p-8 text-center">
-          <div className="absolute inset-0 z-0">
-            <Image
-              src="/images/placeholder-product.svg"
-              alt="Kampanye Furnitur Ruang Makan Jati"
-              fill
-              className="object-contain p-8 opacity-30"
-            />
-            <div className="absolute inset-0 bg-[var(--color-surface)]/80" />
-          </div>
-
-          <div className="relative z-10 max-w-xl space-y-4">
-            <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-[var(--color-muted)]">
-              {t("campaignBadge")}
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-light text-[var(--color-ink)] tracking-tight">
-              {t("campaignTitle")}
-            </h2>
-            <p className="text-xs sm:text-sm text-[var(--color-muted)] leading-relaxed">
-              {t("campaignDescription")}
-            </p>
-            <div className="pt-2">
-              <Link
-                href="/produk"
-                className="inline-flex items-center justify-center min-h-[44px] px-6 text-xs font-mono uppercase tracking-wider bg-[var(--color-ink)] text-white hover:bg-[var(--color-accent)] transition-colors"
-              >
-                {t("campaignCta")} &rarr;
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 6. SECTION "TERLARIS" */}
+      {/* SECTION "TERLARIS" */}
       <section className="max-w-[1280px] mx-auto px-4 sm:px-8">
         <div className="flex items-baseline justify-between mb-8 sm:mb-12 border-b border-[var(--color-line)] pb-4">
           <div>
