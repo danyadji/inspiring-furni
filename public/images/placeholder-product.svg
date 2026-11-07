@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600">
+  <defs>
+    <radialGradient id="woodRing" cx="50%" cy="50%" r="50%">
+      <stop offset="60%" stop-color="#8B5A2B" />
+      <stop offset="85%" stop-color="#6F421B" />
+      <stop offset="100%" stop-color="#4E2D0E" />
+    </radialGradient>
+    <radialGradient id="glassReflection" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#f8fafc" stop-opacity="0.9" />
+      <stop offset="50%" stop-color="#e2e8f0" stop-opacity="0.6" />
+      <stop offset="100%" stop-color="#cbd5e1" stop-opacity="0.8" />
+    </radialGradient>
+  </defs>
+  
+  <rect width="600" height="600" fill="#f5f5f4" />
+  
+  <!-- Outer Wall Cast Shadow -->
+  <circle cx="300" cy="305" r="230" fill="#000000" opacity="0.08" />
+  
+  <!-- Teak Frame Outer -->
+  <circle cx="300" cy="300" r="225" fill="url(#woodRing)" stroke="#3E2209" stroke-width="6" />
+  
+  <!-- Inner Wood Bevel -->
+  <circle cx="300" cy="300" r="175" fill="none" stroke="#3E2209" stroke-width="4" />
+  
+  <!-- Glass Window Pane -->
+  <circle cx="300" cy="300" r="173" fill="url(#glassReflection)" />
+  
+  <!-- Subtle Window Divider / Glazing Bars -->
+  <line x1="300" y1="127" x2="300" y2="473" stroke="#5C3614" stroke-width="8" stroke-linecap="round" />
+  <line x1="127" y1="300" x2="473" y2="300" stroke="#5C3614" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Center Tenon Boss -->
+  <circle cx="300" cy="300" r="16" fill="#4E2D0E" stroke="#3E2209" stroke-width="2" />
+  
+  <!-- Wood Texture Highlights -->
+  <path d="M 120 300 A 180 180 0 0 1 480 300" fill="none" stroke="#A76D38" stroke-width="3" opacity="0.4" stroke-dasharray="12 18" />
+  <path d="M 140 300 A 160 160 0 0 0 460 300" fill="none" stroke="#3E2209" stroke-width="2" opacity="0.5" stroke-dasharray="8 24" />
+  
+  <!-- Craftsmanship Tag -->
+  <rect x="200" y="525" width="200" height="34" rx="4" fill="#292524" />
+  <text x="300" y="547" fill="#fafaf9" font-family="sans-serif" font-size="13" font-weight="600" text-anchor="middle" letter-spacing="0.5">INSPIRING FURNI JEPARA</text>
+</svg>

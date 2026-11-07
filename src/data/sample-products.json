@@ -1,0 +1,342 @@
+[
+  {
+    "id": 1,
+    "name": "Meja Makan Jati Minimalis",
+    "slug": "meja-makan-jati-minimalis",
+    "description": "Meja makan kayu jati solid dengan desain tepi bevel halus dan kaki kokoh. Dikerjakan tangan oleh pengrajin Jepara dengan sistem sambungan tenon mortise tanpa paku besi yang rentan karat. Sangat cocok untuk ruang makan keluarga maupun cafe bernuansa alami.",
+    "short_description": "Meja makan kayu jati solid dengan sambungan presisi khas Jepara.",
+    "images": [
+      {
+        "src": "/images/placeholder-product.svg",
+        "alt": "Meja makan jati minimalis tampak perspektif"
+      }
+    ],
+    "price": "3200000",
+    "categories": [
+      { "id": 1, "name": "Ruang Makan", "slug": "ruang-makan" }
+    ],
+    "attributes": [
+      {
+        "name": "Ukuran",
+        "options": ["160x85 cm", "180x90 cm", "200x100 cm"]
+      },
+      {
+        "name": "Warna",
+        "options": ["Natural", "Jati Tua", "Walnut"]
+      }
+    ],
+    "variations": [
+      { "id": 101, "attributes": { "ukuran": "160x85 cm", "warna": "Natural" }, "price": "3200000", "regular_price": "3200000" },
+      { "id": 102, "attributes": { "ukuran": "160x85 cm", "warna": "Jati Tua" }, "price": "3200000", "regular_price": "3200000" },
+      { "id": 103, "attributes": { "ukuran": "160x85 cm", "warna": "Walnut" }, "price": "3350000", "regular_price": "3350000" },
+      { "id": 104, "attributes": { "ukuran": "180x90 cm", "warna": "Natural" }, "price": "3850000", "regular_price": "3850000" },
+      { "id": 105, "attributes": { "ukuran": "180x90 cm", "warna": "Jati Tua" }, "price": "3850000", "regular_price": "3850000" },
+      { "id": 106, "attributes": { "ukuran": "180x90 cm", "warna": "Walnut" }, "price": "4000000", "regular_price": "4000000" },
+      { "id": 107, "attributes": { "ukuran": "200x100 cm", "warna": "Natural" }, "price": "4500000", "regular_price": "4500000" },
+      { "id": 108, "attributes": { "ukuran": "200x100 cm", "warna": "Jati Tua" }, "price": "4500000", "regular_price": "4500000" },
+      { "id": 109, "attributes": { "ukuran": "200x100 cm", "warna": "Walnut" }, "price": "4700000", "regular_price": "4700000" }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Kursi Makan Jati Ropan",
+    "slug": "kursi-makan-jati-ropan",
+    "description": "Kursi makan kayu jati bergaya scandinavian tropis dengan sandaran melengkung yang ergonomis menopang punggung. Dudukan nyaman dan konstruksi kaki stabil, ideal dipadukan dengan meja makan jati minimalis.",
+    "short_description": "Kursi makan jati ergonomis berkarakter scandinavian tropis.",
+    "images": [
+      {
+        "src": "/images/placeholder-product.svg",
+        "alt": "Kursi makan jati ropan tampak samping dan depan"
+      }
+    ],
+    "price": "450000",
+    "categories": [
+      { "id": 1, "name": "Ruang Makan", "slug": "ruang-makan" }
+    ],
+    "attributes": [
+      {
+        "name": "Warna",
+        "options": ["Natural", "Jati Tua", "Duco Hitam"]
+      }
+    ],
+    "variations": [
+      { "id": 201, "attributes": { "warna": "Natural" }, "price": "450000", "regular_price": "450000" },
+      { "id": 202, "attributes": { "warna": "Jati Tua" }, "price": "450000", "regular_price": "450000" },
+      { "id": 203, "attributes": { "warna": "Duco Hitam" }, "price": "480000", "regular_price": "480000" }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Dipan Tempat Tidur Jati Spindle",
+    "slug": "dipan-tempat-tidur-jati-spindle",
+    "description": "Rangka tempat tidur kayu jati dengan sandaran kepala model jeruji silindris (spindle headboard) yang elegan. Struktur tatakan kasur kokoh dengan penguat tengah untuk kenyamanan tidur optimal tanpa derit.",
+    "short_description": "Tempat tidur kayu jati kokoh berdesain spindle modern.",
+    "images": [
+      {
+        "src": "/images/placeholder-product.svg",
+        "alt": "Dipan tempat tidur jati spindle tampak depan"
+      }
+    ],
+    "price": "3900000",
+    "categories": [
+      { "id": 2, "name": "Kamar Tidur", "slug": "kamar-tidur" }
+    ],
+    "attributes": [
+      {
+        "name": "Ukuran",
+        "options": ["160x200 cm (Queen)", "180x200 cm (King)", "200x200 cm (Super King)"]
+      },
+      {
+        "name": "Warna",
+        "options": ["Natural", "Jati Tua", "Bleaching Jati"]
+      }
+    ],
+    "variations": [
+      { "id": 301, "attributes": { "ukuran": "160x200 cm (Queen)", "warna": "Natural" }, "price": "3900000", "regular_price": "3900000" },
+      { "id": 302, "attributes": { "ukuran": "160x200 cm (Queen)", "warna": "Jati Tua" }, "price": "3900000", "regular_price": "3900000" },
+      { "id": 303, "attributes": { "ukuran": "160x200 cm (Queen)", "warna": "Bleaching Jati" }, "price": "4100000", "regular_price": "4100000" },
+      { "id": 304, "attributes": { "ukuran": "180x200 cm (King)", "warna": "Natural" }, "price": "4300000", "regular_price": "4300000" },
+      { "id": 305, "attributes": { "ukuran": "180x200 cm (King)", "warna": "Jati Tua" }, "price": "4300000", "regular_price": "4300000" },
+      { "id": 306, "attributes": { "ukuran": "180x200 cm (King)", "warna": "Bleaching Jati" }, "price": "4500000", "regular_price": "4500000" },
+      { "id": 307, "attributes": { "ukuran": "200x200 cm (Super King)", "warna": "Natural" }, "price": "4800000", "regular_price": "4800000" },
+      { "id": 308, "attributes": { "ukuran": "200x200 cm (Super King)", "warna": "Jati Tua" }, "price": "4800000", "regular_price": "4800000" },
+      { "id": 309, "attributes": { "ukuran": "200x200 cm (Super King)", "warna": "Bleaching Jati" }, "price": "5050000", "regular_price": "5050000" }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Nakas Samping Kasur Jati",
+    "slug": "nakas-samping-kasur-jati",
+    "description": "Meja nakas samping ranjang dengan dua laci penyimpanan yang presisi. Menggunakan rel kayu jati tradisional yang halus dan awet puluhan tahun.",
+    "short_description": "Meja samping tempat tidur dengan dua laci kayu jati solid.",
+    "images": [
+      {
+        "src": "/images/placeholder-product.svg",
+        "alt": "Nakas samping tempat tidur jati 2 laci"
+      }
+    ],
+    "price": "850000",
+    "categories": [
+      { "id": 2, "name": "Kamar Tidur", "slug": "kamar-tidur" }
+    ],
+    "attributes": [
+      {
+        "name": "Warna",
+        "options": ["Natural", "Jati Tua", "Bleaching Jati"]
+      }
+    ],
+    "variations": [
+      { "id": 401, "attributes": { "warna": "Natural" }, "price": "850000", "regular_price": "850000" },
+      { "id": 402, "attributes": { "warna": "Jati Tua" }, "price": "850000", "regular_price": "850000" },
+      { "id": 403, "attributes": { "warna": "Bleaching Jati" }, "price": "920000", "regular_price": "920000" }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Sofa Kursi Santai Jati Retro",
+    "slug": "sofa-kursi-santai-jati-retro",
+    "description": "Armchair santai dengan rangka kayu jati perhutani dan bantalan busa royal foam berbalut kain woven linen tebal. Pas untuk ruang keluarga, sudut baca, maupun lobby kantor.",
+    "short_description": "Kursi santai berbalut busa tebal dengan rangka kayu jati kokoh.",
+    "images": [
+      {
+        "src": "/images/placeholder-product.svg",
+        "alt": "Sofa kursi santai jati retro tampak depan"
+      }
+    ],
+    "price": "1750000",
+    "categories": [
+      { "id": 3, "name": "Ruang Tamu", "slug": "ruang-tamu" }
+    ],
+    "attributes": [
+      {
+        "name": "Warna",
+        "options": ["Natural Kain Krem", "Natural Kain Abu", "Jati Tua Kain Cokelat"]
+      }
+    ],
+    "variations": [
+      { "id": 501, "attributes": { "warna": "Natural Kain Krem" }, "price": "1750000", "regular_price": "1750000" },
+      { "id": 502, "attributes": { "warna": "Natural Kain Abu" }, "price": "1750000", "regular_price": "1750000" },
+      { "id": 503, "attributes": { "warna": "Jati Tua Kain Cokelat" }, "price": "1850000", "regular_price": "1850000" }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Meja Kopi Coffee Table Bundar Jati",
+    "slug": "meja-kopi-coffee-table-bundar-jati",
+    "description": "Meja kopi bundar dengan permukaan kayu jati tebal 3 cm dan kaki tripod miring yang artistik. Menjadi pemanis sempurna di depan sofa ruang tamu Anda.",
+    "short_description": "Coffee table bundar kayu jati solid untuk ruang tamu keluarga.",
+    "images": [
+      {
+        "src": "/images/placeholder-product.svg",
+        "alt": "Meja kopi bundar jati tampak atas dan samping"
+      }
+    ],
+    "price": "950000",
+    "categories": [
+      { "id": 3, "name": "Ruang Tamu", "slug": "ruang-tamu" }
+    ],
+    "attributes": [
+      {
+        "name": "Ukuran",
+        "options": ["Diameter 60 cm", "Diameter 80 cm"]
+      },
+      {
+        "name": "Warna",
+        "options": ["Natural", "Jati Tua"]
+      }
+    ],
+    "variations": [
+      { "id": 601, "attributes": { "ukuran": "Diameter 60 cm", "warna": "Natural" }, "price": "950000", "regular_price": "950000" },
+      { "id": 602, "attributes": { "ukuran": "Diameter 60 cm", "warna": "Jati Tua" }, "price": "950000", "regular_price": "950000" },
+      { "id": 603, "attributes": { "ukuran": "Diameter 80 cm", "warna": "Natural" }, "price": "1250000", "regular_price": "1250000" },
+      { "id": 604, "attributes": { "ukuran": "Diameter 80 cm", "warna": "Jati Tua" }, "price": "1250000", "regular_price": "1250000" }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Credenza Bufet TV Jati Kisi",
+    "slug": "credenza-bufet-tv-jati-kisi",
+    "description": "Bufet lemari TV dengan pintu geser kisi-kisi jati (slatted sliding door) yang memungkinkan sinyal remote tembus tanpa membuka pintu. Ruang penyimpanan luas untuk perangkat media.",
+    "short_description": "Bufet TV kayu jati beraksen pintu kisi slatted yang estetik.",
+    "images": [
+      {
+        "src": "/images/placeholder-product.svg",
+        "alt": "Credenza bufet TV jati kisi tampak depan"
+      }
+    ],
+    "price": "2900000",
+    "categories": [
+      { "id": 3, "name": "Ruang Tamu", "slug": "ruang-tamu" }
+    ],
+    "attributes": [
+      {
+        "name": "Ukuran",
+        "options": ["150x45x55 cm", "180x45x55 cm", "200x45x55 cm"]
+      },
+      {
+        "name": "Warna",
+        "options": ["Natural", "Jati Tua", "Walnut"]
+      }
+    ],
+    "variations": [
+      { "id": 701, "attributes": { "ukuran": "150x45x55 cm", "warna": "Natural" }, "price": "2900000", "regular_price": "2900000" },
+      { "id": 702, "attributes": { "ukuran": "150x45x55 cm", "warna": "Jati Tua" }, "price": "2900000", "regular_price": "2900000" },
+      { "id": 703, "attributes": { "ukuran": "150x45x55 cm", "warna": "Walnut" }, "price": "3050000", "regular_price": "3050000" },
+      { "id": 704, "attributes": { "ukuran": "180x45x55 cm", "warna": "Natural" }, "price": "3450000", "regular_price": "3450000" },
+      { "id": 705, "attributes": { "ukuran": "180x45x55 cm", "warna": "Jati Tua" }, "price": "3450000", "regular_price": "3450000" },
+      { "id": 706, "attributes": { "ukuran": "180x45x55 cm", "warna": "Walnut" }, "price": "3600000", "regular_price": "3600000" },
+      { "id": 707, "attributes": { "ukuran": "200x45x55 cm", "warna": "Natural" }, "price": "3950000", "regular_price": "3950000" },
+      { "id": 708, "attributes": { "ukuran": "200x45x55 cm", "warna": "Jati Tua" }, "price": "3950000", "regular_price": "3950000" },
+      { "id": 709, "attributes": { "ukuran": "200x45x55 cm", "warna": "Walnut" }, "price": "4150000", "regular_price": "4150000" }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Meja Kerja Kantor Jati Solid",
+    "slug": "meja-kerja-kantor-jati-solid",
+    "description": "Meja kerja kayu jati dengan laci ganda dan slot manajemen kabel tersembunyi. Memberikan suasana kerja yang tenang, berwibawa, dan nyaman untuk ruangan kerja di rumah.",
+    "short_description": "Meja kerja jati minimalis untuk ruang kerja rumah maupun kantor profesional.",
+    "images": [
+      {
+        "src": "/images/placeholder-product.svg",
+        "alt": "Meja kerja kantor jati solid tampak depan"
+      }
+    ],
+    "price": "2400000",
+    "categories": [
+      { "id": 4, "name": "Ruang Kerja", "slug": "ruang-kerja" }
+    ],
+    "attributes": [
+      {
+        "name": "Ukuran",
+        "options": ["120x60 cm", "140x70 cm"]
+      },
+      {
+        "name": "Warna",
+        "options": ["Natural", "Jati Tua"]
+      }
+    ],
+    "variations": [
+      { "id": 801, "attributes": { "ukuran": "120x60 cm", "warna": "Natural" }, "price": "2400000", "regular_price": "2400000" },
+      { "id": 802, "attributes": { "ukuran": "120x60 cm", "warna": "Jati Tua" }, "price": "2400000", "regular_price": "2400000" },
+      { "id": 803, "attributes": { "ukuran": "140x70 cm", "warna": "Natural" }, "price": "2900000", "regular_price": "2900000" },
+      { "id": 804, "attributes": { "ukuran": "140x70 cm", "warna": "Jati Tua" }, "price": "2900000", "regular_price": "2900000" }
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Jendela Bulat Jati Classic",
+    "slug": "jendela-bulat-jati-classic",
+    "description": "Jendela bulat kayu jati pilihan dengan sambungan lengkung tenon dan dowel. Aksen arsitektur tropis yang khas untuk fasad depan rumah, bordes tangga, maupun dinding ruang santai.",
+    "short_description": "Jendela bundar kayu jati asli Jepara, dikerjakan tangan dengan sambungan dowel.",
+    "images": [
+      {
+        "src": "/images/placeholder-product.svg",
+        "alt": "Jendela bulat jati classic tampak depan"
+      }
+    ],
+    "price": "850000",
+    "categories": [
+      { "id": 5, "name": "Pintu & Jendela", "slug": "pintu-jendela" }
+    ],
+    "attributes": [
+      {
+        "name": "Ukuran",
+        "options": ["Diameter 60 cm", "Diameter 80 cm", "Diameter 100 cm"]
+      },
+      {
+        "name": "Warna",
+        "options": ["Natural", "Jati Tua", "Duco Putih"]
+      }
+    ],
+    "variations": [
+      { "id": 901, "attributes": { "ukuran": "Diameter 60 cm", "warna": "Natural" }, "price": "850000", "regular_price": "850000" },
+      { "id": 902, "attributes": { "ukuran": "Diameter 60 cm", "warna": "Jati Tua" }, "price": "850000", "regular_price": "850000" },
+      { "id": 903, "attributes": { "ukuran": "Diameter 60 cm", "warna": "Duco Putih" }, "price": "900000", "regular_price": "900000" },
+      { "id": 904, "attributes": { "ukuran": "Diameter 80 cm", "warna": "Natural" }, "price": "1150000", "regular_price": "1150000" },
+      { "id": 905, "attributes": { "ukuran": "Diameter 80 cm", "warna": "Jati Tua" }, "price": "1150000", "regular_price": "1150000" },
+      { "id": 906, "attributes": { "ukuran": "Diameter 80 cm", "warna": "Duco Putih" }, "price": "1200000", "regular_price": "1200000" },
+      { "id": 907, "attributes": { "ukuran": "Diameter 100 cm", "warna": "Natural" }, "price": "1500000", "regular_price": "1500000" },
+      { "id": 908, "attributes": { "ukuran": "Diameter 100 cm", "warna": "Jati Tua" }, "price": "1500000", "regular_price": "1500000" },
+      { "id": 909, "attributes": { "ukuran": "Diameter 100 cm", "warna": "Duco Putih" }, "price": "1600000", "regular_price": "1600000" }
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Pintu Utama Jati Panel Solid",
+    "slug": "pintu-utama-jati-panel-solid",
+    "description": "Daun pintu utama dari kayu jati utuh berpola alur geometris modern. Ketebalan kayu 4 cm kokoh, tahan perubahan cuaca luar, dan memberikan keamanan serta estetika elegan pada pintu depan rumah.",
+    "short_description": "Daun pintu utama kayu jati solid tebal 4 cm untuk gerbang masuk rumah.",
+    "images": [
+      {
+        "src": "/images/placeholder-product.svg",
+        "alt": "Pintu utama jati panel solid tampak depan"
+      }
+    ],
+    "price": "3100000",
+    "categories": [
+      { "id": 5, "name": "Pintu & Jendela", "slug": "pintu-jendela" }
+    ],
+    "attributes": [
+      {
+        "name": "Ukuran",
+        "options": ["80x210 cm", "90x220 cm", "100x240 cm"]
+      },
+      {
+        "name": "Warna",
+        "options": ["Natural", "Jati Tua", "Dark Walnut"]
+      }
+    ],
+    "variations": [
+      { "id": 1001, "attributes": { "ukuran": "80x210 cm", "warna": "Natural" }, "price": "3100000", "regular_price": "3100000" },
+      { "id": 1002, "attributes": { "ukuran": "80x210 cm", "warna": "Jati Tua" }, "price": "3100000", "regular_price": "3100000" },
+      { "id": 1003, "attributes": { "ukuran": "80x210 cm", "warna": "Dark Walnut" }, "price": "3250000", "regular_price": "3250000" },
+      { "id": 1004, "attributes": { "ukuran": "90x220 cm", "warna": "Natural" }, "price": "3600000", "regular_price": "3600000" },
+      { "id": 1005, "attributes": { "ukuran": "90x220 cm", "warna": "Jati Tua" }, "price": "3600000", "regular_price": "3600000" },
+      { "id": 1006, "attributes": { "ukuran": "90x220 cm", "warna": "Dark Walnut" }, "price": "3750000", "regular_price": "3750000" },
+      { "id": 1007, "attributes": { "ukuran": "100x240 cm", "warna": "Natural" }, "price": "4200000", "regular_price": "4200000" },
+      { "id": 1008, "attributes": { "ukuran": "100x240 cm", "warna": "Jati Tua" }, "price": "4200000", "regular_price": "4200000" },
+      { "id": 1009, "attributes": { "ukuran": "100x240 cm", "warna": "Dark Walnut" }, "price": "4400000", "regular_price": "4400000" }
+    ]
+  }
+]
