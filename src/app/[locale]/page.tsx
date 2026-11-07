@@ -56,7 +56,7 @@ export default async function HomePage({
             {t("heroTitle1")} <br className="hidden sm:inline" />
             <span className="font-normal">{t("heroTitle2")}</span>
           </h1>
-          <p className="mt-5 text-sm sm:text-base text-stone-300 max-w-2xl mx-auto leading-relaxed">
+          <p className="mt-5 text-xs sm:text-sm md:text-base font-mono text-stone-300 max-w-2xl mx-auto leading-relaxed font-[family-name:var(--font-dm-mono)]">
             {t("heroDescription")}
           </p>
 
