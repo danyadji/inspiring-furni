@@ -163,21 +163,21 @@ export default async function HomePage({
 
       {/* 9. BANNER EDITORIAL */}
       <section className="max-w-[1280px] mx-auto px-4 sm:px-8 pb-10">
-        <div className="border border-[var(--color-line)] bg-[var(--color-surface)] p-8 sm:p-14">
-          <div className="max-w-2xl space-y-4">
-            <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-[var(--color-muted)]">
+        <div className="border border-[var(--color-line)] bg-[var(--color-surface)] p-8 sm:p-14 lg:p-16">
+          <div className="max-w-3xl space-y-4">
+            <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-[var(--color-muted)] block">
               {t("editorialBadge")}
             </span>
-            <h2 className="text-2xl sm:text-3xl font-light text-[var(--color-ink)] tracking-tight">
+            <h2 className="text-2xl sm:text-4xl font-light text-[var(--color-ink)] tracking-tight leading-snug font-[family-name:var(--font-dm-sans)]">
               {t("editorialTitle")}
             </h2>
-            <p className="text-xs sm:text-sm text-[var(--color-muted)] leading-relaxed">
+            <p className="text-sm sm:text-base text-[var(--color-muted)] leading-relaxed font-[family-name:var(--font-dm-sans)]">
               {t("editorialDescription")}
             </p>
-            <div className="pt-3">
+            <div className="pt-2">
               <Link
                 href="/about"
-                className="text-xs font-mono uppercase tracking-wider text-[var(--color-ink)] hover:text-[var(--color-accent)] hover:underline"
+                className="text-xs font-mono uppercase tracking-wider text-[var(--color-ink)] hover:text-[var(--color-accent)] hover:underline inline-flex items-center gap-1.5"
               >
                 {t("editorialCta")} &rarr;
               </Link>
