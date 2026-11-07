@@ -130,14 +130,14 @@ export default function ProductDetailView({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14">
         {/* Left: Gallery */}
         <div className="lg:col-span-7 space-y-4">
-          <div className="relative aspect-[4/5] bg-[var(--color-surface)] border border-[var(--color-line)] overflow-hidden flex items-center justify-center p-8">
+          <div className="relative aspect-square w-full bg-stone-100/60 border border-[var(--color-line)] overflow-hidden">
             <Image
               src={activeImage.src}
               alt={activeImage.alt || product.name}
               fill
               priority
               sizes="(max-width: 1024px) 100vw, 55vw"
-              className="object-contain p-6"
+              className="object-cover w-full h-full"
             />
           </div>
 
@@ -148,9 +148,9 @@ export default function ProductDetailView({
                   key={idx}
                   type="button"
                   onClick={() => setActiveImageIndex(idx)}
-                  className={`relative w-20 h-24 border overflow-hidden bg-[var(--color-surface)] flex-shrink-0 transition-colors ${
+                  className={`relative w-20 h-20 border overflow-hidden bg-stone-100/60 flex-shrink-0 transition-colors cursor-pointer ${
                     activeImageIndex === idx
-                      ? "border-[var(--color-ink)]"
+                      ? "border-[var(--color-ink)] ring-1 ring-[var(--color-ink)]"
                       : "border-[var(--color-line)] hover:border-[var(--color-muted)]"
                   }`}
                   aria-label={`Thumbnail ${idx + 1}`}
@@ -160,7 +160,7 @@ export default function ProductDetailView({
                     alt={img.alt || `Thumbnail ${product.name} ${idx + 1}`}
                     fill
                     sizes="80px"
-                    className="object-contain p-1"
+                    className="object-cover w-full h-full"
                   />
                 </button>
               ))}
@@ -319,7 +319,7 @@ export default function ProductDetailView({
               href={waAskUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full min-h-[48px] px-6 py-3 border border-[var(--color-whatsapp)] text-[var(--color-ink)] font-mono text-xs uppercase tracking-wider hover:bg-emerald-50 transition-colors flex items-center justify-center gap-2"
+              className="w-full min-h-[48px] px-6 py-3 border border-[var(--color-ink)] text-[var(--color-ink)] font-mono text-xs uppercase tracking-wider hover:bg-stone-100 transition-colors flex items-center justify-center gap-2 cursor-pointer"
               aria-label={t("askWhatsApp")}
             >
               <svg className="w-4 h-4 text-[var(--color-whatsapp)] flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
