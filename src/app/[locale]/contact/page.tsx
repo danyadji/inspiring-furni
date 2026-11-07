@@ -34,11 +34,10 @@ export default async function ContactPage({
   setRequestLocale(locale);
 
   const t = await getTranslations({ locale, namespace: "Contact" });
-  const tWa = await getTranslations({ locale, namespace: "WhatsApp" });
   const waNumber = process.env.NEXT_PUBLIC_WA_NUMBER || "6289518906727";
 
   return (
-    <div className="max-w-[1280px] mx-auto px-4 sm:px-8 py-10 sm:py-20 space-y-12">
+    <div className="max-w-[1280px] mx-auto px-4 sm:px-8 py-10 sm:py-20 space-y-12 font-[family-name:var(--font-dm-sans)]">
       <div className="max-w-3xl">
         <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-[var(--color-muted)]">
           {t("badge")}
@@ -46,7 +45,7 @@ export default async function ContactPage({
         <h1 className="text-3xl sm:text-5xl font-light text-[var(--color-ink)] tracking-tight mt-1 font-[family-name:var(--font-dm-sans)]">
           {t("title")}
         </h1>
-        <p className="mt-4 text-xs sm:text-sm text-[var(--color-muted)] leading-relaxed">
+        <p className="mt-4 text-xs sm:text-sm text-[var(--color-muted)] leading-relaxed font-[family-name:var(--font-dm-sans)]">
           {t("description")}
         </p>
       </div>
@@ -59,49 +58,38 @@ export default async function ContactPage({
               {t("infoTitle")}
             </h2>
 
-            <div className="space-y-4 text-xs font-mono">
+            <div className="space-y-4 text-xs font-[family-name:var(--font-dm-sans)]">
               <div>
-                <span className="block text-[var(--color-muted)] uppercase">{t("waLabel")}</span>
+                <span className="block text-[var(--color-muted)] text-[11px] font-mono uppercase tracking-wider">{t("waLabel")}</span>
                 <a
                   href={`https://wa.me/${waNumber}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[var(--color-ink)] font-bold text-sm hover:underline mt-0.5 block"
+                  className="text-[var(--color-ink)] font-bold text-sm sm:text-base hover:underline mt-0.5 block font-mono"
                 >
                   +{waNumber}
                 </a>
               </div>
 
               <div>
-                <span className="block text-[var(--color-muted)] uppercase">{t("locationLabel")}</span>
-                <p className="text-[var(--color-ink)] mt-0.5">
+                <span className="block text-[var(--color-muted)] text-[11px] font-mono uppercase tracking-wider">{t("locationLabel")}</span>
+                <p className="text-[var(--color-ink)] mt-0.5 text-xs sm:text-sm font-[family-name:var(--font-dm-sans)]">
                   {t("locationValue")}
                 </p>
               </div>
 
               <div>
-                <span className="block text-[var(--color-muted)] uppercase">{t("serviceLabel")}</span>
-                <p className="text-[var(--color-muted)] mt-0.5 leading-relaxed">
+                <span className="block text-[var(--color-muted)] text-[11px] font-mono uppercase tracking-wider">{t("serviceLabel")}</span>
+                <p className="text-[var(--color-muted)] mt-0.5 leading-relaxed text-xs sm:text-sm font-[family-name:var(--font-dm-sans)]">
                   {t("serviceValue")}
                 </p>
               </div>
             </div>
-
-            <div className="pt-3">
-              <a
-                href={`https://wa.me/${waNumber}?text=${encodeURIComponent(tWa("inquiryGeneral"))}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full inline-flex items-center justify-center min-h-[48px] px-6 text-xs font-mono uppercase tracking-wider bg-[var(--color-whatsapp)] text-[var(--color-ink)] font-bold hover:brightness-95 transition-all gap-2"
-              >
-                {t("openWhatsApp")}
-              </a>
-            </div>
           </div>
 
-          <div className="p-5 border border-[var(--color-line)] text-xs font-mono text-[var(--color-muted)] space-y-1">
-            <p className="text-[var(--color-ink)] font-semibold uppercase tracking-wider">{t("cargoShippingTitle")}</p>
-            <p className="leading-relaxed">
+          <div className="p-5 border border-[var(--color-line)] text-xs font-[family-name:var(--font-dm-sans)] text-[var(--color-muted)] space-y-1">
+            <p className="text-[var(--color-ink)] font-semibold text-[11px] font-mono uppercase tracking-wider">{t("cargoShippingTitle")}</p>
+            <p className="leading-relaxed text-xs sm:text-sm font-[family-name:var(--font-dm-sans)]">
               {t("cargoShippingDesc")}
             </p>
           </div>
@@ -112,7 +100,7 @@ export default async function ContactPage({
           <h2 className="text-sm font-mono uppercase tracking-wider text-[var(--color-ink)] mb-1">
             {t("formTitle")}
           </h2>
-          <p className="text-xs text-[var(--color-muted)] mb-6 font-mono">
+          <p className="text-xs text-[var(--color-muted)] mb-6 font-[family-name:var(--font-dm-sans)]">
             {t("formDescription")}
           </p>
 

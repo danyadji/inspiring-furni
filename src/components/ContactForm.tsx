@@ -27,7 +27,7 @@ export default function ContactForm({ waNumber }: ContactFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4 font-[family-name:var(--font-dm-sans)]">
       <div>
         <label
           htmlFor="contact-name"
@@ -42,7 +42,7 @@ export default function ContactForm({ waNumber }: ContactFormProps) {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder={t("formNamePlaceholder")}
-          className="w-full px-3.5 py-2.5 text-xs font-mono bg-transparent border border-[var(--color-line)] text-[var(--color-ink)] focus:outline-none focus:border-[var(--color-ink)]"
+          className="w-full px-3.5 py-2.5 text-xs sm:text-sm font-[family-name:var(--font-dm-sans)] bg-transparent border border-[var(--color-line)] text-[var(--color-ink)] focus:outline-none focus:border-[var(--color-ink)]"
         />
       </div>
 
@@ -60,16 +60,16 @@ export default function ContactForm({ waNumber }: ContactFormProps) {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder={t("formMessagePlaceholder")}
-          className="w-full px-3.5 py-2.5 text-xs font-mono bg-transparent border border-[var(--color-line)] text-[var(--color-ink)] focus:outline-none focus:border-[var(--color-ink)]"
+          className="w-full px-3.5 py-2.5 text-xs sm:text-sm font-[family-name:var(--font-dm-sans)] bg-transparent border border-[var(--color-line)] text-[var(--color-ink)] focus:outline-none focus:border-[var(--color-ink)]"
         />
       </div>
 
       <button
         type="submit"
-        className="w-full inline-flex items-center justify-center min-h-[48px] px-6 py-3 bg-[var(--color-whatsapp)] text-[var(--color-ink)] font-bold text-xs uppercase tracking-wider hover:brightness-95 transition-all gap-2"
+        className="w-full inline-flex items-center justify-center min-h-[48px] px-6 py-3 bg-[var(--color-ink)] text-white hover:bg-stone-800 font-semibold text-xs uppercase tracking-wider transition-colors gap-2 cursor-pointer font-[family-name:var(--font-dm-sans)]"
       >
         <svg
-          className="w-4 h-4 flex-shrink-0"
+          className="w-4 h-4 flex-shrink-0 text-[var(--color-whatsapp)]"
           viewBox="0 0 24 24"
           fill="currentColor"
           aria-hidden="true"
@@ -80,7 +80,7 @@ export default function ContactForm({ waNumber }: ContactFormProps) {
       </button>
 
       {submitted && (
-        <p className="text-[11px] font-mono text-[var(--color-muted)] text-center mt-2">
+        <p className="text-xs text-[var(--color-muted)] text-center mt-2 font-[family-name:var(--font-dm-sans)]">
           {t("formSubmittedNote")}
         </p>
       )}
