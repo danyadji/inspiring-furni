@@ -83,7 +83,7 @@ export default async function HomePage({
             <span className="text-[11px] font-mono uppercase tracking-widest text-[var(--color-muted)]">
               {t("bestSellersBadge")}
             </span>
-            <h2 className="text-xl sm:text-2xl font-light text-[var(--color-ink)] tracking-tight mt-1">
+            <h2 className="text-2xl sm:text-4xl font-bold text-[var(--color-ink)] tracking-tight mt-1">
               {t("bestSellersTitle")}
             </h2>
           </div>
