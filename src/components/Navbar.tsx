@@ -56,27 +56,17 @@ export default function Navbar() {
           {/* Logo / Brand */}
           <Link
             href="/"
-            className="flex items-center gap-2.5 sm:gap-3 group py-1"
+            className="flex items-center group py-2"
             aria-label="Inspiring Furni Home"
           >
-            <div className="relative w-8 h-8 sm:w-9 sm:h-9 shrink-0 overflow-hidden rounded">
-              <Image
-                src="/images/logo/logo.svg"
-                alt="Inspiring Furni Logo"
-                width={36}
-                height={36}
-                className="object-contain w-full h-full transition-transform duration-300 group-hover:scale-105"
-                priority
-              />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-base sm:text-lg font-bold tracking-tight text-[var(--color-ink)] uppercase font-[family-name:var(--font-dm-sans)] leading-none">
-                Inspiring Furni
-              </span>
-              <span className="text-[10px] font-mono tracking-widest text-[var(--color-muted)] uppercase mt-1">
-                {t("brandSubtitle")}
-              </span>
-            </div>
+            <Image
+              src="/images/logo/logo.png"
+              alt="Inspiring Furni"
+              width={240}
+              height={40}
+              className="h-8 sm:h-10 w-auto object-contain transition-opacity duration-200 group-hover:opacity-90"
+              priority
+            />
           </Link>
 
           {/* Desktop Navigation */}
