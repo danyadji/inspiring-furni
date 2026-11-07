@@ -48,7 +48,7 @@ export default function Navbar() {
 
   return (
     <header
-      className={`z-40 transition-all duration-300 ${
+      className={`z-40 transition-all duration-300 font-[family-name:var(--font-dm-sans)] ${
         isHome ? "fixed top-0 inset-x-0" : "sticky top-0"
       } ${
         isTransparent
@@ -89,7 +89,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-9" aria-label="Navigasi Utama">
+          <nav className="hidden md:flex items-center space-x-9 font-[family-name:var(--font-dm-sans)]" aria-label="Navigasi Utama">
             {navLinks.map((link) => {
               const isActive =
                 link.href === "/"
@@ -100,14 +100,14 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`text-sm tracking-wide transition-colors py-2 relative ${
+                  className={`text-[15px] font-[family-name:var(--font-dm-sans)] tracking-normal transition-colors py-2 relative ${
                     isActive
                       ? isTransparent
                         ? "text-white font-semibold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[1.5px] after:bg-white"
                         : "text-[var(--color-ink)] font-semibold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[1.5px] after:bg-[var(--color-ink)]"
                       : isTransparent
-                      ? "text-white/80 hover:text-white"
-                      : "text-[var(--color-muted)] hover:text-[var(--color-ink)]"
+                      ? "text-white/85 hover:text-white font-normal"
+                      : "text-[var(--color-muted)] hover:text-[var(--color-ink)] font-normal"
                   }`}
                 >
                   {link.label}
@@ -206,9 +206,9 @@ export default function Navbar() {
       {mobileMenuOpen && (
         <div
           id="mobile-navigation"
-          className="md:hidden border-t border-[var(--color-line)] bg-[var(--color-paper)] px-6 pt-3 pb-6 space-y-2 shadow-md"
+          className="md:hidden border-t border-[var(--color-line)] bg-[var(--color-paper)] px-6 pt-3 pb-6 space-y-2 shadow-md font-[family-name:var(--font-dm-sans)]"
         >
-          <nav aria-label="Navigasi Menu Mobile" className="flex flex-col space-y-1">
+          <nav aria-label="Navigasi Menu Mobile" className="flex flex-col space-y-1 font-[family-name:var(--font-dm-sans)]">
             {navLinks.map((link) => {
               const isActive =
                 link.href === "/"
@@ -220,10 +220,10 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`block px-3 py-3 text-base min-h-[44px] flex items-center transition-colors ${
+                  className={`block px-3 py-3 text-base min-h-[44px] flex items-center transition-colors font-[family-name:var(--font-dm-sans)] ${
                     isActive
                       ? "text-[var(--color-ink)] font-semibold border-l-2 border-[var(--color-ink)] pl-3 bg-[var(--color-surface)]"
-                      : "text-[var(--color-muted)] hover:text-[var(--color-ink)]"
+                      : "text-[var(--color-muted)] hover:text-[var(--color-ink)] font-normal"
                   }`}
                 >
                   {link.label}
