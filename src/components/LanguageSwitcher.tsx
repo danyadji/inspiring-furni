@@ -4,7 +4,11 @@ import React, { useTransition } from "react";
 import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/routing";
 
-export default function LanguageSwitcher() {
+interface LanguageSwitcherProps {
+  theme?: "light" | "dark";
+}
+
+export default function LanguageSwitcher({ theme = "dark" }: LanguageSwitcherProps) {
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
@@ -21,6 +25,8 @@ export default function LanguageSwitcher() {
     });
   };
 
+  const isLight = theme === "light";
+
   return (
     <div
       className="flex items-center text-xs font-mono select-none"
@@ -35,14 +41,21 @@ export default function LanguageSwitcher() {
         aria-label="Bahasa Indonesia"
         className={`min-h-[44px] min-w-[36px] px-1.5 flex items-center justify-center transition-colors ${
           locale === "id"
-            ? "font-bold text-[var(--color-ink)] underline underline-offset-4 decoration-[var(--color-ink)]"
+            ? isLight
+              ? "font-bold text-white underline underline-offset-4 decoration-white"
+              : "font-bold text-[var(--color-ink)] underline underline-offset-4 decoration-[var(--color-ink)]"
+            : isLight
+            ? "text-white/70 hover:text-white"
             : "text-[var(--color-muted)] hover:text-[var(--color-ink)]"
         }`}
       >
         ID
       </button>
 
-      <span className="text-[var(--color-line)] px-0.5" aria-hidden="true">
+      <span
+        className={`px-0.5 ${isLight ? "text-white/30" : "text-[var(--color-line)]"}`}
+        aria-hidden="true"
+      >
         |
       </span>
 
@@ -54,7 +67,11 @@ export default function LanguageSwitcher() {
         aria-label="English"
         className={`min-h-[44px] min-w-[36px] px-1.5 flex items-center justify-center transition-colors ${
           locale === "en"
-            ? "font-bold text-[var(--color-ink)] underline underline-offset-4 decoration-[var(--color-ink)]"
+            ? isLight
+              ? "font-bold text-white underline underline-offset-4 decoration-white"
+              : "font-bold text-[var(--color-ink)] underline underline-offset-4 decoration-[var(--color-ink)]"
+            : isLight
+            ? "text-white/70 hover:text-white"
             : "text-[var(--color-muted)] hover:text-[var(--color-ink)]"
         }`}
       >

@@ -51,7 +51,7 @@ export default async function HomePage({
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/60" />
         </div>
 
-        <div className="relative z-10 max-w-[1280px] mx-auto px-4 sm:px-8 text-center py-20">
+        <div className="relative z-10 max-w-[1280px] mx-auto px-4 sm:px-8 text-center pt-28 sm:pt-36 pb-20 sm:pb-24">
           <span className="inline-block text-[11px] sm:text-xs font-mono uppercase tracking-[0.2em] text-[var(--color-surface)] mb-4">
             {t("heroBadge")}
           </span>

@@ -43,12 +43,17 @@ export default function Navbar() {
     { href: "/contact", label: t("contact") },
   ];
 
+  const isHome = pathname === "/";
+  const isTransparent = isHome && !isScrolled && !mobileMenuOpen;
+
   return (
     <header
-      className={`sticky top-0 z-40 transition-colors duration-200 border-b border-[var(--color-line)] ${
-        isScrolled
-          ? "bg-[var(--color-paper)]/95 backdrop-blur-md shadow-xs"
-          : "bg-[var(--color-paper)]"
+      className={`sticky top-0 z-40 transition-all duration-300 ${
+        isHome ? "-mb-18 sm:-mb-20" : ""
+      } ${
+        isTransparent
+          ? "bg-transparent border-b border-transparent"
+          : "bg-[var(--color-paper)]/95 backdrop-blur-md shadow-xs border-b border-[var(--color-line)]"
       }`}
     >
       <div className="max-w-[1280px] mx-auto px-4 sm:px-8">
@@ -56,15 +61,29 @@ export default function Navbar() {
           {/* Logo / Brand */}
           <Link
             href="/"
-            className="flex items-center group py-2"
+            className="flex items-center group py-2 relative"
             aria-label="Inspiring Furni Home"
           >
+            {/* White Logo: Shown when transparent (unscrolled over hero) */}
             <Image
               src="/images/logo/logo.png"
               alt="Inspiring Furni"
               width={240}
               height={40}
-              className="h-6 sm:h-9 md:h-10 w-auto max-w-[140px] xs:max-w-[160px] sm:max-w-none object-contain transition-opacity duration-200 group-hover:opacity-90"
+              className={`h-6 sm:h-9 md:h-10 w-auto max-w-[140px] xs:max-w-[160px] sm:max-w-none object-contain transition-opacity duration-300 ${
+                isTransparent ? "opacity-100" : "opacity-0 absolute pointer-events-none"
+              }`}
+              priority
+            />
+            {/* Dark Logo: Shown when scrolled or on solid background */}
+            <Image
+              src="/images/logo/logo-2.png"
+              alt="Inspiring Furni"
+              width={240}
+              height={40}
+              className={`h-6 sm:h-9 md:h-10 w-auto max-w-[140px] xs:max-w-[160px] sm:max-w-none object-contain transition-opacity duration-300 ${
+                !isTransparent ? "opacity-100" : "opacity-0 absolute pointer-events-none"
+              }`}
               priority
             />
           </Link>
@@ -83,7 +102,11 @@ export default function Navbar() {
                   href={link.href}
                   className={`text-sm tracking-wide transition-colors py-2 relative ${
                     isActive
-                      ? "text-[var(--color-ink)] font-semibold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[1.5px] after:bg-[var(--color-ink)]"
+                      ? isTransparent
+                        ? "text-white font-semibold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[1.5px] after:bg-white"
+                        : "text-[var(--color-ink)] font-semibold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[1.5px] after:bg-[var(--color-ink)]"
+                      : isTransparent
+                      ? "text-white/80 hover:text-white"
                       : "text-[var(--color-muted)] hover:text-[var(--color-ink)]"
                   }`}
                 >
@@ -96,13 +119,17 @@ export default function Navbar() {
           {/* Actions: Language Switcher + Cart + Mobile Menu Toggle */}
           <div className="flex items-center space-x-1 sm:space-x-3">
             {/* Language Switcher (Always visible on mobile & desktop) */}
-            <LanguageSwitcher />
+            <LanguageSwitcher theme={isTransparent ? "light" : "dark"} />
 
             {/* Cart Button */}
             <button
               type="button"
               onClick={openDrawer}
-              className="relative inline-flex items-center justify-center min-h-[44px] px-2 sm:px-3.5 py-2 text-[var(--color-ink)] hover:text-[var(--color-accent)] transition-colors focus-visible:outline-none"
+              className={`relative inline-flex items-center justify-center min-h-[44px] px-2 sm:px-3.5 py-2 transition-colors focus-visible:outline-none ${
+                isTransparent
+                  ? "text-white hover:text-white/80"
+                  : "text-[var(--color-ink)] hover:text-[var(--color-accent)]"
+              }`}
               aria-label={t("openCart", { count: isLoaded ? totalCount : 0 })}
             >
               <svg
@@ -124,7 +151,13 @@ export default function Navbar() {
                 {t("cart")}
               </span>
               {isLoaded && totalCount > 0 && (
-                <span className="ml-1.5 inline-flex items-center justify-center min-w-[20px] h-5 px-1 text-[11px] font-mono font-medium leading-none text-white bg-[var(--color-ink)] rounded-full">
+                <span
+                  className={`ml-1.5 inline-flex items-center justify-center min-w-[20px] h-5 px-1 text-[11px] font-mono font-medium leading-none rounded-full ${
+                    isTransparent
+                      ? "bg-white text-[var(--color-ink)]"
+                      : "bg-[var(--color-ink)] text-white"
+                  }`}
+                >
                   {totalCount}
                 </span>
               )}
@@ -137,7 +170,9 @@ export default function Navbar() {
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-navigation"
               aria-label={mobileMenuOpen ? t("closeMenu") : t("toggleMenu")}
-              className="md:hidden inline-flex items-center justify-center min-h-[44px] min-w-[44px] p-2 text-[var(--color-ink)] focus-visible:outline-none"
+              className={`md:hidden inline-flex items-center justify-center min-h-[44px] min-w-[44px] p-2 transition-colors focus-visible:outline-none ${
+                isTransparent ? "text-white" : "text-[var(--color-ink)]"
+              }`}
             >
               {mobileMenuOpen ? (
                 <svg
