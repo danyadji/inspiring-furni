@@ -18,6 +18,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "**.inspiringfurni.com",
       },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
     ],
   },
 };

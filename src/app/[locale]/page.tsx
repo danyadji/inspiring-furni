@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/routing";
-import { getProducts } from "@/lib/products";
+import { getProducts, getCategories } from "@/lib/products";
 import ProductCard from "@/components/ProductCard";
 
 export const revalidate = 15;
@@ -18,12 +18,20 @@ export default async function HomePage({
   const t = await getTranslations({ locale, namespace: "Home" });
   const tWa = await getTranslations({ locale, namespace: "WhatsApp" });
 
-  const products = await getProducts(locale);
+  const [products, categories] = await Promise.all([
+    getProducts(locale),
+    getCategories(locale),
+  ]);
 
   const waNumber = process.env.NEXT_PUBLIC_WA_NUMBER || "6289518906727";
 
   // Terlaris: 4 products
   const bestSellers = products.slice(0, 4);
+
+  // Kategori pilihan: ambil hingga 5 kategori aktif (kecualikan 'tanpa-kategori')
+  const displayCategories = categories
+    .filter((c) => c.slug !== "tanpa-kategori" && (c.count === undefined || c.count > 0))
+    .slice(0, 5);
 
   // Produk Baru: 4 products (or next 4)
   const newProducts = products.length > 4 ? products.slice(4, 8) : products.slice(0, 4);
@@ -101,6 +109,58 @@ export default async function HomePage({
           ))}
         </div>
       </section>
+
+      {/* SECTION "KATEGORI PILIHAN" */}
+      {displayCategories.length > 0 && (
+        <section className="max-w-[1280px] mx-auto px-4 sm:px-8">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-12 border-b border-[var(--color-line)] pb-4 gap-4">
+            <div className="max-w-2xl">
+              <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-[var(--color-muted)] block">
+                {t("categoriesBadge")}
+              </span>
+              <h2 className="text-2xl sm:text-4xl font-light text-[var(--color-ink)] tracking-tight mt-1 font-[family-name:var(--font-dm-sans)]">
+                {t("categoriesTitle")}
+              </h2>
+            </div>
+            <Link
+              href="/produk"
+              className="text-xs font-mono text-[var(--color-ink)] hover:text-[var(--color-accent)] uppercase tracking-wider hover:underline shrink-0"
+            >
+              {t("viewAll")} &rarr;
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
+            {displayCategories.map((cat) => (
+              <Link
+                key={cat.id}
+                href={`/produk?category=${cat.slug}`}
+                className="group relative flex flex-col bg-[var(--color-paper)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ink)]"
+                aria-label={`Jelajahi kategori ${cat.name}`}
+              >
+                <div className="relative aspect-[4/5] sm:aspect-square w-full overflow-hidden bg-stone-100 border border-[var(--color-line)]">
+                  <Image
+                    src={cat.image || "/images/placeholder-product.svg"}
+                    alt={cat.name}
+                    fill
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                    className="object-cover w-full h-full transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent transition-opacity group-hover:opacity-90" />
+                  <div className="absolute bottom-0 inset-x-0 p-3.5 sm:p-4 text-white">
+                    <h3 className="text-sm sm:text-base font-medium tracking-tight font-[family-name:var(--font-dm-sans)] leading-snug">
+                      {cat.name}
+                    </h3>
+                    <span className="mt-1 text-[11px] font-mono uppercase tracking-wider text-stone-300 inline-flex items-center gap-1 group-hover:text-white transition-colors">
+                      {t("categoryExplore")} &rarr;
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* 7. BANNER PROYEK ATAU GROSIR */}
       <section className="bg-[var(--color-ink)] text-white py-16 sm:py-24">

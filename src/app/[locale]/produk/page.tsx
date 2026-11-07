@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getProducts, getCategories } from "@/lib/products";
@@ -56,7 +56,9 @@ export default async function ProdukPage({
         </p>
       </div>
 
-      <ProductCatalogList products={products} categories={categories} />
+      <Suspense fallback={<div className="py-12 text-center text-xs font-mono text-[var(--color-muted)]">Memuat katalog...</div>}>
+        <ProductCatalogList products={products} categories={categories} />
+      </Suspense>
     </div>
   );
 }

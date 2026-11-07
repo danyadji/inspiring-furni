@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Product, Category } from "@/lib/products";
 import ProductCard from "@/components/ProductCard";
@@ -15,8 +16,18 @@ export default function ProductCatalogList({
   categories,
 }: ProductCatalogListProps) {
   const t = useTranslations("Catalog");
+  const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [selectedCategory, setSelectedCategory] = useState<string>(
+    searchParams.get("category") || "all"
+  );
+
+  useEffect(() => {
+    const cat = searchParams.get("category");
+    if (cat) {
+      setSelectedCategory(cat);
+    }
+  }, [searchParams]);
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {

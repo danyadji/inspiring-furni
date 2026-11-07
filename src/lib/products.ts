@@ -21,6 +21,8 @@ export interface Category {
   id: number;
   name: string;
   slug: string;
+  image?: string;
+  count?: number;
 }
 
 export interface Product {
@@ -338,6 +340,14 @@ export async function getProductBySlug(slug: string, locale: string = "id"): Pro
   return (await memoryCache.inFlight.get(cacheKey)) as Product | null;
 }
 
+const CATEGORY_DEFAULT_IMAGES: Record<string, string> = {
+  "ruang-tamu": "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80",
+  "ruang-makan": "https://images.unsplash.com/photo-1617806118233-18e1de247200?auto=format&fit=crop&w=800&q=80",
+  "kamar-tidur": "https://images.unsplash.com/photo-1540518614846-7ede433c4550?auto=format&fit=crop&w=800&q=80",
+  "pintu-jendela": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80",
+  "ruang-kerja": "https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?auto=format&fit=crop&w=800&q=80",
+};
+
 async function fetchFreshCategories(locale: string = "id"): Promise<Category[]> {
   try {
     const res = await fetch(
@@ -354,6 +364,8 @@ async function fetchFreshCategories(locale: string = "id"): Promise<Category[]> 
       id: number;
       name: string;
       slug: string;
+      count?: number;
+      image?: { src?: string };
       name_en?: string;
       meta_data?: MetaItem[];
     }[];
@@ -364,11 +376,21 @@ async function fetchFreshCategories(locale: string = "id"): Promise<Category[]> 
 
     const isEn = locale === "en";
 
-    return rawCats.map((c) => ({
-      id: c.id,
-      name: isEn ? c.name_en || getMetaValue(c.meta_data, "name_en") || c.name : c.name,
-      slug: c.slug,
-    }));
+    return rawCats.map((c) => {
+      const rawName = isEn ? c.name_en || getMetaValue(c.meta_data, "name_en") || c.name : c.name;
+      const decodedName = rawName.replace(/&amp;/g, "&");
+      const img = c.image?.src
+        ? cleanImageSrc(c.image.src)
+        : CATEGORY_DEFAULT_IMAGES[c.slug] || "/images/placeholder-product.svg";
+
+      return {
+        id: c.id,
+        name: decodedName,
+        slug: c.slug,
+        count: c.count,
+        image: img,
+      };
+    });
   } catch (error) {
     console.error("Error fetching WooCommerce categories:", error);
     return getSampleCategories(locale);
@@ -438,6 +460,7 @@ function getSampleCategories(locale: string = "id"): Category[] {
           id: c.id,
           name: isEn ? c.name_en || getMetaValue(c.meta_data, "name_en") || c.name : c.name,
           slug: c.slug,
+          image: CATEGORY_DEFAULT_IMAGES[c.slug] || "/images/placeholder-product.svg",
         });
       }
     }
