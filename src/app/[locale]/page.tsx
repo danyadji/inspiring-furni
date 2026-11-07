@@ -78,18 +78,18 @@ export default async function HomePage({
 
       {/* SECTION "TERLARIS" */}
       <section className="max-w-[1280px] mx-auto px-4 sm:px-8">
-        <div className="flex items-baseline justify-between mb-8 sm:mb-12 border-b border-[var(--color-line)] pb-4">
-          <div>
-            <span className="text-[11px] font-mono uppercase tracking-widest text-[var(--color-muted)]">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-12 border-b border-[var(--color-line)] pb-4 gap-4">
+          <div className="max-w-2xl">
+            <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-[var(--color-muted)] block">
               {t("bestSellersBadge")}
             </span>
-            <h2 className="text-2xl sm:text-4xl font-bold text-[var(--color-ink)] tracking-tight mt-1 font-[family-name:var(--font-dm-sans)]">
+            <h2 className="text-2xl sm:text-4xl font-light text-[var(--color-ink)] tracking-tight mt-1 font-[family-name:var(--font-dm-sans)]">
               {t("bestSellersTitle")}
             </h2>
           </div>
           <Link
             href="/produk"
-            className="text-xs font-mono text-[var(--color-ink)] hover:text-[var(--color-accent)] uppercase tracking-wider hover:underline"
+            className="text-xs font-mono text-[var(--color-ink)] hover:text-[var(--color-accent)] uppercase tracking-wider hover:underline shrink-0"
           >
             {t("viewAll")} &rarr;
           </Link>
@@ -137,18 +137,18 @@ export default async function HomePage({
 
       {/* 8. SECTION "PRODUK BARU" */}
       <section className="max-w-[1280px] mx-auto px-4 sm:px-8">
-        <div className="flex items-baseline justify-between mb-8 sm:mb-12 border-b border-[var(--color-line)] pb-4">
-          <div>
-            <span className="text-[11px] font-mono uppercase tracking-widest text-[var(--color-muted)]">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-12 border-b border-[var(--color-line)] pb-4 gap-4">
+          <div className="max-w-2xl">
+            <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-[var(--color-muted)] block">
               {t("newProductsBadge")}
             </span>
-            <h2 className="text-xl sm:text-2xl font-light text-[var(--color-ink)] tracking-tight mt-1">
+            <h2 className="text-2xl sm:text-4xl font-light text-[var(--color-ink)] tracking-tight mt-1 font-[family-name:var(--font-dm-sans)]">
               {t("newProductsTitle")}
             </h2>
           </div>
           <Link
             href="/produk"
-            className="text-xs font-mono text-[var(--color-ink)] hover:text-[var(--color-accent)] uppercase tracking-wider hover:underline"
+            className="text-xs font-mono text-[var(--color-ink)] hover:text-[var(--color-accent)] uppercase tracking-wider hover:underline shrink-0"
           >
             {t("viewAll")} &rarr;
           </Link>
