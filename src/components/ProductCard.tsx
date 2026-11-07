@@ -30,7 +30,6 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
     src: "/images/placeholder-product.svg",
     alt: product.name,
   };
-  const secondImage = product.images[1];
 
   const colorAttr = product.attributes.find((a) => {
     const n = a.name.toLowerCase();
@@ -54,77 +53,68 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
     : formatRupiah(product.price);
 
   return (
-    <article className="group flex flex-col bg-[var(--color-paper)]">
+    <article className="group flex flex-col bg-[var(--color-paper)] h-full">
       <Link
         href={`/produk/${product.slug}`}
-        className="block relative aspect-[4/5] bg-[var(--color-surface)] overflow-hidden"
+        className="flex flex-col h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ink)]"
         aria-label={`Lihat detail produk ${product.name}`}
       >
-        <Image
-          src={firstImage.src}
-          alt={firstImage.alt || product.name}
-          fill
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-          priority={priority}
-          className={`object-contain p-6 transition-all duration-300 group-hover:scale-[1.03] ${
-            secondImage ? "group-hover:opacity-0" : ""
-          }`}
-        />
-        {secondImage && (
+        {/* Product Image: Full frame, no crop, no swap on hover */}
+        <div className="relative aspect-square w-full overflow-hidden bg-stone-100/60">
           <Image
-            src={secondImage.src}
-            alt={secondImage.alt || `${product.name} alternate view`}
+            src={firstImage.src}
+            alt={firstImage.alt || product.name}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            className="object-contain p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            priority={priority}
+            className="object-cover w-full h-full transition-transform duration-500 ease-out group-hover:scale-105"
           />
-        )}
-      </Link>
+        </div>
 
-      <div className="pt-3 pb-2 flex-1 flex flex-col justify-between">
-        <div>
-          {/* Color swatches */}
-          {colorOptions.length > 0 && (
-            <div className="flex items-center gap-1.5 mb-2" aria-label="Color options">
-              {colorOptions.slice(0, 4).map((c) => {
-                const hex = COLOR_MAP[c.toLowerCase()] || "#C19A6B";
-                return (
-                  <span
-                    key={c}
-                    title={c}
-                    style={{ backgroundColor: hex }}
-                    className="w-3 h-3 rounded-full border border-black/15 shadow-2xs inline-block"
-                  />
-                );
-              })}
-              {colorOptions.length > 4 && (
-                <span className="text-[10px] font-mono text-[var(--color-muted)]">
-                  +{colorOptions.length - 4}
-                </span>
-              )}
-            </div>
-          )}
+        {/* Product Info */}
+        <div className="pt-3 pb-2 flex-1 flex flex-col justify-between">
+          <div>
+            {/* Color swatches */}
+            {colorOptions.length > 0 && (
+              <div className="flex items-center gap-1.5 mb-2" aria-label="Color options">
+                {colorOptions.slice(0, 4).map((c) => {
+                  const hex = COLOR_MAP[c.toLowerCase()] || "#C19A6B";
+                  return (
+                    <span
+                      key={c}
+                      title={c}
+                      style={{ backgroundColor: hex }}
+                      className="w-3 h-3 rounded-full border border-black/15 shadow-2xs inline-block"
+                    />
+                  );
+                })}
+                {colorOptions.length > 4 && (
+                  <span className="text-[10px] font-mono text-[var(--color-muted)]">
+                    +{colorOptions.length - 4}
+                  </span>
+                )}
+              </div>
+            )}
 
-          <h3 className="text-sm font-medium text-[var(--color-ink)] leading-snug group-hover:text-[var(--color-accent)] transition-colors font-[family-name:var(--font-dm-sans)]">
-            <Link href={`/produk/${product.slug}`}>
+            <h3 className="text-sm sm:text-base font-medium text-[var(--color-ink)] leading-snug group-hover:text-[var(--color-accent)] transition-colors font-[family-name:var(--font-dm-sans)]">
               {product.name}
-            </Link>
-          </h3>
+            </h3>
 
-          <p className="mt-1 text-[11px] font-mono text-[var(--color-muted)] truncate">
-            {specSummary}
-          </p>
-        </div>
+            <p className="mt-1 text-[11px] font-mono text-[var(--color-muted)] truncate">
+              {specSummary}
+            </p>
+          </div>
 
-        <div className="mt-2 pt-2 border-t border-[var(--color-line)] flex items-baseline justify-between">
-          <span className="text-xs sm:text-[13px] font-mono font-medium text-[var(--color-ink)]">
-            {priceLabel}
-          </span>
-          <span className="text-[11px] font-mono text-[var(--color-accent)] uppercase tracking-wider group-hover:underline">
-            {t("detail")} &rarr;
-          </span>
+          <div className="mt-3 pt-2 border-t border-[var(--color-line)] flex items-baseline justify-between">
+            <span className="text-xs sm:text-[13px] font-mono font-medium text-[var(--color-ink)]">
+              {priceLabel}
+            </span>
+            <span className="text-[11px] font-mono text-[var(--color-accent)] uppercase tracking-wider group-hover:underline flex items-center gap-1">
+              {t("detail")} &rarr;
+            </span>
+          </div>
         </div>
-      </div>
+      </Link>
     </article>
   );
 }
