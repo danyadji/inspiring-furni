@@ -35,6 +35,7 @@ export default async function ContactPage({
 
   const t = await getTranslations({ locale, namespace: "Contact" });
   const waNumber = process.env.NEXT_PUBLIC_WA_NUMBER || "6289518906727";
+  const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL || "inspirigfurni.id@gmail.com";
 
   return (
     <div className="max-w-[1280px] mx-auto px-4 sm:px-8 py-10 sm:py-20 space-y-12 font-[family-name:var(--font-dm-sans)]">
@@ -68,6 +69,16 @@ export default async function ContactPage({
                   className="text-[var(--color-ink)] font-bold text-sm sm:text-base hover:underline mt-0.5 block font-mono"
                 >
                   +{waNumber}
+                </a>
+              </div>
+
+              <div>
+                <span className="block text-[var(--color-muted)] text-[11px] font-mono uppercase tracking-wider">{t("emailLabel")}</span>
+                <a
+                  href={`mailto:${contactEmail}`}
+                  className="text-[var(--color-ink)] font-bold text-sm sm:text-base hover:underline mt-0.5 block font-mono break-all"
+                >
+                  {contactEmail}
                 </a>
               </div>
 
