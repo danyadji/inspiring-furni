@@ -14,28 +14,12 @@ interface ProductCardProps {
   priority?: boolean;
 }
 
-const COLOR_MAP: Record<string, string> = {
-  natural: "#D2A679",
-  "jati tua": "#6E4728",
-  walnut: "#5C4033",
-  "dark walnut": "#3D2B1F",
-  "duco hitam": "#222222",
-  "duco putih": "#F5F5F0",
-  bleached: "#E6D7C3",
-};
-
 export default function ProductCard({ product, priority = false }: ProductCardProps) {
   const t = useTranslations("ProductCard");
   const firstImage = product.images[0] || {
     src: "/images/placeholder-product.svg",
     alt: product.name,
   };
-
-  const colorAttr = product.attributes.find((a) => {
-    const n = a.name.toLowerCase();
-    return n.includes("warna") || n.includes("color");
-  });
-  const colorOptions = colorAttr ? colorAttr.options : [];
 
   const sizeAttr = product.attributes.find((a) => {
     const n = a.name.toLowerCase();
@@ -74,29 +58,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
         {/* Product Info */}
         <div className="pt-3 pb-2 flex-1 flex flex-col justify-between">
           <div>
-            {/* Color swatches */}
-            {colorOptions.length > 0 && (
-              <div className="flex items-center gap-1.5 mb-2" aria-label="Color options">
-                {colorOptions.slice(0, 4).map((c) => {
-                  const hex = COLOR_MAP[c.toLowerCase()] || "#C19A6B";
-                  return (
-                    <span
-                      key={c}
-                      title={c}
-                      style={{ backgroundColor: hex }}
-                      className="w-3 h-3 rounded-full border border-black/15 shadow-2xs inline-block"
-                    />
-                  );
-                })}
-                {colorOptions.length > 4 && (
-                  <span className="text-[10px] font-mono text-[var(--color-muted)]">
-                    +{colorOptions.length - 4}
-                  </span>
-                )}
-              </div>
-            )}
-
-            <h3 className="text-sm sm:text-base font-medium text-[var(--color-ink)] leading-snug group-hover:text-[var(--color-accent)] transition-colors font-[family-name:var(--font-dm-sans)]">
+            <h3 className="text-sm sm:text-base font-medium text-[var(--color-ink)] leading-snug font-[family-name:var(--font-dm-sans)]">
               {product.name}
             </h3>
 
