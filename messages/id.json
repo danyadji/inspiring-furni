@@ -156,7 +156,7 @@
     "description": "Punya pertanyaan spesifikasi furnitur, rencana ukuran custom, atau ingin mengecek estimasi waktu pengerjaan dan ongkir ekspedisi cargo? Kami siap membantu langsung via chat WhatsApp.",
     "infoTitle": "Informasi Workshop",
     "waLabel": "WhatsApp Resmi:",
-    "locationLabel": "Lokasi Workshop & Showroom:",
+    "locationLabel": "Lokasi Workshop:",
     "locationValue": "Kabupaten Jepara, Jawa Tengah, Indonesia",
     "serviceLabel": "Layanan:",
     "serviceValue": "Melayani pesanan rumah tinggal per unit, hingga pesanan skala proyek arsitektur, villa, kafe, dan perkantoran.",
@@ -174,7 +174,7 @@
   },
   "Footer": {
     "description": "Workshop furnitur kayu jati Jepara. Spesialis meja makan, kursi santai, rangka tempat tidur, credenza TV, hingga pintu dan jendela custom tanpa biaya perantara.",
-    "locationTitle": "Workshop & Showroom:",
+    "locationTitle": "Lokasi Workshop:",
     "locationValue": "Jepara, Jawa Tengah, Indonesia",
     "navTitle": "Navigasi",
     "socialTitle": "Media Sosial & Pemesanan",
