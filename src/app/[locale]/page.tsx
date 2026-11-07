@@ -45,6 +45,7 @@ export default async function HomePage({
             alt="Workshop Inspiring Furni Jepara"
             fill
             priority
+            sizes="100vw"
             className="object-cover opacity-25 scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/60" />

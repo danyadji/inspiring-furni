@@ -41,7 +41,6 @@ const useSampleData = process.env.USE_SAMPLE_DATA === "true";
 const wpApiUrl = process.env.WP_API_URL ?? "";
 const wcReadKey = process.env.WC_READ_KEY ?? "";
 const wcReadSecret = process.env.WC_READ_SECRET ?? "";
-const isDev = process.env.NODE_ENV === "development";
 
 function basicAuth(key: string, secret: string): string {
   return "Basic " + Buffer.from(`${key}:${secret}`).toString("base64");
@@ -59,16 +58,32 @@ function cleanImageSrc(src?: string): string {
 }
 
 function getFetchOptions() {
-  if (isDev) {
-    return {
-      headers: { Authorization: basicAuth(wcReadKey, wcReadSecret) },
-      cache: "no-store" as const,
-    };
-  }
   return {
     headers: { Authorization: basicAuth(wcReadKey, wcReadSecret) },
     next: { revalidate: 15 },
   };
+}
+
+// In-Memory Stale-While-Revalidate (SWR) cache
+interface CacheEntry<T> {
+  data: T;
+  timestamp: number;
+}
+
+const CACHE_TTL_MS = 20 * 1000; // 20 seconds fresh window
+
+const memoryCache = {
+  products: new Map<string, CacheEntry<Product[]>>(),
+  categories: new Map<string, CacheEntry<Category[]>>(),
+  slugProduct: new Map<string, CacheEntry<Product | null>>(),
+  inFlight: new Map<string, Promise<unknown>>(),
+};
+
+export function clearProductCache(): void {
+  memoryCache.products.clear();
+  memoryCache.categories.clear();
+  memoryCache.slugProduct.clear();
+  memoryCache.inFlight.clear();
 }
 
 interface RawWcVariation {
@@ -163,11 +178,7 @@ function normalizeProduct(
   };
 }
 
-export async function getProducts(locale: string = "id"): Promise<Product[]> {
-  if (useSampleData) {
-    return (sampleProducts as RawWcProduct[]).map((p) => normalizeProduct(p, [], locale));
-  }
-
+async function fetchFreshProducts(locale: string = "id"): Promise<Product[]> {
   try {
     const res = await fetch(
       `${wpApiUrl}/wp-json/wc/v3/products?per_page=100&status=publish`,
@@ -190,12 +201,51 @@ export async function getProducts(locale: string = "id"): Promise<Product[]> {
   }
 }
 
-export async function getProductBySlug(slug: string, locale: string = "id"): Promise<Product | null> {
+export async function getProducts(locale: string = "id"): Promise<Product[]> {
   if (useSampleData) {
-    const found = (sampleProducts as RawWcProduct[]).find((p) => p.slug === slug);
-    return found ? normalizeProduct(found, [], locale) : null;
+    return (sampleProducts as RawWcProduct[]).map((p) => normalizeProduct(p, [], locale));
   }
 
+  const cacheKey = `products_${locale}`;
+  const cached = memoryCache.products.get(cacheKey);
+  const now = Date.now();
+
+  if (cached) {
+    // If cache is stale, trigger background revalidation
+    if (now - cached.timestamp > CACHE_TTL_MS && !memoryCache.inFlight.has(cacheKey)) {
+      const task = fetchFreshProducts(locale)
+        .then((fresh) => {
+          if (fresh && fresh.length > 0) {
+            memoryCache.products.set(cacheKey, { data: fresh, timestamp: Date.now() });
+          }
+        })
+        .finally(() => {
+          memoryCache.inFlight.delete(cacheKey);
+        });
+      memoryCache.inFlight.set(cacheKey, task);
+    }
+    return cached.data;
+  }
+
+  // Deduplicate concurrent cold fetches
+  if (!memoryCache.inFlight.has(cacheKey)) {
+    const task = fetchFreshProducts(locale)
+      .then((fresh) => {
+        if (fresh && fresh.length > 0) {
+          memoryCache.products.set(cacheKey, { data: fresh, timestamp: Date.now() });
+        }
+        return fresh;
+      })
+      .finally(() => {
+        memoryCache.inFlight.delete(cacheKey);
+      });
+    memoryCache.inFlight.set(cacheKey, task);
+  }
+
+  return (await memoryCache.inFlight.get(cacheKey)) as Product[];
+}
+
+async function fetchFreshProductBySlug(slug: string, locale: string = "id"): Promise<Product | null> {
   try {
     const res = await fetch(
       `${wpApiUrl}/wp-json/wc/v3/products?slug=${encodeURIComponent(slug)}`,
@@ -249,11 +299,46 @@ export async function getProductBySlug(slug: string, locale: string = "id"): Pro
   }
 }
 
-export async function getCategories(locale: string = "id"): Promise<Category[]> {
+export async function getProductBySlug(slug: string, locale: string = "id"): Promise<Product | null> {
   if (useSampleData) {
-    return getSampleCategories(locale);
+    const found = (sampleProducts as RawWcProduct[]).find((p) => p.slug === slug);
+    return found ? normalizeProduct(found, [], locale) : null;
   }
 
+  const cacheKey = `product_${slug}_${locale}`;
+  const cached = memoryCache.slugProduct.get(cacheKey);
+  const now = Date.now();
+
+  if (cached) {
+    if (now - cached.timestamp > CACHE_TTL_MS && !memoryCache.inFlight.has(cacheKey)) {
+      const task = fetchFreshProductBySlug(slug, locale)
+        .then((fresh) => {
+          memoryCache.slugProduct.set(cacheKey, { data: fresh, timestamp: Date.now() });
+        })
+        .finally(() => {
+          memoryCache.inFlight.delete(cacheKey);
+        });
+      memoryCache.inFlight.set(cacheKey, task);
+    }
+    return cached.data;
+  }
+
+  if (!memoryCache.inFlight.has(cacheKey)) {
+    const task = fetchFreshProductBySlug(slug, locale)
+      .then((fresh) => {
+        memoryCache.slugProduct.set(cacheKey, { data: fresh, timestamp: Date.now() });
+        return fresh;
+      })
+      .finally(() => {
+        memoryCache.inFlight.delete(cacheKey);
+      });
+    memoryCache.inFlight.set(cacheKey, task);
+  }
+
+  return (await memoryCache.inFlight.get(cacheKey)) as Product | null;
+}
+
+async function fetchFreshCategories(locale: string = "id"): Promise<Category[]> {
   try {
     const res = await fetch(
       `${wpApiUrl}/wp-json/wc/v3/products/categories?per_page=100`,
@@ -288,6 +373,56 @@ export async function getCategories(locale: string = "id"): Promise<Category[]> 
     console.error("Error fetching WooCommerce categories:", error);
     return getSampleCategories(locale);
   }
+}
+
+export async function getCategories(locale: string = "id"): Promise<Category[]> {
+  if (useSampleData) {
+    return getSampleCategories(locale);
+  }
+
+  const cacheKey = `categories_${locale}`;
+  const cached = memoryCache.categories.get(cacheKey);
+  const now = Date.now();
+
+  if (cached) {
+    if (now - cached.timestamp > CACHE_TTL_MS && !memoryCache.inFlight.has(cacheKey)) {
+      const task = fetchFreshCategories(locale)
+        .then((fresh) => {
+          if (fresh && fresh.length > 0) {
+            memoryCache.categories.set(cacheKey, { data: fresh, timestamp: Date.now() });
+          }
+        })
+        .finally(() => {
+          memoryCache.inFlight.delete(cacheKey);
+        });
+      memoryCache.inFlight.set(cacheKey, task);
+    }
+    return cached.data;
+  }
+
+  if (!memoryCache.inFlight.has(cacheKey)) {
+    const task = fetchFreshCategories(locale)
+      .then((fresh) => {
+        if (fresh && fresh.length > 0) {
+          memoryCache.categories.set(cacheKey, { data: fresh, timestamp: Date.now() });
+        }
+        return fresh;
+      })
+      .finally(() => {
+        memoryCache.inFlight.delete(cacheKey);
+      });
+    memoryCache.inFlight.set(cacheKey, task);
+  }
+
+  return (await memoryCache.inFlight.get(cacheKey)) as Category[];
+}
+
+// Warm up cache in background on startup
+if (!useSampleData && wpApiUrl) {
+  setTimeout(() => {
+    getProducts("id").catch(() => {});
+    getCategories("id").catch(() => {});
+  }, 100);
 }
 
 function getSampleCategories(locale: string = "id"): Category[] {
