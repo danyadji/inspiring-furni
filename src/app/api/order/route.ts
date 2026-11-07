@@ -20,7 +20,11 @@ interface OrderRequestPayload {
 const wpApiUrl = process.env.WP_API_URL ?? "";
 const wcOrderKey = process.env.WC_ORDER_KEY ?? "";
 const wcOrderSecret = process.env.WC_ORDER_SECRET ?? "";
-const useSampleData = process.env.USE_SAMPLE_DATA === "true";
+const isVercelLocalhost =
+  process.env.NODE_ENV === "production" &&
+  (wpApiUrl.includes("localhost") || wpApiUrl.includes("127.0.0.1"));
+const useSampleData =
+  process.env.USE_SAMPLE_DATA === "true" || !wpApiUrl || isVercelLocalhost;
 const waNumber = process.env.NEXT_PUBLIC_WA_NUMBER || "6289518906727";
 
 function basicAuth(key: string, secret: string): string {

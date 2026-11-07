@@ -39,10 +39,41 @@ export interface Product {
   variations: ProductVariation[];
 }
 
-const useSampleData = process.env.USE_SAMPLE_DATA === "true";
 const wpApiUrl = process.env.WP_API_URL ?? "";
 const wcReadKey = process.env.WC_READ_KEY ?? "";
 const wcReadSecret = process.env.WC_READ_SECRET ?? "";
+
+// Mode Standalone / Demo: Aktif jika USE_SAMPLE_DATA="true", atau WP_API_URL kosong,
+// atau saat di-deploy ke Vercel (production) sementara WP_API_URL masih mengarah ke localhost
+const isVercelLocalhost =
+  process.env.NODE_ENV === "production" &&
+  (wpApiUrl.includes("localhost") || wpApiUrl.includes("127.0.0.1"));
+
+const useSampleData =
+  process.env.USE_SAMPLE_DATA === "true" || !wpApiUrl || isVercelLocalhost;
+
+const SAMPLE_PRODUCT_IMAGES: Record<string, string> = {
+  "meja-makan-jati-minimalis":
+    "https://images.unsplash.com/photo-1617806118233-18e1de247200?auto=format&fit=crop&w=800&q=80",
+  "kursi-makan-jati-ropan":
+    "https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=800&q=80",
+  "dipan-tempat-tidur-jati-spindle":
+    "https://images.unsplash.com/photo-1540518614846-7ede433c4550?auto=format&fit=crop&w=800&q=80",
+  "nakas-samping-kasur-jati":
+    "https://images.unsplash.com/photo-1532372320572-cda25653a26d?auto=format&fit=crop&w=800&q=80",
+  "sofa-kursi-santai-jati-retro":
+    "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80",
+  "meja-kopi-coffee-table-bundar-jati":
+    "https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&w=800&q=80",
+  "credenza-bufet-tv-jati-kisi":
+    "https://images.unsplash.com/photo-1595428774223-ef52624120d2?auto=format&fit=crop&w=800&q=80",
+  "meja-kerja-kantor-jati-solid":
+    "https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?auto=format&fit=crop&w=800&q=80",
+  "jendela-bulat-jati-classic":
+    "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80",
+  "pintu-utama-jati-panel-solid":
+    "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=800&q=80",
+};
 
 function basicAuth(key: string, secret: string): string {
   return "Basic " + Buffer.from(`${key}:${secret}`).toString("base64");
@@ -131,11 +162,23 @@ function normalizeProduct(
 ): Product {
   const images: ProductImage[] =
     Array.isArray(raw.images) && raw.images.length > 0
-      ? raw.images.map((img) => ({
-          src: cleanImageSrc(img.src),
-          alt: img.alt || raw.name,
-        }))
-      : [{ src: "/images/placeholder-product.svg", alt: raw.name }];
+      ? raw.images.map((img) => {
+          const src = cleanImageSrc(img.src);
+          const finalSrc =
+            src === "/images/placeholder-product.svg" && SAMPLE_PRODUCT_IMAGES[raw.slug]
+              ? SAMPLE_PRODUCT_IMAGES[raw.slug]
+              : src;
+          return {
+            src: finalSrc,
+            alt: img.alt || raw.name,
+          };
+        })
+      : [
+          {
+            src: SAMPLE_PRODUCT_IMAGES[raw.slug] || "/images/placeholder-product.svg",
+            alt: raw.name,
+          },
+        ];
 
   const isEn = locale === "en";
 
