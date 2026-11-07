@@ -48,16 +48,16 @@ export default function Navbar() {
 
   return (
     <header
-      className={`sticky top-0 z-40 transition-all duration-300 ${
-        isHome ? "-mb-18 sm:-mb-20" : ""
+      className={`z-40 transition-all duration-300 ${
+        isHome ? "fixed top-0 inset-x-0" : "sticky top-0"
       } ${
         isTransparent
-          ? "bg-transparent border-b border-transparent"
+          ? "bg-transparent border-none"
           : "bg-[var(--color-paper)]/95 backdrop-blur-md shadow-xs border-b border-[var(--color-line)]"
       }`}
     >
       <div className="max-w-[1280px] mx-auto px-4 sm:px-8">
-        <div className="flex items-center justify-between h-18 sm:h-20">
+        <div className="flex items-center justify-between h-[72px] sm:h-20">
           {/* Logo / Brand */}
           <Link
             href="/"
