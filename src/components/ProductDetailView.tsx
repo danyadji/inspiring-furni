@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/routing";
@@ -47,11 +47,40 @@ export default function ProductDetailView({
   const [openAccordion, setOpenAccordion] = useState<string | null>("deskripsi");
   const [currentUrl, setCurrentUrl] = useState<string>("");
 
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const isProgrammaticScrollRef = useRef(false);
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       setCurrentUrl(window.location.href);
     }
   }, []);
+
+  const handleSliderScroll = () => {
+    if (!sliderRef.current || isProgrammaticScrollRef.current) return;
+    const { scrollLeft, clientWidth } = sliderRef.current;
+    if (clientWidth > 0) {
+      const newIndex = Math.round(scrollLeft / clientWidth);
+      if (newIndex >= 0 && newIndex < product.images.length && newIndex !== activeImageIndex) {
+        setActiveImageIndex(newIndex);
+      }
+    }
+  };
+
+  const scrollToImage = (index: number) => {
+    if (!sliderRef.current) return;
+    const clampedIndex = Math.max(0, Math.min(index, product.images.length - 1));
+    isProgrammaticScrollRef.current = true;
+    setActiveImageIndex(clampedIndex);
+    const width = sliderRef.current.clientWidth;
+    sliderRef.current.scrollTo({
+      left: clampedIndex * width,
+      behavior: "smooth",
+    });
+    setTimeout(() => {
+      isProgrammaticScrollRef.current = false;
+    }, 400);
+  };
 
   // Match variation based on selected attributes
   const currentVariation: ProductVariation | undefined = useMemo(() => {
@@ -116,11 +145,6 @@ export default function ProductDetailView({
 
   const waAskUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(waAskMessage)}`;
 
-  const activeImage = product.images[activeImageIndex] || {
-    src: "/images/placeholder-product.svg",
-    alt: product.name,
-  };
-
   return (
     <div className="max-w-[1280px] mx-auto px-4 sm:px-8 py-8 space-y-12">
       {/* Breadcrumb */}
@@ -146,17 +170,67 @@ export default function ProductDetailView({
 
       {/* Main Product Showcase */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14">
-        {/* Left: Gallery */}
+        {/* Left: Gallery Slider & Thumbnails */}
         <div className="lg:col-span-7 space-y-4">
-          <div className="relative aspect-square w-full bg-stone-100/60 border border-[var(--color-line)] overflow-hidden">
-            <Image
-              src={activeImage.src}
-              alt={activeImage.alt || product.name}
-              fill
-              priority
-              sizes="(max-width: 1024px) 100vw, 55vw"
-              className="object-cover w-full h-full"
-            />
+          <div className="relative aspect-square w-full bg-stone-100/60 border border-[var(--color-line)] overflow-hidden group select-none">
+            {/* Horizontal Swipeable Slide Container */}
+            <div
+              ref={sliderRef}
+              onScroll={handleSliderScroll}
+              className="flex w-full h-full overflow-x-auto snap-x snap-mandatory scroll-smooth touch-pan-x"
+              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+            >
+              {product.images.map((img, idx) => (
+                <div
+                  key={idx}
+                  className="min-w-full w-full h-full relative snap-center flex-shrink-0"
+                >
+                  <Image
+                    src={img.src}
+                    alt={img.alt || `${product.name} ${idx + 1}`}
+                    fill
+                    priority={idx === 0}
+                    sizes="(max-width: 1024px) 100vw, 55vw"
+                    className="object-cover w-full h-full pointer-events-none"
+                    draggable={false}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Slider Navigation Arrows (Visible if multiple images exist) */}
+            {product.images.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  onClick={() => scrollToImage(activeImageIndex - 1)}
+                  disabled={activeImageIndex === 0}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 bg-white/90 hover:bg-white text-[var(--color-ink)] border border-[var(--color-line)] flex items-center justify-center transition-all cursor-pointer backdrop-blur-[2px] disabled:opacity-0 disabled:pointer-events-none shadow-sm"
+                  aria-label="Foto sebelumnya"
+                >
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => scrollToImage(activeImageIndex + 1)}
+                  disabled={activeImageIndex === product.images.length - 1}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 bg-white/90 hover:bg-white text-[var(--color-ink)] border border-[var(--color-line)] flex items-center justify-center transition-all cursor-pointer backdrop-blur-[2px] disabled:opacity-0 disabled:pointer-events-none shadow-sm"
+                  aria-label="Foto berikutnya"
+                >
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+
+                {/* Counter Badge */}
+                <div className="absolute bottom-3 right-3 px-2.5 py-1 bg-black/65 backdrop-blur-sm text-white text-[11px] font-mono tracking-wider pointer-events-none">
+                  {activeImageIndex + 1} / {product.images.length}
+                </div>
+              </>
+            )}
           </div>
 
           {product.images.length > 1 && (
@@ -165,7 +239,7 @@ export default function ProductDetailView({
                 <button
                   key={idx}
                   type="button"
-                  onClick={() => setActiveImageIndex(idx)}
+                  onClick={() => scrollToImage(idx)}
                   className={`relative w-20 h-20 border overflow-hidden bg-stone-100/60 flex-shrink-0 transition-colors cursor-pointer ${
                     activeImageIndex === idx
                       ? "border-[var(--color-ink)] ring-1 ring-[var(--color-ink)]"
