@@ -907,36 +907,20 @@ export default function ProductDetailView({
         role="region"
         aria-label="Aksi Cepat Produk"
       >
-        <div className="flex items-center justify-between gap-2.5 max-w-lg mx-auto">
-          {/* Left: Price and Variant info (Tappable to scroll to options) */}
+        <div className="flex items-center justify-between gap-3 max-w-lg mx-auto">
+          {/* Left: Active price only (Tappable to scroll to options) */}
           <button
             type="button"
             onClick={scrollToOptions}
-            className="text-left flex-1 min-w-0 pr-1 group cursor-pointer flex flex-col justify-center"
+            className="text-left flex-1 min-w-0 pr-2 group cursor-pointer flex flex-col justify-center"
             title="Ubah pilihan ukuran atau warna"
           >
-            <div className="flex items-baseline gap-1.5 leading-none">
-              <span className="text-sm sm:text-base font-mono font-bold text-[var(--color-ink)] whitespace-nowrap">
-                {formatRupiah(activePrice)}
-              </span>
-              {isOnSale && (
-                <span className="text-[11px] font-mono text-[var(--color-muted)] line-through decoration-stone-400 leading-none whitespace-nowrap">
-                  {formatRupiah(regularPrice)}
-                </span>
-              )}
-            </div>
-            <div className="flex items-center gap-1.5 mt-1 leading-tight text-[10px] font-mono text-[var(--color-muted)] truncate">
-              {isOnSale && (
-                <span className="text-[9px] font-mono uppercase tracking-wider px-1 py-0.5 bg-red-50 text-red-700 border border-red-200 font-semibold shrink-0">
-                  {locale === "en" ? `-${discountPercent}%` : `Hemat ${discountPercent}%`}
-                </span>
-              )}
-              {variantSummary && (
-                <span className="truncate group-hover:text-[var(--color-ink)] transition-colors">
-                  {variantSummary}
-                </span>
-              )}
-            </div>
+            <span className="text-[10px] font-mono text-[var(--color-muted)] uppercase tracking-wider leading-none mb-1">
+              {t("unitPrice")}
+            </span>
+            <span className="text-base sm:text-lg font-mono font-bold text-[var(--color-ink)] whitespace-nowrap leading-tight">
+              {formatRupiah(activePrice)}
+            </span>
           </button>
 
           {/* Right: Quick Actions (WhatsApp & Add to Cart) */}
