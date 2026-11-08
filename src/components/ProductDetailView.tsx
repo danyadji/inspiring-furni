@@ -907,29 +907,36 @@ export default function ProductDetailView({
         role="region"
         aria-label="Aksi Cepat Produk"
       >
-        <div className="flex items-center justify-between gap-3 max-w-lg mx-auto">
+        <div className="flex items-center justify-between gap-2.5 max-w-lg mx-auto">
           {/* Left: Price and Variant info (Tappable to scroll to options) */}
           <button
             type="button"
             onClick={scrollToOptions}
-            className="text-left flex-1 min-w-0 pr-1 group cursor-pointer"
+            className="text-left flex-1 min-w-0 pr-1 group cursor-pointer flex flex-col justify-center"
             title="Ubah pilihan ukuran atau warna"
           >
-            <div className="flex items-baseline gap-2 flex-wrap">
-              <span className="text-sm sm:text-base font-mono font-bold text-[var(--color-ink)] leading-tight">
+            <div className="flex items-baseline gap-1.5 leading-none">
+              <span className="text-sm sm:text-base font-mono font-bold text-[var(--color-ink)] whitespace-nowrap">
                 {formatRupiah(activePrice)}
               </span>
               {isOnSale && (
-                <span className="text-xs font-mono text-[var(--color-muted)] line-through decoration-stone-400 leading-tight">
+                <span className="text-[11px] font-mono text-[var(--color-muted)] line-through decoration-stone-400 leading-none whitespace-nowrap">
                   {formatRupiah(regularPrice)}
                 </span>
               )}
             </div>
-            {variantSummary && (
-              <div className="text-[11px] font-mono text-[var(--color-muted)] truncate leading-tight mt-0.5 group-hover:text-[var(--color-ink)] transition-colors">
-                {variantSummary}
-              </div>
-            )}
+            <div className="flex items-center gap-1.5 mt-1 leading-tight text-[10px] font-mono text-[var(--color-muted)] truncate">
+              {isOnSale && (
+                <span className="text-[9px] font-mono uppercase tracking-wider px-1 py-0.5 bg-red-50 text-red-700 border border-red-200 font-semibold shrink-0">
+                  {locale === "en" ? `-${discountPercent}%` : `Hemat ${discountPercent}%`}
+                </span>
+              )}
+              {variantSummary && (
+                <span className="truncate group-hover:text-[var(--color-ink)] transition-colors">
+                  {variantSummary}
+                </span>
+              )}
+            </div>
           </button>
 
           {/* Right: Quick Actions (WhatsApp & Add to Cart) */}
@@ -938,25 +945,24 @@ export default function ProductDetailView({
               href={waAskUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="min-h-[44px] min-w-[44px] px-3 border border-[var(--color-ink)] text-[var(--color-ink)] flex items-center justify-center gap-1.5 text-xs font-mono uppercase tracking-wider hover:bg-stone-100 transition-colors cursor-pointer shrink-0"
+              className="min-h-[42px] min-w-[42px] w-[42px] h-[42px] border border-[var(--color-line)] bg-stone-50 hover:bg-stone-100 text-[var(--color-ink)] flex items-center justify-center transition-colors cursor-pointer shrink-0 shadow-sm"
               aria-label={t("askWhatsApp")}
               title={t("askWhatsApp")}
             >
               <svg className="w-4 h-4 text-[var(--color-whatsapp)] shrink-0" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.586-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.861.174.086.275.072.376-.044.101-.116.433-.506.549-.68.116-.173.231-.144.39-.086s1.011.477 1.184.564.289.13.332.203c.044.072.044.419-.1 1.024z" />
               </svg>
-              <span className="hidden xs:inline">WA</span>
             </a>
 
             <button
               type="button"
               onClick={handleAddToCart}
-              className="min-h-[44px] px-4 bg-[var(--color-ink)] text-white hover:bg-[var(--color-accent)] transition-colors flex items-center justify-center gap-1.5 text-xs font-mono uppercase tracking-wider shrink-0 cursor-pointer shadow-sm font-medium"
+              className="min-h-[42px] h-[42px] px-3.5 bg-[var(--color-ink)] text-white hover:bg-[var(--color-accent)] transition-colors flex items-center justify-center gap-1.5 text-xs font-mono uppercase tracking-wider shrink-0 cursor-pointer shadow-sm font-medium"
             >
               <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
               </svg>
-              <span>{t("addToCart")}</span>
+              <span>{t("addToCartMobile")}</span>
             </button>
           </div>
         </div>
