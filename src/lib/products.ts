@@ -21,8 +21,11 @@ export interface Category {
   id: number;
   name: string;
   slug: string;
+  description?: string;
   image?: string;
   count?: number;
+  seoTitle?: string;
+  seoDescription?: string;
 }
 
 export interface Product {
@@ -37,6 +40,11 @@ export interface Product {
   categories: Category[];
   attributes: ProductAttribute[];
   variations: ProductVariation[];
+  sku?: string;
+  stockStatus?: "instock" | "outofstock" | "onbackorder";
+  dateModified?: string;
+  seoTitle?: string;
+  seoDescription?: string;
 }
 
 const wpApiUrl = process.env.WP_API_URL ?? "";
@@ -136,6 +144,10 @@ interface RawWcProduct {
   name: string;
   slug: string;
   type?: string;
+  sku?: string;
+  stock_status?: string;
+  date_modified?: string;
+  date_modified_gmt?: string;
   description?: string;
   short_description?: string;
   images?: { src?: string; alt?: string }[];
@@ -149,10 +161,16 @@ interface RawWcProduct {
   short_description_en?: string;
 }
 
-function getMetaValue(meta: MetaItem[] | undefined, key: string): string | undefined {
+function getMetaValue(meta: MetaItem[] | undefined, keyOrKeys: string | string[]): string | undefined {
   if (!meta || !Array.isArray(meta)) return undefined;
-  const item = meta.find((m) => m.key === key);
-  return item && typeof item.value === "string" && item.value.trim() ? item.value.trim() : undefined;
+  const keys = Array.isArray(keyOrKeys) ? keyOrKeys : [keyOrKeys];
+  for (const k of keys) {
+    const item = meta.find((m) => m.key === k || m.key === `_${k}`);
+    if (item && typeof item.value === "string" && item.value.trim()) {
+      return item.value.trim();
+    }
+  }
+  return undefined;
 }
 
 function normalizeProduct(
@@ -170,7 +188,7 @@ function normalizeProduct(
               : src;
           return {
             src: finalSrc,
-            alt: img.alt || raw.name,
+            alt: img.alt && img.alt.trim() ? img.alt.trim() : raw.name,
           };
         })
       : [
@@ -209,6 +227,19 @@ function normalizeProduct(
     options: attr.options || [],
   }));
 
+  const seoTitle = getMetaValue(raw.meta_data, [
+    "seo_title",
+    "seo_title_en",
+    "_yoast_wpseo_title",
+    "rank_math_title",
+  ]);
+  const seoDescription = getMetaValue(raw.meta_data, [
+    "seo_description",
+    "seo_description_en",
+    "_yoast_wpseo_metadesc",
+    "rank_math_description",
+  ]);
+
   return {
     id: raw.id,
     name: resolvedName,
@@ -220,6 +251,11 @@ function normalizeProduct(
     categories,
     attributes,
     variations,
+    sku: raw.sku || undefined,
+    stockStatus: (raw.stock_status as "instock" | "outofstock" | "onbackorder") || "instock",
+    dateModified: raw.date_modified_gmt || raw.date_modified || undefined,
+    seoTitle,
+    seoDescription,
   };
 }
 
@@ -497,6 +533,7 @@ async function fetchFreshCategories(locale: string = "id"): Promise<Category[]> 
       id: number;
       name: string;
       slug: string;
+      description?: string;
       count?: number;
       image?: { src?: string };
       name_en?: string;
@@ -516,12 +553,29 @@ async function fetchFreshCategories(locale: string = "id"): Promise<Category[]> 
         ? cleanImageSrc(c.image.src)
         : CATEGORY_DEFAULT_IMAGES[c.slug] || "/images/placeholder-product.svg";
 
+      const seoTitle = getMetaValue(c.meta_data, [
+        "seo_title",
+        "seo_title_en",
+        "_yoast_wpseo_title",
+        "rank_math_title",
+      ]);
+      const seoDescription = getMetaValue(c.meta_data, [
+        "seo_description",
+        "seo_description_en",
+        "_yoast_wpseo_metadesc",
+        "rank_math_description",
+      ]);
+      const desc = c.description ? stripHtml(c.description) : undefined;
+
       return {
         id: c.id,
         name: decodedName,
         slug: c.slug,
+        description: desc,
         count: c.count,
         image: img,
+        seoTitle,
+        seoDescription,
       };
     });
   } catch (error) {
@@ -599,4 +653,25 @@ function getSampleCategories(locale: string = "id"): Category[] {
     }
   }
   return cats;
+}
+
+export async function getCategoryBySlug(slug: string, locale: string = "id"): Promise<Category | null> {
+  const categories = await getCategories(locale);
+  return categories.find((c) => c.slug === slug) || null;
+}
+
+export async function getProductsByCategory(categorySlug: string, locale: string = "id"): Promise<Product[]> {
+  const products = await getProducts(locale);
+  return products.filter((p) => p.categories.some((c) => c.slug === categorySlug));
+}
+
+// 301 Redirect map for historical or changed product slugs
+export const HISTORICAL_SLUG_REDIRECTS: Record<string, string> = {
+  "meja-makan-minimalis": "meja-makan-jati-minimalis",
+  "kursi-ropan": "kursi-makan-jati-ropan",
+  "dipan-spindle": "dipan-tempat-tidur-jati-spindle",
+};
+
+export function getRedirectForSlug(oldSlug: string): string | null {
+  return HISTORICAL_SLUG_REDIRECTS[oldSlug] || null;
 }

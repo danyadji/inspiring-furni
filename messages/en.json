@@ -10,7 +10,13 @@
     "contactDescription": "Get in touch with Inspiring Furni via WhatsApp for custom furniture dimensions, direct pricing, and cargo shipping estimates.",
     "cartTitle": "Shopping Cart | Inspiring Furni",
     "cartDescription": "Review your selected solid teak furniture pieces and complete your order directly via WhatsApp with our workshop.",
-    "productNotFound": "Product Not Found"
+    "productNotFound": "Product Not Found",
+    "categoryTitle": "{categoryName} | Inspiring Furni",
+    "categoryDefaultDesc": "Handcrafted authentic solid teak furniture collection in {categoryName}. Precision woodcraft direct from Jepara workshop.",
+    "categoryNotFound": "Category Not Found",
+    "breadcrumbHome": "Home",
+    "breadcrumbCatalog": "Product Catalog",
+    "breadcrumbCategories": "Categories"
   },
   "NotFound": {
     "title": "Page Not Found",

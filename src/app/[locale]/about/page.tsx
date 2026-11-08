@@ -3,6 +3,14 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/routing";
+import {
+  getSiteUrl,
+  stripHtmlAndTruncate,
+  buildCanonicalAndAlternates,
+  buildBreadcrumbJsonLd,
+} from "@/lib/seo";
+
+export const revalidate = 60;
 
 export async function generateMetadata({
   params,
@@ -11,17 +19,38 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Metadata" });
+  const siteUrl = getSiteUrl();
+
+  const title = t("aboutTitle");
+  const description = stripHtmlAndTruncate(t("aboutDescription"), 155);
+  const alternates = buildCanonicalAndAlternates("/about", locale);
+  const ogImage = `${siteUrl}/images/placeholder-product.svg`;
 
   return {
-    title: t("aboutTitle"),
-    description: t("aboutDescription"),
-    alternates: {
-      canonical: `https://inspiringfurni.com/${locale}/about`,
-      languages: {
-        id: "https://inspiringfurni.com/id/about",
-        en: "https://inspiringfurni.com/en/about",
-        "x-default": "https://inspiringfurni.com/id/about",
-      },
+    title: { absolute: title },
+    description,
+    alternates,
+    openGraph: {
+      title,
+      description,
+      url: alternates.canonical,
+      siteName: "Inspiring Furni",
+      locale: locale === "en" ? "en_US" : "id_ID",
+      type: "website",
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
     },
   };
 }
@@ -35,11 +64,25 @@ export default async function AboutPage({
   setRequestLocale(locale);
 
   const t = await getTranslations({ locale, namespace: "About" });
+  const tMeta = await getTranslations({ locale, namespace: "Metadata" });
   const tWa = await getTranslations({ locale, namespace: "WhatsApp" });
   const waNumber = process.env.NEXT_PUBLIC_WA_NUMBER || "6289518906727";
 
+  const breadcrumbsJsonLd = buildBreadcrumbJsonLd(
+    [
+      { name: tMeta("breadcrumbHome"), pathWithoutLocale: "/" },
+      { name: t("title"), pathWithoutLocale: "/about" },
+    ],
+    locale
+  );
+
   return (
-    <div className="max-w-[1280px] mx-auto px-4 sm:px-8 py-10 sm:py-20 space-y-14 font-[family-name:var(--font-dm-sans)]">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbsJsonLd) }}
+      />
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-8 py-10 sm:py-20 space-y-14 font-[family-name:var(--font-dm-sans)]">
       <div className="max-w-3xl">
         <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-[var(--color-muted)]">
           {t("badge")}
@@ -140,6 +183,7 @@ export default async function AboutPage({
         </div>
       </div>
     </div>
+    </>
   );
 }
 

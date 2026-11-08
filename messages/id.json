@@ -10,7 +10,13 @@
     "contactDescription": "Hubungi workshop Inspiring Furni via WhatsApp atau form pesan untuk konsultasi harga furnitur, pesanan custom, dan estimasi waktu pengerjaan.",
     "cartTitle": "Keranjang Belanja | Inspiring Furni",
     "cartDescription": "Periksa pilihan furnitur kayu jati di keranjang Anda dan lanjutkan pemesanan langsung via WhatsApp ke workshop Inspiring Furni.",
-    "productNotFound": "Produk Tidak Ditemukan"
+    "productNotFound": "Produk Tidak Ditemukan",
+    "categoryTitle": "{categoryName} | Inspiring Furni",
+    "categoryDefaultDesc": "Koleksi furnitur kayu jati asli Jepara kategori {categoryName}. Dikerjakan dengan sambungan kayu presisi langsung dari pengrajin workshop.",
+    "categoryNotFound": "Kategori Tidak Ditemukan",
+    "breadcrumbHome": "Beranda",
+    "breadcrumbCatalog": "Katalog Produk",
+    "breadcrumbCategories": "Kategori"
   },
   "NotFound": {
     "title": "Halaman Tidak Ditemukan",

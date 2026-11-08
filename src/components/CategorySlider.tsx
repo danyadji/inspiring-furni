@@ -7,10 +7,10 @@ import { Category } from "@/lib/products";
 
 interface CategorySliderProps {
   categories: Category[];
-  badgeText: string;
-  titleText: string;
-  viewAllText: string;
-  exploreText: string;
+  badgeText?: string;
+  titleText?: string;
+  viewAllText?: string;
+  exploreText?: string;
 }
 
 export default function CategorySlider({
@@ -18,7 +18,7 @@ export default function CategorySlider({
   badgeText,
   titleText,
   viewAllText,
-  exploreText,
+  exploreText = "Jelajahi",
 }: CategorySliderProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -55,48 +55,54 @@ export default function CategorySlider({
 
   return (
     <section className="max-w-[1280px] mx-auto px-4 sm:px-8">
-      {/* Header with Title and Mobile Navigation */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 sm:mb-10 border-b border-[var(--color-line)] pb-4 gap-4">
-        <div className="max-w-2xl">
-          <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-[var(--color-muted)] block">
-            {badgeText}
-          </span>
-          <h2 className="text-2xl sm:text-4xl font-light text-[var(--color-ink)] tracking-tight mt-1 font-[family-name:var(--font-dm-sans)]">
-            {titleText}
-          </h2>
-        </div>
-
-        <div className="flex items-center justify-between sm:justify-end gap-5">
-          {/* Mobile and Tablet Scroll Buttons (hidden on desktop grid) */}
-          <div className="flex items-center gap-1.5 lg:hidden">
-            <button
-              type="button"
-              onClick={() => handleScroll("left")}
-              disabled={!canScrollLeft}
-              className="w-8 h-8 rounded-full border border-[var(--color-line)] flex items-center justify-center text-[var(--color-ink)] transition-colors disabled:opacity-30 disabled:cursor-not-allowed hover:bg-stone-100 cursor-pointer"
-              aria-label="Geser kategori ke kiri"
-            >
-              &larr;
-            </button>
-            <button
-              type="button"
-              onClick={() => handleScroll("right")}
-              disabled={!canScrollRight}
-              className="w-8 h-8 rounded-full border border-[var(--color-line)] flex items-center justify-center text-[var(--color-ink)] transition-colors disabled:opacity-30 disabled:cursor-not-allowed hover:bg-stone-100 cursor-pointer"
-              aria-label="Geser kategori ke kanan"
-            >
-              &rarr;
-            </button>
+      {/* Header with Title and Mobile Navigation (if titleText provided) */}
+      {titleText && (
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 sm:mb-10 border-b border-[var(--color-line)] pb-4 gap-4">
+          <div className="max-w-2xl">
+            {badgeText && (
+              <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-[var(--color-muted)] block">
+                {badgeText}
+              </span>
+            )}
+            <h2 className="text-2xl sm:text-4xl font-light text-[var(--color-ink)] tracking-tight mt-1 font-[family-name:var(--font-dm-sans)]">
+              {titleText}
+            </h2>
           </div>
 
-          <Link
-            href="/produk"
-            className="text-xs font-mono text-[var(--color-ink)] hover:text-[var(--color-accent)] uppercase tracking-wider hover:underline shrink-0"
-          >
-            {viewAllText} &rarr;
-          </Link>
+          <div className="flex items-center justify-between sm:justify-end gap-5">
+            {/* Mobile and Tablet Scroll Buttons (hidden on desktop grid) */}
+            <div className="flex items-center gap-1.5 lg:hidden">
+              <button
+                type="button"
+                onClick={() => handleScroll("left")}
+                disabled={!canScrollLeft}
+                className="w-8 h-8 rounded-full border border-[var(--color-line)] flex items-center justify-center text-[var(--color-ink)] disabled:opacity-30 disabled:cursor-not-allowed hover:border-[var(--color-ink)] transition-colors cursor-pointer bg-[var(--color-paper)]"
+                aria-label="Geser kategori ke kiri"
+              >
+                &larr;
+              </button>
+              <button
+                type="button"
+                onClick={() => handleScroll("right")}
+                disabled={!canScrollRight}
+                className="w-8 h-8 rounded-full border border-[var(--color-line)] flex items-center justify-center text-[var(--color-ink)] disabled:opacity-30 disabled:cursor-not-allowed hover:border-[var(--color-ink)] transition-colors cursor-pointer bg-[var(--color-paper)]"
+                aria-label="Geser kategori ke kanan"
+              >
+                &rarr;
+              </button>
+            </div>
+
+            {viewAllText && (
+              <Link
+                href="/produk"
+                className="text-xs font-mono uppercase tracking-wider text-[var(--color-ink)] hover:text-[var(--color-accent)] hover:underline inline-flex items-center gap-1 transition-colors"
+              >
+                {viewAllText} &rarr;
+              </Link>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Cards Container: Horizontal scroll-snap on mobile/tablet, 5-col grid on desktop */}
       <div
@@ -106,7 +112,7 @@ export default function CategorySlider({
         {categories.map((cat) => (
           <Link
             key={cat.id}
-            href={`/produk?category=${cat.slug}`}
+            href={`/kategori/${cat.slug}`}
             className="group relative flex flex-col shrink-0 w-[68vw] xs:w-[220px] sm:w-[260px] lg:w-auto snap-start bg-[var(--color-paper)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ink)]"
             aria-label={`Jelajahi kategori ${cat.name}`}
           >
@@ -134,4 +140,3 @@ export default function CategorySlider({
     </section>
   );
 }
-

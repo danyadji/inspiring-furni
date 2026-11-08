@@ -1,16 +1,24 @@
 import React from "react";
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
-import { getProductBySlug, getProducts } from "@/lib/products";
+import { getProductBySlug, getProducts, getRedirectForSlug } from "@/lib/products";
+import {
+  getSiteUrl,
+  stripHtmlAndTruncate,
+  buildCanonicalAndAlternates,
+  buildProductJsonLd,
+  buildBreadcrumbJsonLd,
+  sanitizePublicImage,
+} from "@/lib/seo";
 import ProductDetailView from "@/components/ProductDetailView";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
 }
 
-export const revalidate = 15;
+export const revalidate = 60;
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
@@ -30,28 +38,51 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const product = await getProductBySlug(slug, locale);
 
   if (!product) {
+    const redirectSlug = getRedirectForSlug(slug);
+    if (redirectSlug) {
+      permanentRedirect(`/${locale}/produk/${redirectSlug}`);
+    }
     return {
-      title: t("productNotFound"),
+      title: { absolute: t("productNotFound") },
     };
   }
 
-  const categoryName = product.categories[0]?.name || (locale === "en" ? "Teak Furniture" : "Furnitur Jati");
+  const siteUrl = getSiteUrl();
+  const pageTitle = product.seoTitle || `${product.name} | Inspiring Furni`;
+  const rawDesc = product.seoDescription || product.short_description || product.description;
+  const description = stripHtmlAndTruncate(rawDesc, 155);
+
+  const alternates = buildCanonicalAndAlternates(`/produk/${slug}`, locale);
+
+  const mainImage = product.images[0]?.src
+    ? sanitizePublicImage(product.images[0].src, siteUrl)
+    : `${siteUrl}/images/placeholder-product.svg`;
 
   return {
-    title: `${product.name} | ${categoryName} | Inspiring Furni`,
-    description: product.short_description || product.description.slice(0, 160),
-    alternates: {
-      canonical: `https://inspiringfurni.com/${locale}/produk/${slug}`,
-      languages: {
-        id: `https://inspiringfurni.com/id/produk/${slug}`,
-        en: `https://inspiringfurni.com/en/produk/${slug}`,
-        "x-default": `https://inspiringfurni.com/id/produk/${slug}`,
-      },
-    },
+    title: { absolute: pageTitle },
+    description,
+    alternates,
     openGraph: {
-      title: `${product.name} | Inspiring Furni Jepara`,
-      description: product.short_description,
-      images: product.images[0]?.src ? [{ url: product.images[0].src }] : [],
+      title: pageTitle,
+      description,
+      url: alternates.canonical,
+      siteName: "Inspiring Furni",
+      locale: locale === "en" ? "en_US" : "id_ID",
+      type: "website",
+      images: [
+        {
+          url: mainImage,
+          width: 1200,
+          height: 630,
+          alt: product.name,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: pageTitle,
+      description,
+      images: [mainImage],
     },
   };
 }
@@ -66,8 +97,37 @@ export default async function ProductDetailPage({ params }: Props) {
   ]);
 
   if (!product) {
+    const redirectSlug = getRedirectForSlug(slug);
+    if (redirectSlug) {
+      permanentRedirect(`/${locale}/produk/${redirectSlug}`);
+    }
     notFound();
   }
+
+  const t = await getTranslations({ locale, namespace: "Metadata" });
+
+  // Structured Data (JSON-LD)
+  const productJsonLd = buildProductJsonLd(product, locale);
+
+  const primaryCategory = product.categories[0];
+  const breadcrumbItems = [
+    { name: t("breadcrumbHome"), pathWithoutLocale: "/" },
+    { name: t("breadcrumbCatalog"), pathWithoutLocale: "/produk" },
+  ];
+
+  if (primaryCategory && primaryCategory.slug) {
+    breadcrumbItems.push({
+      name: primaryCategory.name,
+      pathWithoutLocale: `/kategori/${primaryCategory.slug}`,
+    });
+  }
+
+  breadcrumbItems.push({
+    name: product.name,
+    pathWithoutLocale: `/produk/${product.slug}`,
+  });
+
+  const breadcrumbsJsonLd = buildBreadcrumbJsonLd(breadcrumbItems, locale);
 
   // Find related products: prioritize same category, then fallback to other products
   const productCategorySlugs = new Set(product.categories.map((c) => c.slug));
@@ -80,17 +140,26 @@ export default async function ProductDetailPage({ params }: Props) {
   );
 
   const relatedProducts = [...sameCategoryProducts, ...otherProducts].slice(0, 4);
-
   const waNumber = process.env.NEXT_PUBLIC_WA_NUMBER || "6289518906727";
 
   return (
-    <div className="max-w-[1280px] mx-auto px-4 sm:px-8 py-6 sm:py-10">
-      <ProductDetailView
-        product={product}
-        waNumber={waNumber}
-        relatedProducts={relatedProducts}
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
       />
-    </div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbsJsonLd) }}
+      />
+
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-8 py-6 sm:py-10">
+        <ProductDetailView
+          product={product}
+          waNumber={waNumber}
+          relatedProducts={relatedProducts}
+        />
+      </div>
+    </>
   );
 }
-

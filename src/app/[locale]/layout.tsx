@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { routing, Locale } from "@/i18n/routing";
+import { getSiteUrl, buildCanonicalAndAlternates } from "@/lib/seo";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CartDrawer from "@/components/CartDrawer";
@@ -44,29 +45,39 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Metadata" });
+  const siteUrl = getSiteUrl();
+  const alternates = buildCanonicalAndAlternates("/", locale);
+  const ogImage = `${siteUrl}/images/placeholder-product.svg`;
 
   return {
-    metadataBase: new URL("https://inspiringfurni.com"),
+    metadataBase: new URL(siteUrl),
     title: {
       default: t("homeTitle"),
       template: "%s | Inspiring Furni",
     },
     description: t("homeDescription"),
-    alternates: {
-      canonical: `https://inspiringfurni.com/${locale}`,
-      languages: {
-        id: "https://inspiringfurni.com/id",
-        en: "https://inspiringfurni.com/en",
-        "x-default": "https://inspiringfurni.com/id",
-      },
-    },
+    alternates,
     openGraph: {
       title: t("homeTitle"),
       description: t("homeDescription"),
-      url: `https://inspiringfurni.com/${locale}`,
+      url: alternates.canonical,
       siteName: "Inspiring Furni",
       locale: locale === "en" ? "en_US" : "id_ID",
       type: "website",
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: "Inspiring Furni Jepara",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t("homeTitle"),
+      description: t("homeDescription"),
+      images: [ogImage],
     },
   };
 }

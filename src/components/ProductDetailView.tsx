@@ -6,6 +6,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { Product, ProductVariation } from "@/lib/products";
 import { useCart } from "@/context/CartContext";
+import { getSiteUrl } from "@/lib/seo";
 import ProductCard, { formatRupiah } from "@/components/ProductCard";
 
 interface ProductDetailViewProps {
@@ -406,7 +407,8 @@ export default function ProductDetailView({
     .map(([k, v]) => `${k.charAt(0).toUpperCase() + k.slice(1)}: ${v}`)
     .join(", ");
 
-  const fallbackUrl = `https://inspiringfurni.com/${locale}/produk/${product.slug}`;
+  const siteUrl = getSiteUrl();
+  const fallbackUrl = `${siteUrl}/${locale}/produk/${product.slug}`;
   const effectiveProductUrl = currentUrl || fallbackUrl;
 
   const waAskMessage = variantSummary

@@ -1,35 +1,33 @@
 import React from "react";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { stripHtmlAndTruncate, buildCanonicalAndAlternates } from "@/lib/seo";
 import CartView from "@/components/CartView";
 
-export async function generateMetadata({
-  params,
-}: {
+interface Props {
   params: Promise<{ locale: string }>;
-}): Promise<Metadata> {
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Metadata" });
 
+  const title = t("cartTitle");
+  const description = stripHtmlAndTruncate(t("cartDescription"), 155);
+  const alternates = buildCanonicalAndAlternates("/keranjang", locale);
+
   return {
-    title: t("cartTitle"),
-    description: t("cartDescription"),
-    alternates: {
-      canonical: `https://inspiringfurni.com/${locale}/keranjang`,
-      languages: {
-        id: "https://inspiringfurni.com/id/keranjang",
-        en: "https://inspiringfurni.com/en/keranjang",
-        "x-default": "https://inspiringfurni.com/id/keranjang",
-      },
+    title: { absolute: title },
+    description,
+    alternates,
+    robots: {
+      index: false,
+      follow: true,
     },
   };
 }
 
-export default async function KeranjangPage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
+export default async function KeranjangPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
 
@@ -54,4 +52,3 @@ export default async function KeranjangPage({
     </div>
   );
 }
-

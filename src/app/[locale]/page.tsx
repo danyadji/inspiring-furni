@@ -3,10 +3,11 @@ import Image from "next/image";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/routing";
 import { getProducts, getCategories } from "@/lib/products";
+import { buildOrganizationJsonLd, buildWebSiteJsonLd } from "@/lib/seo";
 import ProductCard from "@/components/ProductCard";
 import CategorySlider from "@/components/CategorySlider";
 
-export const revalidate = 15;
+export const revalidate = 60;
 
 export default async function HomePage({
   params,
@@ -37,8 +38,20 @@ export default async function HomePage({
   // Produk Baru: 4 products (or next 4)
   const newProducts = products.length > 4 ? products.slice(4, 8) : products.slice(0, 4);
 
+  const orgJsonLd = buildOrganizationJsonLd();
+  const websiteJsonLd = buildWebSiteJsonLd(locale);
+
   return (
-    <div className="space-y-16 sm:space-y-28">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+      />
+      <div className="space-y-16 sm:space-y-28">
       {/* 3. HERO SECTION */}
       <section className="relative min-h-screen flex items-center justify-center bg-[var(--color-ink)] text-white overflow-hidden">
         {/* Background Image with dark overlay */}
@@ -206,6 +219,7 @@ export default async function HomePage({
         </div>
       </section>
     </div>
+    </>
   );
 }
 

@@ -1,42 +1,82 @@
 import { MetadataRoute } from "next";
-import { getProducts } from "@/lib/products";
+import { getProducts, getCategories } from "@/lib/products";
 import { routing } from "@/i18n/routing";
+import { getSiteUrl } from "@/lib/seo";
+
+export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://inspiringfurni.com";
-  const products = await getProducts();
+  const baseUrl = getSiteUrl();
 
-  const pages = ["", "/produk", "/about", "/contact", "/keranjang"];
+  const [products, categories] = await Promise.all([
+    getProducts("id"),
+    getCategories("id"),
+  ]);
+
+  // Static public pages (exclude cart /keranjang and /api/)
+  const staticPages = [
+    { path: "", priority: 1.0, changeFrequency: "weekly" as const },
+    { path: "/produk", priority: 0.9, changeFrequency: "weekly" as const },
+    { path: "/about", priority: 0.7, changeFrequency: "monthly" as const },
+    { path: "/contact", priority: 0.7, changeFrequency: "monthly" as const },
+  ];
 
   const staticEntries: MetadataRoute.Sitemap = [];
 
-  for (const page of pages) {
+  for (const page of staticPages) {
     for (const locale of routing.locales) {
-      const isHome = page === "";
+      const pagePath = page.path;
       staticEntries.push({
-        url: `${baseUrl}/${locale}${page}`,
+        url: `${baseUrl}/${locale}${pagePath}`,
         lastModified: new Date(),
-        changeFrequency: isHome ? "weekly" : "monthly",
-        priority: isHome ? 1.0 : page === "/produk" ? 0.9 : 0.7,
+        changeFrequency: page.changeFrequency,
+        priority: page.priority,
         alternates: {
           languages: {
-            id: `${baseUrl}/id${page}`,
-            en: `${baseUrl}/en${page}`,
+            id: `${baseUrl}/id${pagePath}`,
+            en: `${baseUrl}/en${pagePath}`,
           },
         },
       });
     }
   }
 
-  const productEntries: MetadataRoute.Sitemap = [];
+  // Category entries
+  const categoryEntries: MetadataRoute.Sitemap = [];
 
-  for (const product of products) {
+  for (const cat of categories) {
+    if (!cat.slug || cat.slug === "tanpa-kategori") continue;
+
     for (const locale of routing.locales) {
-      productEntries.push({
-        url: `${baseUrl}/${locale}/produk/${product.slug}`,
+      categoryEntries.push({
+        url: `${baseUrl}/${locale}/kategori/${cat.slug}`,
         lastModified: new Date(),
         changeFrequency: "weekly",
         priority: 0.8,
+        alternates: {
+          languages: {
+            id: `${baseUrl}/id/kategori/${cat.slug}`,
+            en: `${baseUrl}/en/kategori/${cat.slug}`,
+          },
+        },
+      });
+    }
+  }
+
+  // Product entries
+  const productEntries: MetadataRoute.Sitemap = [];
+
+  for (const product of products) {
+    if (!product.slug) continue;
+
+    const lastModified = product.dateModified ? new Date(product.dateModified) : new Date();
+
+    for (const locale of routing.locales) {
+      productEntries.push({
+        url: `${baseUrl}/${locale}/produk/${product.slug}`,
+        lastModified,
+        changeFrequency: "weekly",
+        priority: 0.9,
         alternates: {
           languages: {
             id: `${baseUrl}/id/produk/${product.slug}`,
@@ -47,5 +87,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
-  return [...staticEntries, ...productEntries];
+  return [...staticEntries, ...categoryEntries, ...productEntries];
 }
