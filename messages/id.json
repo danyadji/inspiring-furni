@@ -225,6 +225,7 @@
     "inquiryAbout": "Halo Inspiring Furni, saya membaca halaman Tentang Kami dan ingin konsultasi pembuatan furnitur jati.",
     "inquiryGeneral": "Halo Inspiring Furni, saya ingin chat langsung mengenai pemesanan furnitur jati.",
     "inquiryProductWithVariant": "Halo Inspiring Furni, saya ingin bertanya tentang {product} ({variant}).\n\nLink produk:\n{url}\n\nApakah bisa dibantu informasi estimasi pengerjaan dan ongkir?",
-    "inquiryProductStandard": "Halo Inspiring Furni, saya ingin bertanya tentang {product}.\n\nLink produk:\n{url}\n\nApakah bisa dibantu informasi estimasi pengerjaan dan ongkir?"
+    "inquiryProductStandard": "Halo Inspiring Furni, saya ingin bertanya tentang {product}.\n\nLink produk:\n{url}\n\nApakah bisa dibantu informasi estimasi pengerjaan dan ongkir?",
+    "floatingTooltip": "Konsultasi Pengrajin"
   }
 }

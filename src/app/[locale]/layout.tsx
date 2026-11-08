@@ -7,6 +7,7 @@ import { routing, Locale } from "@/i18n/routing";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CartDrawer from "@/components/CartDrawer";
+import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import MobileZoomPreventer from "@/components/MobileZoomPreventer";
 import { CartProvider } from "@/context/CartContext";
 import "../globals.css";
@@ -98,6 +99,7 @@ export default async function LocaleLayout({
             <main className="flex-1">{children}</main>
             <Footer />
             <CartDrawer />
+            <FloatingWhatsApp />
           </CartProvider>
         </NextIntlClientProvider>
       </body>
