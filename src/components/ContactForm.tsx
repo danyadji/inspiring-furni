@@ -23,7 +23,18 @@ export default function ContactForm({ waNumber }: ContactFormProps) {
     const url = `https://wa.me/${waNumber}?text=${encodeURIComponent(text)}`;
 
     setSubmitted(true);
-    window.open(url, "_blank", "noopener,noreferrer");
+    const isMobile =
+      typeof window !== "undefined" &&
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      window.location.href = url;
+    } else {
+      const win = window.open(url, "_blank", "noopener,noreferrer");
+      if (!win || win.closed || typeof win.closed === "undefined") {
+        window.location.href = url;
+      }
+    }
   };
 
   return (

@@ -68,6 +68,21 @@ export default function CartView({ waNumber }: CartViewProps) {
     );
   }
 
+  const openWhatsAppUrl = (url: string) => {
+    const isMobile =
+      typeof window !== "undefined" &&
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      window.location.href = url;
+    } else {
+      const win = window.open(url, "_blank", "noopener,noreferrer");
+      if (!win || win.closed || typeof win.closed === "undefined") {
+        window.location.href = url;
+      }
+    }
+  };
+
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
@@ -107,7 +122,8 @@ export default function CartView({ waNumber }: CartViewProps) {
           orderId: data.orderId,
           whatsappUrl: data.whatsappUrl,
         });
-        window.open(data.whatsappUrl, "_blank", "noopener,noreferrer");
+        clearCart();
+        openWhatsAppUrl(data.whatsappUrl);
       } else {
         const fallbackItems = items
           .map(
@@ -129,7 +145,8 @@ export default function CartView({ waNumber }: CartViewProps) {
           orderId: "WA-Direct",
           whatsappUrl: fallbackUrl,
         });
-        window.open(fallbackUrl, "_blank", "noopener,noreferrer");
+        clearCart();
+        openWhatsAppUrl(fallbackUrl);
       }
     } catch {
       const fallbackText = `${tWa("orderHeaderFallback")}${items
@@ -148,7 +165,8 @@ export default function CartView({ waNumber }: CartViewProps) {
         orderId: "WA-Direct",
         whatsappUrl: fallbackUrl,
       });
-      window.open(fallbackUrl, "_blank", "noopener,noreferrer");
+      clearCart();
+      openWhatsAppUrl(fallbackUrl);
     } finally {
       setIsSubmitting(false);
     }

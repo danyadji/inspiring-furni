@@ -16,6 +16,7 @@ export default function CartDrawer() {
     items,
     removeItem,
     updateQuantity,
+    clearCart,
     subtotal,
     totalCount,
     isDrawerOpen,
@@ -49,6 +50,21 @@ export default function CartDrawer() {
       document.body.style.overflow = "";
     };
   }, [isDrawerOpen]);
+
+  const openWhatsAppUrl = (url: string) => {
+    const isMobile =
+      typeof window !== "undefined" &&
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      window.location.href = url;
+    } else {
+      const win = window.open(url, "_blank", "noopener,noreferrer");
+      if (!win || win.closed || typeof win.closed === "undefined") {
+        window.location.href = url;
+      }
+    }
+  };
 
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -94,7 +110,8 @@ export default function CartDrawer() {
         throw new Error(data.error || "Order processing error");
       }
 
-      window.open(data.whatsappUrl, "_blank", "noopener,noreferrer");
+      openWhatsAppUrl(data.whatsappUrl);
+      clearCart();
       closeDrawer();
     } catch {
       // Fallback: If recording fails, still generate localized WhatsApp link
@@ -116,7 +133,8 @@ export default function CartDrawer() {
       })}\n\n${tWa("closing")}`;
 
       const fallbackUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(fallbackText)}`;
-      window.open(fallbackUrl, "_blank", "noopener,noreferrer");
+      openWhatsAppUrl(fallbackUrl);
+      clearCart();
       closeDrawer();
     } finally {
       setIsSubmitting(false);
