@@ -6,11 +6,12 @@ import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { Product, ProductVariation } from "@/lib/products";
 import { useCart } from "@/context/CartContext";
-import { formatRupiah } from "@/components/ProductCard";
+import ProductCard, { formatRupiah } from "@/components/ProductCard";
 
 interface ProductDetailViewProps {
   product: Product;
   waNumber: string;
+  relatedProducts?: Product[];
 }
 
 const COLOR_MAP: Record<string, string> = {
@@ -26,6 +27,7 @@ const COLOR_MAP: Record<string, string> = {
 export default function ProductDetailView({
   product,
   waNumber,
+  relatedProducts = [],
 }: ProductDetailViewProps) {
   const t = useTranslations("ProductDetail");
   const tWa = useTranslations("WhatsApp");
@@ -781,6 +783,34 @@ export default function ProductDetailView({
           </div>
         </div>
       </div>
+
+      {/* Related Products Section */}
+      {relatedProducts && relatedProducts.length > 0 && (
+        <section className="border-t border-[var(--color-line)] pt-12 sm:pt-16">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-10 gap-4">
+            <div>
+              <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-[var(--color-muted)] block">
+                {t("relatedBadge")}
+              </span>
+              <h2 className="text-xl sm:text-3xl font-light text-[var(--color-ink)] tracking-tight mt-1 font-[family-name:var(--font-dm-sans)]">
+                {t("relatedTitle")}
+              </h2>
+            </div>
+            <Link
+              href="/produk"
+              className="text-xs font-mono text-[var(--color-ink)] hover:text-[var(--color-accent)] uppercase tracking-wider hover:underline shrink-0"
+            >
+              {t("viewAll")} &rarr;
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+            {relatedProducts.map((relProduct) => (
+              <ProductCard key={relProduct.id} product={relProduct} />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Sticky Bottom Action Bar for Mobile (< md) */}
       <div

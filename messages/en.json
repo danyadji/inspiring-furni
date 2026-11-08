@@ -93,7 +93,10 @@
     "accordionPacking": "Cargo Packaging Standards",
     "accordionPackingContent": "Each edge and timber surface is wrapped with dense protective foam, thick corrugated cardboard, and reinforced with a heavy solid wood crate for long-distance transit.",
     "accordionGaransi": "Jepara Workshop Guarantee",
-    "accordionGaransiContent": "Guaranteed 100% genuine solid teak wood without hidden particle board in structural components, backed by replacement assurance against transit damage upon arrival."
+    "accordionGaransiContent": "Guaranteed 100% genuine solid teak wood without hidden particle board in structural components, backed by replacement assurance against transit damage upon arrival.",
+    "relatedBadge": "Selected Recommendations",
+    "relatedTitle": "Similar Pieces for Your Space",
+    "viewAll": "View All"
   },
   "Cart": {
     "title": "Cart",

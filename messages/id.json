@@ -93,7 +93,10 @@
     "accordionPacking": "Standar Packing Cargo",
     "accordionPackingContent": "Setiap sudut dan permukaan furnitur dibalut foamsheet, single-face carton tebal, serta diperkuat rangka palet kayu solid untuk pengiriman jarak jauh antarpulau via ekspedisi rekanan.",
     "accordionGaransi": "Garansi Workshop Jepara",
-    "accordionGaransiContent": "Jaminan keaslian bahan baku 100% kayu jati solid tanpa campuran triplek di bagian utama, serta jaminan penggantian bila terjadi kerusakan struktur saat diterima di lokasi."
+    "accordionGaransiContent": "Jaminan keaslian bahan baku 100% kayu jati solid tanpa campuran triplek di bagian utama, serta jaminan penggantian bila terjadi kerusakan struktur saat diterima di lokasi.",
+    "relatedBadge": "Rekomendasi Pilihan",
+    "relatedTitle": "Koleksi Serupa untuk Ruangan Anda",
+    "viewAll": "Lihat Semua"
   },
   "Cart": {
     "title": "Keranjang",

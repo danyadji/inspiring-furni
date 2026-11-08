@@ -60,17 +60,36 @@ export default async function ProductDetailPage({ params }: Props) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
 
-  const product = await getProductBySlug(slug, locale);
+  const [product, allProducts] = await Promise.all([
+    getProductBySlug(slug, locale),
+    getProducts(locale),
+  ]);
 
   if (!product) {
     notFound();
   }
 
+  // Find related products: prioritize same category, then fallback to other products
+  const productCategorySlugs = new Set(product.categories.map((c) => c.slug));
+  const sameCategoryProducts = allProducts.filter(
+    (p) => p.id !== product.id && p.categories.some((c) => productCategorySlugs.has(c.slug))
+  );
+
+  const otherProducts = allProducts.filter(
+    (p) => p.id !== product.id && !sameCategoryProducts.some((sc) => sc.id === p.id)
+  );
+
+  const relatedProducts = [...sameCategoryProducts, ...otherProducts].slice(0, 4);
+
   const waNumber = process.env.NEXT_PUBLIC_WA_NUMBER || "6289518906727";
 
   return (
     <div className="max-w-[1280px] mx-auto px-4 sm:px-8 py-6 sm:py-10">
-      <ProductDetailView product={product} waNumber={waNumber} />
+      <ProductDetailView
+        product={product}
+        waNumber={waNumber}
+        relatedProducts={relatedProducts}
+      />
     </div>
   );
 }
