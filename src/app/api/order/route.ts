@@ -12,7 +12,11 @@ interface OrderItemPayload {
 
 interface OrderRequestPayload {
   customerName: string;
+  customerEmail?: string;
+  customerPhone?: string;
   customerAddress: string;
+  customerCity?: string;
+  customerPostcode?: string;
   items: OrderItemPayload[];
   locale?: string;
 }
@@ -34,7 +38,16 @@ function basicAuth(key: string, secret: string): string {
 export async function POST(req: NextRequest) {
   try {
     const body = (await req.json()) as OrderRequestPayload;
-    const { customerName, customerAddress, items, locale = "id" } = body;
+    const {
+      customerName,
+      customerEmail = "",
+      customerPhone = "",
+      customerAddress,
+      customerCity = "",
+      customerPostcode = "",
+      items,
+      locale = "id",
+    } = body;
 
     const messages = locale === "en" ? enMessages.WhatsApp : idMessages.WhatsApp;
 
@@ -123,11 +136,17 @@ export async function POST(req: NextRequest) {
             status: "on-hold",
             billing: {
               first_name: customerName.trim(),
+              email: customerEmail.trim() || undefined,
+              phone: customerPhone.trim() || undefined,
               address_1: customerAddress.trim(),
+              city: customerCity.trim() || undefined,
+              postcode: customerPostcode.trim() || undefined,
             },
             shipping: {
               first_name: customerName.trim(),
               address_1: customerAddress.trim(),
+              city: customerCity.trim() || undefined,
+              postcode: customerPostcode.trim() || undefined,
             },
             line_items: lineItemDetails.map((li) => ({
               product_id: li.productId,
@@ -160,10 +179,27 @@ export async function POST(req: NextRequest) {
       message += `${index + 1}. ${li.productName}${variantStr} x ${li.quantity} = ${formatRupiah(li.lineSubtotal)}\n`;
     });
 
-    message += `\n${messages.subtotalLabel.replace("{amount}", formatRupiah(totalSubtotal))}\n`;
+    message += `\n${messages.subtotalLabel.replace("{amount}", formatRupiah(totalSubtotal))}\n\n`;
+    message += `${messages.contactHeader || "Data Pemesan:"}\n`;
     message += `${messages.nameLabel.replace("{name}", customerName.trim())}\n`;
-    message += `${messages.addressLabel.replace("{address}", customerAddress.trim())}\n\n`;
-    message += messages.closing;
+    if (customerPhone.trim()) {
+      const phoneLbl = messages.phoneLabel || "No. WhatsApp: {phone}";
+      message += `${phoneLbl.replace("{phone}", customerPhone.trim())}\n`;
+    }
+    if (customerEmail.trim()) {
+      const emailLbl = messages.emailLabel || "Email: {email}";
+      message += `${emailLbl.replace("{email}", customerEmail.trim())}\n`;
+    }
+    message += `${messages.addressLabel.replace("{address}", customerAddress.trim())}\n`;
+    if (customerCity.trim()) {
+      const cityLbl = messages.cityLabel || "Kota: {city}";
+      message += `${cityLbl.replace("{city}", customerCity.trim())}\n`;
+    }
+    if (customerPostcode.trim()) {
+      const postLbl = messages.postalCodeLabel || "Kode Pos: {postcode}";
+      message += `${postLbl.replace("{postcode}", customerPostcode.trim())}\n`;
+    }
+    message += `\n${messages.closing}`;
 
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${waNumber}?text=${encodedMessage}`;
