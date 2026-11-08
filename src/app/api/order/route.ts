@@ -3,6 +3,7 @@ import { getProductBySlug, getProductById } from "@/lib/products";
 import { formatRupiah } from "@/lib/format";
 import idMessages from "../../../../messages/id.json";
 import enMessages from "../../../../messages/en.json";
+import crypto from "crypto";
 
 interface OrderItemPayload {
   productId: number;
@@ -22,6 +23,7 @@ interface OrderRequestPayload {
   customerPostcode?: string;
   items: OrderItemPayload[];
   locale?: string;
+  website?: string; // Honeypot field for bot detection
 }
 
 const wpApiUrl = process.env.WP_API_URL ?? "";
@@ -38,26 +40,106 @@ function basicAuth(key: string, secret: string): string {
   return "Basic " + Buffer.from(`${key}:${secret}`).toString("base64");
 }
 
+function getClientIp(req: NextRequest): string {
+  const forwarded = req.headers.get("x-forwarded-for");
+  if (forwarded) {
+    return forwarded.split(",")[0].trim();
+  }
+  return req.headers.get("x-real-ip") || "127.0.0.1";
+}
+
+// In-memory rate limiting: max 5 orders per minute per IP
+const ipRateLimitMap = new Map<string, { count: number; expiresAt: number }>();
+
+// In-memory idempotency deduplication cache: 15 seconds window
+interface CachedOrderResponse {
+  success: boolean;
+  orderId: string;
+  subtotal: number;
+  whatsappUrl: string;
+  waUrl: string;
+  timestamp: number;
+}
+const recentOrdersCache = new Map<string, CachedOrderResponse>();
+
+function cleanExpiredCache() {
+  const now = Date.now();
+  for (const [ip, entry] of ipRateLimitMap.entries()) {
+    if (entry.expiresAt < now) {
+      ipRateLimitMap.delete(ip);
+    }
+  }
+  for (const [key, entry] of recentOrdersCache.entries()) {
+    if (now - entry.timestamp > 20000) {
+      recentOrdersCache.delete(key);
+    }
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
+    cleanExpiredCache();
+
+    const clientIp = getClientIp(req);
+    const now = Date.now();
+
+    // 1. Rate limiting check (max 5 order submissions per 60 seconds per IP)
+    const rateLimit = ipRateLimitMap.get(clientIp);
+    if (rateLimit && rateLimit.expiresAt > now) {
+      if (rateLimit.count >= 5) {
+        return NextResponse.json(
+          {
+            error:
+              "Terlalu banyak permintaan pemesanan. Mohon tunggu satu menit sebelum mencoba kembali.",
+          },
+          { status: 429 }
+        );
+      }
+      rateLimit.count += 1;
+    } else {
+      ipRateLimitMap.set(clientIp, { count: 1, expiresAt: now + 60000 });
+    }
+
     const body = (await req.json()) as OrderRequestPayload;
     const {
-      customerName,
+      customerName = "",
       customerEmail = "",
       customerPhone = "",
-      customerAddress,
+      customerAddress = "",
       customerCity = "",
       customerPostcode = "",
       items,
       locale = "id",
+      website = "",
     } = body;
+
+    // 2. Honeypot check: if hidden honeypot field is filled, reject silently
+    if (website && typeof website === "string" && website.trim().length > 0) {
+      return NextResponse.json(
+        {
+          success: true,
+          orderId: "IF-OK",
+          subtotal: 0,
+          whatsappUrl: "",
+          waUrl: "",
+        },
+        { status: 200 }
+      );
+    }
 
     const messages = locale === "en" ? enMessages.WhatsApp : idMessages.WhatsApp;
 
-    // 1. Validation
+    // 3. Input validation and sanitization
     if (!customerName || typeof customerName !== "string" || !customerName.trim()) {
       return NextResponse.json(
         { error: locale === "en" ? "Customer name is required." : "Nama pemesan wajib diisi." },
+        { status: 400 }
+      );
+    }
+
+    if (customerName.length > 100) {
+      return NextResponse.json(
+        { error: locale === "en" ? "Customer name is too long." : "Nama pemesan terlalu panjang (maks 100 karakter)." },
         { status: 400 }
       );
     }
@@ -69,6 +151,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    if (customerAddress.length > 500) {
+      return NextResponse.json(
+        { error: locale === "en" ? "Address is too long." : "Alamat pengiriman terlalu panjang (maks 500 karakter)." },
+        { status: 400 }
+      );
+    }
+
     if (!Array.isArray(items) || items.length === 0) {
       return NextResponse.json(
         { error: locale === "en" ? "Shopping cart cannot be empty." : "Keranjang belanja tidak boleh kosong." },
@@ -76,7 +165,31 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 2. Fetch server product data with variations to accurately verify prices
+    if (items.length > 50) {
+      return NextResponse.json(
+        { error: locale === "en" ? "Too many items in cart." : "Jumlah jenis produk dalam keranjang melebihi batas." },
+        { status: 400 }
+      );
+    }
+
+    // 4. Deduplication / Idempotency Check
+    // If the identical order is sent within 15 seconds, return the already created order
+    const orderFingerprint = crypto
+      .createHash("sha256")
+      .update(
+        `${clientIp}:${customerName.trim().toLowerCase()}:${customerAddress.trim().toLowerCase()}:${items
+          .map((it) => `${it.productId}-${it.variationId}-${it.quantity}`)
+          .sort()
+          .join(",")}`
+      )
+      .digest("hex");
+
+    const cachedOrder = recentOrdersCache.get(orderFingerprint);
+    if (cachedOrder && now - cachedOrder.timestamp < 15000) {
+      return NextResponse.json(cachedOrder);
+    }
+
+    // 5. Fetch server product data with variations to accurately verify prices
     let totalSubtotal = 0;
     const lineItemDetails: {
       productName: string;
@@ -99,21 +212,24 @@ export async function POST(req: NextRequest) {
 
       // Find exact variation from WooCommerce product data
       const variation =
-        product.variations.find((v) => v.id === item.variationId) || product.variations[0];
-      const unitPrice = variation ? parseInt(variation.price, 10) : parseInt(product.price, 10);
-      const qty = Math.max(1, Math.floor(item.quantity));
+        product.variations && product.variations.length > 0
+          ? product.variations.find((v) => v.id === item.variationId)
+          : undefined;
+
+      const rawPrice = variation ? variation.price : product.price;
+      const unitPrice = parseFloat(rawPrice) || 0;
+      const qty = Math.max(1, Math.min(999, Math.floor(Number(item.quantity) || 1)));
       const lineSubtotal = unitPrice * qty;
       totalSubtotal += lineSubtotal;
 
-      // Extract clear variant labels: prefer item.attributes or variation attributes
       let variantDetails = "";
-      if (item.attributes && Object.keys(item.attributes).length > 0) {
-        variantDetails = Object.entries(item.attributes)
-          .map(([k, v]) => `${k.charAt(0).toUpperCase() + k.slice(1)}: ${v}`)
-          .join(", ");
-      } else if (variation && Object.keys(variation.attributes).length > 0) {
+      if (variation) {
         variantDetails = Object.entries(variation.attributes)
-          .map(([k, v]) => `${k.charAt(0).toUpperCase() + k.slice(1)}: ${v}`)
+          .map(([k, v]) => `${k}: ${v}`)
+          .join(", ");
+      } else if (item.attributes && Object.keys(item.attributes).length > 0) {
+        variantDetails = Object.entries(item.attributes)
+          .map(([k, v]) => `${k}: ${v}`)
           .join(", ");
       }
 
@@ -135,7 +251,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 3. Record order to WooCommerce or generate reference
+    // 6. Record order to WooCommerce or generate reference
     let orderId = `IF-${Math.floor(1000 + Math.random() * 9000)}`;
 
     if (!useSampleData && wpApiUrl && wcOrderKey && wcOrderSecret) {
@@ -148,6 +264,10 @@ export async function POST(req: NextRequest) {
           },
           body: JSON.stringify({
             status: "on-hold",
+            currency: "IDR",
+            payment_method: "bacs",
+            payment_method_title: "Transfer Bank / WhatsApp (DP & Kargo Jepara)",
+            set_paid: false,
             customer_note: "Pesanan via Web Inspiring Furni (Checkout WhatsApp). Menunggu konfirmasi ongkir kargo truk Jepara.",
             billing: {
               first_name: customerName.trim(),
@@ -167,7 +287,29 @@ export async function POST(req: NextRequest) {
               product_id: li.productId,
               variation_id: li.variationId !== li.productId ? li.variationId : undefined,
               quantity: li.quantity,
+              meta_data: li.variantText
+                ? [
+                    {
+                      key: "Varian",
+                      value: li.variantText,
+                    },
+                  ]
+                : [],
             })),
+            meta_data: [
+              {
+                key: "_checkout_source",
+                value: "Inspiring Furni Web (WhatsApp Checkout)",
+              },
+              {
+                key: "_customer_phone",
+                value: customerPhone.trim() || "-",
+              },
+              {
+                key: "_shipping_type",
+                value: "Kargo Truk Jepara (Konfirmasi via WhatsApp)",
+              },
+            ],
           }),
         });
 
@@ -182,7 +324,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // 4. Compose WhatsApp message using translation template
+    // 7. Compose WhatsApp message using translation template
     const header = messages.orderHeader.replace("{orderId}", orderId);
     let message = header;
 
@@ -219,13 +361,19 @@ export async function POST(req: NextRequest) {
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${waNumber}?text=${encodedMessage}`;
 
-    return NextResponse.json({
+    const orderResult: CachedOrderResponse = {
       success: true,
       orderId,
       subtotal: totalSubtotal,
       whatsappUrl,
       waUrl: whatsappUrl,
-    });
+      timestamp: now,
+    };
+
+    // Save to deduplication cache
+    recentOrdersCache.set(orderFingerprint, orderResult);
+
+    return NextResponse.json(orderResult);
   } catch (error) {
     console.error("API /api/order error:", error);
     return NextResponse.json(

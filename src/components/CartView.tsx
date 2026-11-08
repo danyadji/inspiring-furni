@@ -28,6 +28,9 @@ export default function CartView({ waNumber }: CartViewProps) {
   const [customerCity, setCustomerCity] = useState("");
   const [customerPostcode, setCustomerPostcode] = useState("");
 
+  // Anti-spam honeypot
+  const [botField, setBotField] = useState("");
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderResult, setOrderResult] = useState<{
     orderId: string;
@@ -92,6 +95,7 @@ export default function CartView({ waNumber }: CartViewProps) {
           customerAddress: customerAddress.trim(),
           customerCity: customerCity.trim(),
           customerPostcode: customerPostcode.trim(),
+          website: botField,
           locale,
           items: items.map((item) => ({
             productId: item.productId,
@@ -381,6 +385,18 @@ export default function CartView({ waNumber }: CartViewProps) {
                     </div>
                   </div>
                 </div>
+              </div>
+
+              {/* Anti-spam bot honeypot (hidden from human users) */}
+              <div style={{ display: "none" }} aria-hidden="true">
+                <input
+                  type="text"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={botField}
+                  onChange={(e) => setBotField(e.target.value)}
+                />
               </div>
 
               {errorMessage && (
