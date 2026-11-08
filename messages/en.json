@@ -82,7 +82,8 @@
   "ProductCard": {
     "priceStarting": "From {price}",
     "detail": "View Piece",
-    "specDefault": "Solid Jepara Teak · Refined Finish"
+    "specDefault": "Solid Jepara Teak · Refined Finish",
+    "saleBadge": "Sale"
   },
   "ProductDetail": {
     "breadcrumbHome": "Home",

@@ -374,6 +374,18 @@ export default function ProductDetailView({
     ? parseInt(currentVariation.price, 10)
     : parseInt(product.price, 10);
 
+  const regularPrice = currentVariation
+    ? parseInt(currentVariation.regular_price || currentVariation.price, 10)
+    : parseInt(product.regular_price || product.price, 10);
+
+  const isOnSale = Boolean(
+    (currentVariation?.on_sale || product.on_sale) && regularPrice > activePrice
+  ) || regularPrice > activePrice;
+
+  const discountPercent = isOnSale
+    ? Math.round(((regularPrice - activePrice) / regularPrice) * 100)
+    : 0;
+
   const handleSelectAttribute = (attrName: string, option: string) => {
     setSelectedAttributes((prev) => ({
       ...prev,
@@ -617,14 +629,30 @@ export default function ProductDetailView({
             </p>
           </div>
 
-          {/* Dynamic Price */}
+          {/* Dynamic Price & Sale Strikethrough */}
           <div className="pt-2 pb-4 border-b border-[var(--color-line)]">
-            <span className="text-xs font-mono text-[var(--color-muted)] block uppercase tracking-wider">
-              {t("unitPrice")}
-            </span>
-            <span className="text-2xl sm:text-3xl font-mono font-bold text-[var(--color-ink)] mt-1 block">
-              {formatRupiah(activePrice)}
-            </span>
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-xs font-mono text-[var(--color-muted)] uppercase tracking-wider">
+                {t("unitPrice")}
+              </span>
+              {isOnSale && (
+                <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 bg-red-50 text-red-700 border border-red-200 font-semibold">
+                  {locale === "en" ? `Save ${discountPercent}%` : `Hemat ${discountPercent}%`}
+                </span>
+              )}
+            </div>
+
+            <div className="flex items-baseline gap-3 mt-1.5 flex-wrap">
+              <span className="text-2xl sm:text-3xl font-mono font-bold text-[var(--color-ink)]">
+                {formatRupiah(activePrice)}
+              </span>
+              {isOnSale && (
+                <span className="text-base sm:text-lg font-mono text-[var(--color-muted)] line-through decoration-stone-400">
+                  {formatRupiah(regularPrice)}
+                </span>
+              )}
+            </div>
+
             <span className="block text-[11px] font-mono text-[var(--color-muted)] mt-1">
               {t("shippingNote")}
             </span>
@@ -887,8 +915,15 @@ export default function ProductDetailView({
             className="text-left flex-1 min-w-0 pr-1 group cursor-pointer"
             title="Ubah pilihan ukuran atau warna"
           >
-            <div className="text-sm sm:text-base font-mono font-bold text-[var(--color-ink)] leading-tight">
-              {formatRupiah(activePrice)}
+            <div className="flex items-baseline gap-2 flex-wrap">
+              <span className="text-sm sm:text-base font-mono font-bold text-[var(--color-ink)] leading-tight">
+                {formatRupiah(activePrice)}
+              </span>
+              {isOnSale && (
+                <span className="text-xs font-mono text-[var(--color-muted)] line-through decoration-stone-400 leading-tight">
+                  {formatRupiah(regularPrice)}
+                </span>
+              )}
             </div>
             {variantSummary && (
               <div className="text-[11px] font-mono text-[var(--color-muted)] truncate leading-tight mt-0.5 group-hover:text-[var(--color-ink)] transition-colors">

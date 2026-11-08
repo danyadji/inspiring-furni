@@ -32,6 +32,13 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
     : t("specDefault");
 
   const hasMultipleVariations = product.variations && product.variations.length > 1;
+  const currentPriceNum = parseFloat(String(product.price).replace(/[^0-9.-]+/g, "")) || 0;
+  const regularPriceNum = parseFloat(String(product.regular_price || "").replace(/[^0-9.-]+/g, "")) || 0;
+  const isOnSale = Boolean(
+    (product.on_sale && regularPriceNum > currentPriceNum) ||
+      (regularPriceNum > currentPriceNum && regularPriceNum > 0)
+  );
+
   const priceLabel = hasMultipleVariations
     ? t("priceStarting", { price: formatRupiah(product.price) })
     : formatRupiah(product.price);
@@ -45,6 +52,11 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
       >
         {/* Product Image: Full frame, no crop, no swap on hover */}
         <div className="relative aspect-square w-full overflow-hidden bg-stone-100/60">
+          {isOnSale && (
+            <span className="absolute top-2.5 left-2.5 z-10 text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 bg-red-700 text-white font-medium shadow-sm">
+              {t("saleBadge")}
+            </span>
+          )}
           <Image
             src={firstImage.src}
             alt={firstImage.alt || product.name}
@@ -67,11 +79,18 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
             </p>
           </div>
 
-          <div className="mt-3 pt-2 border-t border-[var(--color-line)] flex items-baseline justify-between">
-            <span className="text-xs sm:text-[13px] font-mono font-medium text-[var(--color-ink)]">
-              {priceLabel}
-            </span>
-            <span className="text-[11px] font-mono text-[var(--color-accent)] uppercase tracking-wider group-hover:underline flex items-center gap-1">
+          <div className="mt-3 pt-2 border-t border-[var(--color-line)] flex items-baseline justify-between gap-2">
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <span className="text-xs sm:text-[13px] font-mono font-medium text-[var(--color-ink)]">
+                {priceLabel}
+              </span>
+              {isOnSale && (
+                <span className="text-[11px] font-mono text-[var(--color-muted)] line-through decoration-stone-400">
+                  {formatRupiah(regularPriceNum)}
+                </span>
+              )}
+            </div>
+            <span className="text-[11px] font-mono text-[var(--color-accent)] uppercase tracking-wider group-hover:underline flex items-center gap-1 shrink-0">
               {t("detail")} &rarr;
             </span>
           </div>

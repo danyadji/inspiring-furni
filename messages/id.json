@@ -82,7 +82,8 @@
   "ProductCard": {
     "priceStarting": "Mulai {price}",
     "detail": "Detail",
-    "specDefault": "Jati Solid Jepara · Finishing Halus"
+    "specDefault": "Jati Solid Jepara · Finishing Halus",
+    "saleBadge": "Obral"
   },
   "ProductDetail": {
     "breadcrumbHome": "Home",

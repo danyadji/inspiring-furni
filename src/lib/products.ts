@@ -15,6 +15,8 @@ export interface ProductVariation {
   attributes: Record<string, string>;
   price: string;
   regular_price: string;
+  sale_price?: string;
+  on_sale?: boolean;
 }
 
 export interface Category {
@@ -37,6 +39,9 @@ export interface Product {
   images: ProductImage[];
   /** Starting price (lowest variant), formatted as a plain number string */
   price: string;
+  regular_price?: string;
+  sale_price?: string;
+  on_sale?: boolean;
   categories: Category[];
   attributes: ProductAttribute[];
   variations: ProductVariation[];
@@ -131,6 +136,8 @@ interface RawWcVariation {
   id: number;
   price?: string;
   regular_price?: string;
+  sale_price?: string;
+  on_sale?: boolean;
   attributes?: { name: string; option: string }[];
 }
 
@@ -152,6 +159,9 @@ interface RawWcProduct {
   short_description?: string;
   images?: { src?: string; alt?: string }[];
   price?: string;
+  regular_price?: string;
+  sale_price?: string;
+  on_sale?: boolean;
   categories?: { id: number; name: string; slug: string; name_en?: string; meta_data?: MetaItem[] }[];
   attributes?: { name: string; options?: string[]; name_en?: string }[];
   variations?: (number | ProductVariation)[];
@@ -240,6 +250,28 @@ function normalizeProduct(
     "rank_math_description",
   ]);
 
+  const isVariableOnSale = variations.some(
+    (v) => v.on_sale || (v.regular_price && Number(v.regular_price) > Number(v.price))
+  );
+  const isOnSale = Boolean(
+    raw.on_sale ||
+      isVariableOnSale ||
+      (raw.regular_price && raw.price && Number(raw.regular_price) > Number(raw.price))
+  );
+
+  let regularPrice = raw.regular_price || raw.price || "0";
+  if (variations.length > 0) {
+    const sortedByPrice = [...variations].sort((a, b) => {
+      const pA = parseFloat(a.price || "0");
+      const pB = parseFloat(b.price || "0");
+      return pA - pB;
+    });
+    const lowestVar = sortedByPrice[0];
+    if (lowestVar) {
+      regularPrice = lowestVar.regular_price || lowestVar.price || regularPrice;
+    }
+  }
+
   return {
     id: raw.id,
     name: resolvedName,
@@ -248,6 +280,9 @@ function normalizeProduct(
     short_description: stripHtml(rawShortDesc || ""),
     images,
     price: raw.price || "0",
+    regular_price: regularPrice,
+    sale_price: raw.sale_price,
+    on_sale: isOnSale,
     categories,
     attributes,
     variations,
@@ -275,7 +310,44 @@ async function fetchFreshProducts(locale: string = "id"): Promise<Product[]> {
     if (!Array.isArray(rawProducts) || rawProducts.length === 0) {
       return (sampleProducts as RawWcProduct[]).map((p) => normalizeProduct(p, [], locale));
     }
-    return rawProducts.map((p) => normalizeProduct(p, [], locale));
+
+    // For products on sale with variations, fetch variations so regular_price and discount are accurate
+    const productsWithVars = await Promise.all(
+      rawProducts.map(async (p) => {
+        if (p.on_sale && p.type === "variable") {
+          try {
+            const varRes = await fetch(
+              `${wpApiUrl}/wp-json/wc/v3/products/${p.id}/variations?per_page=100`,
+              getFetchOptions()
+            );
+            if (varRes.ok) {
+              const rawVars = (await varRes.json()) as RawWcVariation[];
+              const variations: ProductVariation[] = rawVars.map((v) => ({
+                id: v.id,
+                price: v.price || v.sale_price || v.regular_price || p.price || "0",
+                regular_price: v.regular_price || v.price || p.price || "0",
+                sale_price: v.sale_price || undefined,
+                on_sale: Boolean(
+                  v.on_sale ||
+                    (v.regular_price && v.price && Number(v.regular_price) > Number(v.price)) ||
+                    (v.regular_price && v.sale_price && Number(v.regular_price) > Number(v.sale_price))
+                ),
+                attributes: (v.attributes || []).reduce<Record<string, string>>((acc, a) => {
+                  acc[a.name.toLowerCase()] = a.option;
+                  return acc;
+                }, {}),
+              }));
+              return normalizeProduct(p, variations, locale);
+            }
+          } catch (e) {
+            console.error(`Failed to fetch variations for on_sale product ${p.id}:`, e);
+          }
+        }
+        return normalizeProduct(p, [], locale);
+      })
+    );
+
+    return productsWithVars;
   } catch (error) {
     console.error("Error fetching WooCommerce products, falling back:", error);
     return (sampleProducts as RawWcProduct[]).map((p) => normalizeProduct(p, [], locale));
@@ -359,8 +431,14 @@ async function fetchFreshProductBySlug(slug: string, locale: string = "id"): Pro
           const rawVars = (await varRes.json()) as RawWcVariation[];
           variations = rawVars.map((v) => ({
             id: v.id,
-            price: v.price || v.regular_price || rawProduct.price || "0",
+            price: v.price || v.sale_price || v.regular_price || rawProduct.price || "0",
             regular_price: v.regular_price || v.price || rawProduct.price || "0",
+            sale_price: v.sale_price || undefined,
+            on_sale: Boolean(
+              v.on_sale ||
+                (v.regular_price && v.price && Number(v.regular_price) > Number(v.price)) ||
+                (v.regular_price && v.sale_price && Number(v.regular_price) > Number(v.sale_price))
+            ),
             attributes: (v.attributes || []).reduce<Record<string, string>>((acc, a) => {
               acc[a.name.toLowerCase()] = a.option;
               return acc;
@@ -449,8 +527,14 @@ async function fetchFreshProductById(id: number, locale: string = "id"): Promise
           const rawVars = (await varRes.json()) as RawWcVariation[];
           variations = rawVars.map((v) => ({
             id: v.id,
-            price: v.price || v.regular_price || rawProduct.price || "0",
+            price: v.price || v.sale_price || v.regular_price || rawProduct.price || "0",
             regular_price: v.regular_price || v.price || rawProduct.price || "0",
+            sale_price: v.sale_price || undefined,
+            on_sale: Boolean(
+              v.on_sale ||
+                (v.regular_price && v.price && Number(v.regular_price) > Number(v.price)) ||
+                (v.regular_price && v.sale_price && Number(v.regular_price) > Number(v.sale_price))
+            ),
             attributes: (v.attributes || []).reduce<Record<string, string>>((acc, a) => {
               acc[a.name.toLowerCase()] = a.option;
               return acc;
