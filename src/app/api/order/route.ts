@@ -1,12 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getProducts, Product } from "@/lib/products";
+import { getProductBySlug, getProductById } from "@/lib/products";
 import { formatRupiah } from "@/lib/format";
 import idMessages from "../../../../messages/id.json";
 import enMessages from "../../../../messages/en.json";
 
 interface OrderItemPayload {
   productId: number;
+  productSlug?: string;
+  productName?: string;
   variationId: number;
+  attributes?: Record<string, string>;
   quantity: number;
 }
 
@@ -73,8 +76,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 2. Fetch server product data to verify prices
-    const serverProducts = await getProducts(locale);
+    // 2. Fetch server product data with variations to accurately verify prices
     let totalSubtotal = 0;
     const lineItemDetails: {
       productName: string;
@@ -87,11 +89,15 @@ export async function POST(req: NextRequest) {
     }[] = [];
 
     for (const item of items) {
-      const product = serverProducts.find((p: Product) => p.id === item.productId);
+      const product = item.productSlug
+        ? await getProductBySlug(item.productSlug, locale)
+        : await getProductById(item.productId, locale);
+
       if (!product) {
         continue;
       }
 
+      // Find exact variation from WooCommerce product data
       const variation =
         product.variations.find((v) => v.id === item.variationId) || product.variations[0];
       const unitPrice = variation ? parseInt(variation.price, 10) : parseInt(product.price, 10);
@@ -99,9 +105,17 @@ export async function POST(req: NextRequest) {
       const lineSubtotal = unitPrice * qty;
       totalSubtotal += lineSubtotal;
 
-      const variantDetails = variation
-        ? Object.values(variation.attributes).join(", ")
-        : (locale === "en" ? "Standard" : "Standar");
+      // Extract clear variant labels: prefer item.attributes or variation attributes
+      let variantDetails = "";
+      if (item.attributes && Object.keys(item.attributes).length > 0) {
+        variantDetails = Object.entries(item.attributes)
+          .map(([k, v]) => `${k.charAt(0).toUpperCase() + k.slice(1)}: ${v}`)
+          .join(", ");
+      } else if (variation && Object.keys(variation.attributes).length > 0) {
+        variantDetails = Object.entries(variation.attributes)
+          .map(([k, v]) => `${k.charAt(0).toUpperCase() + k.slice(1)}: ${v}`)
+          .join(", ");
+      }
 
       lineItemDetails.push({
         productName: product.name,
@@ -110,7 +124,7 @@ export async function POST(req: NextRequest) {
         unitPrice,
         lineSubtotal,
         productId: product.id,
-        variationId: variation ? variation.id : product.id,
+        variationId: variation ? variation.id : (item.variationId || product.id),
       });
     }
 
@@ -134,6 +148,7 @@ export async function POST(req: NextRequest) {
           },
           body: JSON.stringify({
             status: "on-hold",
+            customer_note: "Pesanan via Web Inspiring Furni (Checkout WhatsApp). Menunggu konfirmasi ongkir kargo truk Jepara.",
             billing: {
               first_name: customerName.trim(),
               email: customerEmail.trim() || undefined,

@@ -383,6 +383,96 @@ export async function getProductBySlug(slug: string, locale: string = "id"): Pro
   return (await memoryCache.inFlight.get(cacheKey)) as Product | null;
 }
 
+async function fetchFreshProductById(id: number, locale: string = "id"): Promise<Product | null> {
+  try {
+    const res = await fetch(
+      `${wpApiUrl}/wp-json/wc/v3/products/${id}`,
+      getFetchOptions()
+    );
+
+    if (!res.ok) {
+      const fallback = (sampleProducts as RawWcProduct[]).find((p) => p.id === id);
+      return fallback ? normalizeProduct(fallback, [], locale) : null;
+    }
+
+    const rawProduct = (await res.json()) as RawWcProduct;
+    if (!rawProduct || !rawProduct.id) {
+      const fallback = (sampleProducts as RawWcProduct[]).find((p) => p.id === id);
+      return fallback ? normalizeProduct(fallback, [], locale) : null;
+    }
+
+    let variations: ProductVariation[] = [];
+    if (rawProduct.type === "variable") {
+      try {
+        const varRes = await fetch(
+          `${wpApiUrl}/wp-json/wc/v3/products/${rawProduct.id}/variations?per_page=100`,
+          getFetchOptions()
+        );
+
+        if (varRes.ok) {
+          const rawVars = (await varRes.json()) as RawWcVariation[];
+          variations = rawVars.map((v) => ({
+            id: v.id,
+            price: v.price || v.regular_price || rawProduct.price || "0",
+            regular_price: v.regular_price || v.price || rawProduct.price || "0",
+            attributes: (v.attributes || []).reduce<Record<string, string>>((acc, a) => {
+              acc[a.name.toLowerCase()] = a.option;
+              return acc;
+            }, {}),
+          }));
+        }
+      } catch (e) {
+        console.error(`Failed to fetch variations for product ${rawProduct.id}:`, e);
+      }
+    }
+
+    return normalizeProduct(rawProduct, variations, locale);
+  } catch (error) {
+    console.error(`Error fetching product by id ${id}:`, error);
+    const fallback = (sampleProducts as RawWcProduct[]).find((p) => p.id === id);
+    return fallback ? normalizeProduct(fallback, [], locale) : null;
+  }
+}
+
+export async function getProductById(id: number, locale: string = "id"): Promise<Product | null> {
+  if (useSampleData) {
+    const found = (sampleProducts as RawWcProduct[]).find((p) => p.id === id);
+    return found ? normalizeProduct(found, [], locale) : null;
+  }
+
+  const cacheKey = `product_id_${id}_${locale}`;
+  const cached = memoryCache.slugProduct.get(cacheKey);
+  const now = Date.now();
+
+  if (cached) {
+    if (now - cached.timestamp > CACHE_TTL_MS && !memoryCache.inFlight.has(cacheKey)) {
+      const task = fetchFreshProductById(id, locale)
+        .then((fresh) => {
+          memoryCache.slugProduct.set(cacheKey, { data: fresh, timestamp: Date.now() });
+        })
+        .finally(() => {
+          memoryCache.inFlight.delete(cacheKey);
+        });
+      memoryCache.inFlight.set(cacheKey, task);
+    }
+    return cached.data;
+  }
+
+  if (!memoryCache.inFlight.has(cacheKey)) {
+    const task = fetchFreshProductById(id, locale)
+      .then((fresh) => {
+        memoryCache.slugProduct.set(cacheKey, { data: fresh, timestamp: Date.now() });
+        return fresh;
+      })
+      .finally(() => {
+        memoryCache.inFlight.delete(cacheKey);
+      });
+    memoryCache.inFlight.set(cacheKey, task);
+  }
+
+  return (await memoryCache.inFlight.get(cacheKey)) as Product | null;
+}
+
 const CATEGORY_DEFAULT_IMAGES: Record<string, string> = {
   "ruang-tamu": "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80",
   "ruang-makan": "https://images.unsplash.com/photo-1617806118233-18e1de247200?auto=format&fit=crop&w=800&q=80",

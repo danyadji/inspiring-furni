@@ -95,7 +95,10 @@ export default function CartView({ waNumber }: CartViewProps) {
           locale,
           items: items.map((item) => ({
             productId: item.productId,
+            productSlug: item.productSlug,
+            productName: item.productName,
             variationId: item.variationId,
+            attributes: item.attributes,
             quantity: item.quantity,
           })),
         }),
