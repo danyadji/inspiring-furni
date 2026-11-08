@@ -47,8 +47,23 @@ export default function ProductDetailView({
   const [openAccordion, setOpenAccordion] = useState<string | null>("deskripsi");
   const [currentUrl, setCurrentUrl] = useState<string>("");
 
+  // Lightbox modal & Zoom state
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [zoomScale, setZoomScale] = useState(1);
+  const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+
   const sliderRef = useRef<HTMLDivElement>(null);
   const isProgrammaticScrollRef = useRef(false);
+  const sliderTouchStartRef = useRef<{ x: number; y: number } | null>(null);
+  const isDraggingSliderRef = useRef(false);
+
+  const dragStartRef = useRef<{ x: number; y: number; startPanX: number; startPanY: number } | null>(null);
+  const pinchStartDistRef = useRef<number | null>(null);
+  const pinchStartScaleRef = useRef<number>(1);
+  const lastTapTimeRef = useRef<number>(0);
+  const swipeStartRef = useRef<{ x: number; y: number; time: number } | null>(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -80,6 +95,241 @@ export default function ProductDetailView({
     setTimeout(() => {
       isProgrammaticScrollRef.current = false;
     }, 400);
+  };
+
+  const handleSliderTouchStart = (e: React.TouchEvent) => {
+    isDraggingSliderRef.current = false;
+    if (e.touches.length === 1) {
+      sliderTouchStartRef.current = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY,
+      };
+    }
+  };
+
+  const handleSliderTouchMove = (e: React.TouchEvent) => {
+    if (sliderTouchStartRef.current && e.touches.length === 1) {
+      const dx = Math.abs(e.touches[0].clientX - sliderTouchStartRef.current.x);
+      const dy = Math.abs(e.touches[0].clientY - sliderTouchStartRef.current.y);
+      if (dx > 10 || dy > 10) {
+        isDraggingSliderRef.current = true;
+      }
+    }
+  };
+
+  const handleImageClick = (idx: number) => {
+    if (isDraggingSliderRef.current) {
+      isDraggingSliderRef.current = false;
+      return;
+    }
+    openLightbox(idx);
+  };
+
+  const openLightbox = (index: number) => {
+    setLightboxIndex(index);
+    setZoomScale(1);
+    setPanOffset({ x: 0, y: 0 });
+    setIsLightboxOpen(true);
+  };
+
+  const closeLightbox = () => {
+    setIsLightboxOpen(false);
+    setZoomScale(1);
+    setPanOffset({ x: 0, y: 0 });
+  };
+
+  const changeLightboxImage = (newIndex: number) => {
+    const clamped = Math.max(0, Math.min(newIndex, product.images.length - 1));
+    setLightboxIndex(clamped);
+    setZoomScale(1);
+    setPanOffset({ x: 0, y: 0 });
+  };
+
+  const handleZoomIn = () => {
+    setZoomScale((prev) => Math.min(Number((prev + 0.5).toFixed(2)), 4));
+  };
+
+  const handleZoomOut = () => {
+    setZoomScale((prev) => {
+      const next = Math.max(Number((prev - 0.5).toFixed(2)), 1);
+      if (next === 1) {
+        setPanOffset({ x: 0, y: 0 });
+      }
+      return next;
+    });
+  };
+
+  const handleResetZoom = () => {
+    setZoomScale(1);
+    setPanOffset({ x: 0, y: 0 });
+  };
+
+  const handleToggleZoom = () => {
+    if (zoomScale > 1) {
+      handleResetZoom();
+    } else {
+      setZoomScale(2.5);
+      setPanOffset({ x: 0, y: 0 });
+    }
+  };
+
+  useEffect(() => {
+    if (!isLightboxOpen) return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        closeLightbox();
+      } else if (e.key === "ArrowLeft" && zoomScale === 1) {
+        setLightboxIndex((prev) => (prev > 0 ? prev - 1 : prev));
+      } else if (e.key === "ArrowRight" && zoomScale === 1) {
+        setLightboxIndex((prev) => (prev < product.images.length - 1 ? prev + 1 : prev));
+      } else if (e.key === "+" || e.key === "=") {
+        handleZoomIn();
+      } else if (e.key === "-") {
+        handleZoomOut();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isLightboxOpen, zoomScale, product.images.length]);
+
+  const handleLightboxTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      const t1 = e.touches[0];
+      const t2 = e.touches[1];
+      const dist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+      pinchStartDistRef.current = dist;
+      pinchStartScaleRef.current = zoomScale;
+      dragStartRef.current = null;
+      swipeStartRef.current = null;
+    } else if (e.touches.length === 1) {
+      const t = e.touches[0];
+      const now = Date.now();
+
+      if (now - lastTapTimeRef.current < 300) {
+        lastTapTimeRef.current = 0;
+        handleToggleZoom();
+        return;
+      }
+      lastTapTimeRef.current = now;
+
+      if (zoomScale > 1) {
+        setIsDragging(true);
+        dragStartRef.current = {
+          x: t.clientX,
+          y: t.clientY,
+          startPanX: panOffset.x,
+          startPanY: panOffset.y,
+        };
+      } else {
+        swipeStartRef.current = {
+          x: t.clientX,
+          y: t.clientY,
+          time: now,
+        };
+      }
+    }
+  };
+
+  const handleLightboxTouchMove = (e: React.TouchEvent) => {
+    if (e.touches.length === 2 && pinchStartDistRef.current !== null) {
+      const t1 = e.touches[0];
+      const t2 = e.touches[1];
+      const currentDist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+      const ratio = currentDist / pinchStartDistRef.current;
+      const newScale = Math.min(Math.max(pinchStartScaleRef.current * ratio, 1), 4);
+      setZoomScale(Number(newScale.toFixed(2)));
+    } else if (e.touches.length === 1 && zoomScale > 1 && dragStartRef.current) {
+      const t = e.touches[0];
+      const dx = t.clientX - dragStartRef.current.x;
+      const dy = t.clientY - dragStartRef.current.y;
+      const maxPanX = (window.innerWidth * (zoomScale - 1)) / 2;
+      const maxPanY = (window.innerHeight * (zoomScale - 1)) / 2;
+      const nextX = Math.min(Math.max(dragStartRef.current.startPanX + dx, -maxPanX), maxPanX);
+      const nextY = Math.min(Math.max(dragStartRef.current.startPanY + dy, -maxPanY), maxPanY);
+      setPanOffset({ x: nextX, y: nextY });
+    }
+  };
+
+  const handleLightboxTouchEnd = (e: React.TouchEvent) => {
+    if (e.touches.length < 2) {
+      pinchStartDistRef.current = null;
+      if (zoomScale <= 1.05) {
+        setZoomScale(1);
+        setPanOffset({ x: 0, y: 0 });
+      }
+    }
+    if (e.touches.length === 0) {
+      setIsDragging(false);
+      dragStartRef.current = null;
+
+      if (zoomScale === 1 && swipeStartRef.current) {
+        const changedTouch = e.changedTouches[0];
+        const dx = changedTouch.clientX - swipeStartRef.current.x;
+        const dy = changedTouch.clientY - swipeStartRef.current.y;
+        const dt = Date.now() - swipeStartRef.current.time;
+        if (dt < 400 && Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+          if (dx < 0 && lightboxIndex < product.images.length - 1) {
+            setLightboxIndex((prev) => prev + 1);
+          } else if (dx > 0 && lightboxIndex > 0) {
+            setLightboxIndex((prev) => prev - 1);
+          }
+        }
+        swipeStartRef.current = null;
+      }
+    }
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (zoomScale > 1) {
+      e.preventDefault();
+      setIsDragging(true);
+      dragStartRef.current = {
+        x: e.clientX,
+        y: e.clientY,
+        startPanX: panOffset.x,
+        startPanY: panOffset.y,
+      };
+    }
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (isDragging && dragStartRef.current && zoomScale > 1) {
+      const dx = e.clientX - dragStartRef.current.x;
+      const dy = e.clientY - dragStartRef.current.y;
+      const maxPanX = (window.innerWidth * (zoomScale - 1)) / 2;
+      const maxPanY = (window.innerHeight * (zoomScale - 1)) / 2;
+      const nextX = Math.min(Math.max(dragStartRef.current.startPanX + dx, -maxPanX), maxPanX);
+      const nextY = Math.min(Math.max(dragStartRef.current.startPanY + dy, -maxPanY), maxPanY);
+      setPanOffset({ x: nextX, y: nextY });
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+    dragStartRef.current = null;
+  };
+
+  const handleWheel = (e: React.WheelEvent) => {
+    e.stopPropagation();
+    if (e.deltaY < 0) {
+      setZoomScale((prev) => Math.min(Number((prev + 0.25).toFixed(2)), 4));
+    } else {
+      setZoomScale((prev) => {
+        const next = Math.max(Number((prev - 0.25).toFixed(2)), 1);
+        if (next === 1) {
+          setPanOffset({ x: 0, y: 0 });
+        }
+        return next;
+      });
+    }
   };
 
   // Match variation based on selected attributes
@@ -177,13 +427,17 @@ export default function ProductDetailView({
             <div
               ref={sliderRef}
               onScroll={handleSliderScroll}
+              onTouchStart={handleSliderTouchStart}
+              onTouchMove={handleSliderTouchMove}
               className="flex w-full h-full overflow-x-auto snap-x snap-mandatory scroll-smooth touch-pan-x"
               style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             >
               {product.images.map((img, idx) => (
                 <div
                   key={idx}
-                  className="min-w-full w-full h-full relative snap-center flex-shrink-0"
+                  onClick={() => handleImageClick(idx)}
+                  className="min-w-full w-full h-full relative snap-center flex-shrink-0 cursor-zoom-in"
+                  title="Perbesar foto"
                 >
                   <Image
                     src={img.src}
@@ -203,25 +457,31 @@ export default function ProductDetailView({
               <>
                 <button
                   type="button"
-                  onClick={() => scrollToImage(activeImageIndex - 1)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    scrollToImage(activeImageIndex - 1);
+                  }}
                   disabled={activeImageIndex === 0}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 bg-white/90 hover:bg-white text-[var(--color-ink)] border border-[var(--color-line)] flex items-center justify-center transition-all cursor-pointer backdrop-blur-[2px] disabled:opacity-0 disabled:pointer-events-none shadow-sm"
+                  className="absolute left-2 top-1/2 -translate-y-1/2 w-11 h-11 bg-transparent border-none text-[var(--color-ink)] hover:opacity-60 flex items-center justify-center transition-opacity cursor-pointer disabled:opacity-0 disabled:pointer-events-none drop-shadow-[0_1px_3px_rgba(255,255,255,0.9)] z-10 p-0"
                   aria-label="Foto sebelumnya"
                 >
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M15 19l-7-7 7-7" />
                   </svg>
                 </button>
 
                 <button
                   type="button"
-                  onClick={() => scrollToImage(activeImageIndex + 1)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    scrollToImage(activeImageIndex + 1);
+                  }}
                   disabled={activeImageIndex === product.images.length - 1}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 bg-white/90 hover:bg-white text-[var(--color-ink)] border border-[var(--color-line)] flex items-center justify-center transition-all cursor-pointer backdrop-blur-[2px] disabled:opacity-0 disabled:pointer-events-none shadow-sm"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-11 h-11 bg-transparent border-none text-[var(--color-ink)] hover:opacity-60 flex items-center justify-center transition-opacity cursor-pointer disabled:opacity-0 disabled:pointer-events-none drop-shadow-[0_1px_3px_rgba(255,255,255,0.9)] z-10 p-0"
                   aria-label="Foto berikutnya"
                 >
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 5l7 7-7 7" />
                   </svg>
                 </button>
 
@@ -497,6 +757,168 @@ export default function ProductDetailView({
           </div>
         </div>
       </div>
+
+      {/* Full-screen Lightbox Modal with Zoom & Pan */}
+      {isLightboxOpen && (
+        <div
+          data-allow-zoom="true"
+          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex flex-col justify-between select-none touch-none"
+        >
+          {/* Top Bar: Counter, Zoom Controls, Close Button */}
+          <div className="relative z-30 flex items-center justify-between px-4 sm:px-6 py-3 border-b border-white/10 bg-black/40">
+            <div className="text-white/80 font-mono text-xs sm:text-sm tracking-wider">
+              {lightboxIndex + 1} / {product.images.length}
+            </div>
+
+            {/* Zoom Controls */}
+            <div className="flex items-center gap-1.5 sm:gap-2 bg-white/10 rounded-full px-2.5 py-1 backdrop-blur-sm">
+              <button
+                type="button"
+                onClick={handleZoomOut}
+                disabled={zoomScale <= 1}
+                className="w-8 h-8 rounded-full flex items-center justify-center text-white/90 hover:text-white hover:bg-white/15 disabled:opacity-30 disabled:cursor-not-allowed transition-colors text-base font-mono"
+                aria-label="Perkecil zoom"
+              >
+                −
+              </button>
+
+              <button
+                type="button"
+                onClick={handleResetZoom}
+                className="px-2 py-0.5 text-xs font-mono text-white/90 hover:text-white"
+                aria-label="Reset zoom"
+              >
+                {Math.round(zoomScale * 100)}%
+              </button>
+
+              <button
+                type="button"
+                onClick={handleZoomIn}
+                disabled={zoomScale >= 4}
+                className="w-8 h-8 rounded-full flex items-center justify-center text-white/90 hover:text-white hover:bg-white/15 disabled:opacity-30 disabled:cursor-not-allowed transition-colors text-base font-mono"
+                aria-label="Perbesar zoom"
+              >
+                +
+              </button>
+            </div>
+
+            {/* Close Button */}
+            <button
+              type="button"
+              onClick={closeLightbox}
+              className="w-11 h-11 flex items-center justify-center text-white/80 hover:text-white transition-opacity cursor-pointer"
+              aria-label="Tutup tampilan penuh"
+            >
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Center Image Viewport */}
+          <div
+            className="relative flex-1 w-full h-full flex items-center justify-center overflow-hidden"
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onWheel={handleWheel}
+            onDoubleClick={handleToggleZoom}
+            onTouchStart={handleLightboxTouchStart}
+            onTouchMove={handleLightboxTouchMove}
+            onTouchEnd={handleLightboxTouchEnd}
+          >
+            {/* Left Nav Arrow (Lightbox) - Pure arrow, no bg, no border */}
+            {product.images.length > 1 && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  changeLightboxImage(lightboxIndex - 1);
+                }}
+                disabled={lightboxIndex === 0}
+                className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-transparent border-none text-white/80 hover:text-white flex items-center justify-center transition-opacity cursor-pointer disabled:opacity-0 disabled:pointer-events-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] z-20 p-0"
+                aria-label="Foto sebelumnya"
+              >
+                <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+            )}
+
+            {/* Scalable & Draggable Image Canvas */}
+            <div
+              className="relative max-w-[94vw] max-h-[78vh] w-full h-full flex items-center justify-center"
+              style={{
+                transform: `translate3d(${panOffset.x}px, ${panOffset.y}px, 0) scale(${zoomScale})`,
+                transition: isDragging ? "none" : "transform 0.15s ease-out",
+                cursor: zoomScale > 1 ? (isDragging ? "grabbing" : "grab") : "zoom-in",
+              }}
+            >
+              <div className="relative w-full h-full max-w-[1100px] max-h-[78vh]">
+                <Image
+                  src={product.images[lightboxIndex]?.src || ""}
+                  alt={product.images[lightboxIndex]?.alt || product.name}
+                  fill
+                  priority
+                  sizes="100vw"
+                  className="object-contain pointer-events-none select-none"
+                  draggable={false}
+                />
+              </div>
+            </div>
+
+            {/* Right Nav Arrow (Lightbox) - Pure arrow, no bg, no border */}
+            {product.images.length > 1 && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  changeLightboxImage(lightboxIndex + 1);
+                }}
+                disabled={lightboxIndex === product.images.length - 1}
+                className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-transparent border-none text-white/80 hover:text-white flex items-center justify-center transition-opacity cursor-pointer disabled:opacity-0 disabled:pointer-events-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] z-20 p-0"
+                aria-label="Foto berikutnya"
+              >
+                <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            )}
+          </div>
+
+          {/* Bottom Bar: Thumbnails & Helper Text */}
+          <div className="relative z-30 px-4 sm:px-6 py-3 border-t border-white/10 bg-black/40 flex flex-col items-center gap-2">
+            {product.images.length > 1 && (
+              <div className="flex items-center gap-2 overflow-x-auto max-w-full py-1">
+                {product.images.map((img, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => changeLightboxImage(idx)}
+                    className={`relative w-12 h-12 sm:w-14 sm:h-14 overflow-hidden flex-shrink-0 transition-opacity cursor-pointer ${
+                      lightboxIndex === idx
+                        ? "border-2 border-white opacity-100"
+                        : "border border-white/20 opacity-50 hover:opacity-80"
+                    }`}
+                    aria-label={`Lihat foto ${idx + 1}`}
+                  >
+                    <Image
+                      src={img.src}
+                      alt={img.alt || `Thumbnail ${idx + 1}`}
+                      fill
+                      sizes="56px"
+                      className="object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
+            <p className="text-[11px] font-mono text-white/50 tracking-wider">
+              Ketuk 2x atau pinch untuk memperbesar
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
