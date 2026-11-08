@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { Product, ProductVariation } from "@/lib/products";
 import { useCart } from "@/context/CartContext";
@@ -29,6 +29,7 @@ export default function ProductDetailView({
 }: ProductDetailViewProps) {
   const t = useTranslations("ProductDetail");
   const tWa = useTranslations("WhatsApp");
+  const locale = useLocale();
   const { addItem } = useCart();
 
   const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>(() => {
@@ -44,6 +45,13 @@ export default function ProductDetailView({
   const [quantity, setQuantity] = useState(1);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [openAccordion, setOpenAccordion] = useState<string | null>("deskripsi");
+  const [currentUrl, setCurrentUrl] = useState<string>("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setCurrentUrl(window.location.href);
+    }
+  }, []);
 
   // Match variation based on selected attributes
   const currentVariation: ProductVariation | undefined = useMemo(() => {
@@ -92,9 +100,19 @@ export default function ProductDetailView({
     .map(([k, v]) => `${k.charAt(0).toUpperCase() + k.slice(1)}: ${v}`)
     .join(", ");
 
+  const fallbackUrl = `https://inspiringfurni.com/${locale}/produk/${product.slug}`;
+  const effectiveProductUrl = currentUrl || fallbackUrl;
+
   const waAskMessage = variantSummary
-    ? tWa("inquiryProductWithVariant", { product: product.name, variant: variantSummary })
-    : tWa("inquiryProductStandard", { product: product.name });
+    ? tWa("inquiryProductWithVariant", {
+        product: product.name,
+        variant: variantSummary,
+        url: effectiveProductUrl,
+      })
+    : tWa("inquiryProductStandard", {
+        product: product.name,
+        url: effectiveProductUrl,
+      });
 
   const waAskUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(waAskMessage)}`;
 

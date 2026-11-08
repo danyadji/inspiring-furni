@@ -221,7 +221,7 @@
     "inquiryWholesale": "Hello Inspiring Furni, I would like to discuss wholesale / project furniture orders for an interior project.",
     "inquiryAbout": "Hello Inspiring Furni, I read your About page and would like to consult on custom teak furniture.",
     "inquiryGeneral": "Hello Inspiring Furni, I would like to chat regarding solid teak furniture orders.",
-    "inquiryProductWithVariant": "Hello Inspiring Furni, I have an inquiry about {product} ({variant}). Could you provide estimated production time and shipping cost?",
-    "inquiryProductStandard": "Hello Inspiring Furni, I have an inquiry about {product}. Could you provide estimated production time and shipping cost?"
+    "inquiryProductWithVariant": "Hello Inspiring Furni, I have an inquiry about {product} ({variant}).\n\nProduct link:\n{url}\n\nCould you provide estimated production time and shipping cost?",
+    "inquiryProductStandard": "Hello Inspiring Furni, I have an inquiry about {product}.\n\nProduct link:\n{url}\n\nCould you provide estimated production time and shipping cost?"
   }
 }
