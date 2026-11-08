@@ -96,7 +96,10 @@
     "accordionGaransiContent": "Guaranteed 100% genuine solid teak wood without hidden particle board in structural components, backed by replacement assurance against transit damage upon arrival.",
     "relatedBadge": "Selected Recommendations",
     "relatedTitle": "Similar Pieces for Your Space",
-    "viewAll": "View All"
+    "viewAll": "View All",
+    "shareProduct": "Share",
+    "linkCopiedShort": "Copied!",
+    "linkCopied": "Link Copied"
   },
   "Cart": {
     "title": "Cart",

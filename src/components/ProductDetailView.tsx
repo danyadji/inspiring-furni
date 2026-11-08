@@ -48,6 +48,7 @@ export default function ProductDetailView({
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [openAccordion, setOpenAccordion] = useState<string | null>("deskripsi");
   const [currentUrl, setCurrentUrl] = useState<string>("");
+  const [isCopied, setIsCopied] = useState(false);
 
   // Lightbox modal & Zoom state
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
@@ -421,6 +422,32 @@ export default function ProductDetailView({
 
   const waAskUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(waAskMessage)}`;
 
+  const handleShare = async () => {
+    const url = effectiveProductUrl;
+    if (typeof navigator !== "undefined" && navigator.share) {
+      try {
+        await navigator.share({
+          title: product.name,
+          text: `${product.name} · Inspiring Furni Jepara`,
+          url,
+        });
+        return;
+      } catch {
+        // Fallback to clipboard if share was cancelled or failed
+      }
+    }
+
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      try {
+        await navigator.clipboard.writeText(url);
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 2500);
+      } catch {
+        // Clipboard fallback
+      }
+    }
+  };
+
   return (
     <div className="max-w-[1280px] mx-auto px-4 sm:px-8 pt-8 pb-20 md:pb-8 space-y-12">
       {/* Breadcrumb */}
@@ -549,10 +576,38 @@ export default function ProductDetailView({
         {/* Right: Info & Variant Selection */}
         <div className="lg:col-span-5 space-y-6">
           <div>
-            <span className="text-[11px] font-mono uppercase tracking-widest text-[var(--color-muted)]">
-              {product.categories[0]?.name || t("defaultCategory")}
-            </span>
-            <h1 className="text-2xl sm:text-3xl font-light text-[var(--color-ink)] tracking-tight mt-1 font-[family-name:var(--font-dm-sans)]">
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-[11px] font-mono uppercase tracking-widest text-[var(--color-muted)]">
+                {product.categories[0]?.name || t("defaultCategory")}
+              </span>
+
+              {/* Share / Copy Link Button */}
+              <button
+                type="button"
+                onClick={handleShare}
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-mono border border-[var(--color-line)] hover:border-[var(--color-muted)] hover:text-[var(--color-ink)] text-[var(--color-muted)] transition-all cursor-pointer"
+                aria-label={t("shareProduct")}
+                title={t("shareProduct")}
+              >
+                {isCopied ? (
+                  <span className="text-emerald-700 flex items-center gap-1 font-medium">
+                    <svg className="w-3.5 h-3.5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    {t("linkCopiedShort")}
+                  </span>
+                ) : (
+                  <>
+                    <svg className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                    </svg>
+                    <span>{t("shareProduct")}</span>
+                  </>
+                )}
+              </button>
+            </div>
+
+            <h1 className="text-2xl sm:text-3xl font-light text-[var(--color-ink)] tracking-tight mt-1.5 font-[family-name:var(--font-dm-sans)]">
               {product.name}
             </h1>
             <p className="mt-2 text-xs sm:text-sm text-[var(--color-muted)] leading-relaxed">
