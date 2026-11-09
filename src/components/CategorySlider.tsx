@@ -114,7 +114,7 @@ export default function CategorySlider({
             key={cat.id}
             href={`/kategori/${cat.slug}`}
             className="group relative flex flex-col shrink-0 w-[68vw] xs:w-[220px] sm:w-[260px] lg:w-auto snap-start bg-[var(--color-paper)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ink)]"
-            aria-label={`Jelajahi kategori ${cat.name}`}
+            aria-label={cat.name}
           >
             <div className="relative aspect-[4/5] sm:aspect-square w-full overflow-hidden bg-stone-100 border border-[var(--color-line)]">
               <Image

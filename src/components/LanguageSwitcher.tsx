@@ -38,7 +38,7 @@ export default function LanguageSwitcher({ theme = "dark" }: LanguageSwitcherPro
         onClick={() => handleSwitch("id")}
         disabled={isPending}
         aria-current={locale === "id" ? "true" : undefined}
-        aria-label="Bahasa Indonesia"
+        aria-label="ID - Bahasa Indonesia"
         className={`min-h-[44px] min-w-[36px] px-1.5 flex items-center justify-center transition-colors ${
           locale === "id"
             ? isLight
@@ -64,7 +64,7 @@ export default function LanguageSwitcher({ theme = "dark" }: LanguageSwitcherPro
         onClick={() => handleSwitch("en")}
         disabled={isPending}
         aria-current={locale === "en" ? "true" : undefined}
-        aria-label="English"
+        aria-label="EN - English"
         className={`min-h-[44px] min-w-[36px] px-1.5 flex items-center justify-center transition-colors ${
           locale === "en"
             ? isLight

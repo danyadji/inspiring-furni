@@ -54,7 +54,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
       <Link
         href={`/produk/${product.slug}`}
         className="flex flex-col h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ink)]"
-        aria-label={`Lihat detail produk ${product.name}`}
+        aria-label={product.name}
       >
         {/* Product Image: Full frame, no crop, no swap on hover */}
         <div className="relative aspect-square w-full overflow-hidden bg-stone-100/60">

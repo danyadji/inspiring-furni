@@ -122,7 +122,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-14 pt-8 border-t border-stone-800 flex flex-col sm:flex-row items-center justify-between text-[11px] text-stone-500 gap-4">
+        <div className="mt-14 pt-8 border-t border-stone-800 flex flex-col sm:flex-row items-center justify-between text-[11px] text-stone-400 gap-4">
           <p>&copy; {new Date().getFullYear()} Inspiring Furni Jepara. {t("rights")}</p>
           <div className="flex space-x-6">
             <span>{t("privacy")}</span>

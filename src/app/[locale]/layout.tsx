@@ -9,15 +9,12 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CartDrawer from "@/components/CartDrawer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
-import MobileZoomPreventer from "@/components/MobileZoomPreventer";
 import { CartProvider } from "@/context/CartContext";
 import "../globals.css";
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
 };
 
 const dmSans = DM_Sans({
@@ -105,7 +102,6 @@ export default async function LocaleLayout({
       >
         <NextIntlClientProvider messages={messages}>
           <CartProvider>
-            <MobileZoomPreventer />
             <Navbar />
             <main className="flex-1">{children}</main>
             <Footer />
