@@ -158,6 +158,46 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Optional field length & basic format validation
+    if (customerPhone && customerPhone.length > 20) {
+      return NextResponse.json(
+        { error: locale === "en" ? "Phone number is too long." : "Nomor WhatsApp tidak valid (maks 20 karakter)." },
+        { status: 400 }
+      );
+    }
+
+    if (customerEmail && customerEmail.length > 254) {
+      return NextResponse.json(
+        { error: locale === "en" ? "Email address is too long." : "Alamat email tidak valid (terlalu panjang)." },
+        { status: 400 }
+      );
+    }
+
+    if (
+      customerEmail &&
+      customerEmail.trim() &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail.trim())
+    ) {
+      return NextResponse.json(
+        { error: locale === "en" ? "Email format is invalid." : "Format email tidak valid." },
+        { status: 400 }
+      );
+    }
+
+    if (customerCity && customerCity.length > 100) {
+      return NextResponse.json(
+        { error: locale === "en" ? "City name is too long." : "Nama kota terlalu panjang (maks 100 karakter)." },
+        { status: 400 }
+      );
+    }
+
+    if (customerPostcode && customerPostcode.length > 10) {
+      return NextResponse.json(
+        { error: locale === "en" ? "Postal code is too long." : "Kode pos tidak valid (maks 10 karakter)." },
+        { status: 400 }
+      );
+    }
+
     if (!Array.isArray(items) || items.length === 0) {
       return NextResponse.json(
         { error: locale === "en" ? "Shopping cart cannot be empty." : "Keranjang belanja tidak boleh kosong." },
@@ -228,8 +268,10 @@ export async function POST(req: NextRequest) {
           .map(([k, v]) => `${k}: ${v}`)
           .join(", ");
       } else if (item.attributes && Object.keys(item.attributes).length > 0) {
+        // Sanitize client-supplied attribute values: strip control chars, limit length
         variantDetails = Object.entries(item.attributes)
-          .map(([k, v]) => `${k}: ${v}`)
+          .filter(([k, v]) => typeof k === "string" && typeof v === "string")
+          .map(([k, v]) => `${k.slice(0, 50)}: ${v.replace(/[\r\n\t]/g, " ").slice(0, 100)}`)
           .join(", ");
       }
 

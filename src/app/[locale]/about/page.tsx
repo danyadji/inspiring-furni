@@ -95,16 +95,22 @@ export default async function AboutPage({
         </p>
       </div>
 
-      {/* Visual Banner */}
-      <div className="relative aspect-[21/9] w-full bg-[var(--color-surface)] border border-[var(--color-line)] overflow-hidden flex items-center justify-center p-8">
+      {/* Visual Banner with depth, cinematic color grade, and shadow */}
+      <div className="relative aspect-[16/9] sm:aspect-[21/9] w-full overflow-hidden shadow-2xl ring-1 ring-black/10 group">
         <Image
-          src="/images/placeholder-product.svg"
+          src="/images/bg-hero-2.jpeg"
           alt="Workshop Inspiring Furni Jepara"
           fill
           priority
           sizes="(max-width: 1280px) 100vw, 1280px"
-          className="object-contain p-8 opacity-40"
+          className="object-cover brightness-[0.92] contrast-[1.08] saturate-[1.15] sepia-[0.06] transition-transform duration-700 ease-out group-hover:scale-[1.02]"
         />
+        {/* Subtle warm color grading overlay */}
+        <div className="absolute inset-0 bg-amber-950/15 mix-blend-multiply pointer-events-none" />
+        {/* Darkening gradient scrim */}
+        <div className="absolute inset-0 bg-gradient-to-t from-stone-950/65 via-stone-950/20 to-stone-950/35 pointer-events-none" />
+        {/* Soft edge inner shadow vignette */}
+        <div className="absolute inset-0 shadow-[inset_0_0_90px_rgba(0,0,0,0.45)] pointer-events-none" />
       </div>
 
       {/* Story Sections */}

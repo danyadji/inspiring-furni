@@ -48,3 +48,7 @@ CLAUDE.md
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# security audit output
+/audit/
+

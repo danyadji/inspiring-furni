@@ -31,17 +31,23 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
     ? `${sizeOption} · ${t("specDefault")}`
     : t("specDefault");
 
-  const hasMultipleVariations = product.variations && product.variations.length > 1;
-  const currentPriceNum = parseFloat(String(product.price).replace(/[^0-9.-]+/g, "")) || 0;
+  let lowestPriceNum = parseFloat(String(product.price).replace(/[^0-9.-]+/g, "")) || 0;
+  if (product.variations && product.variations.length > 0) {
+    const varPrices = product.variations
+      .map((v) => parseFloat(String(v.price).replace(/[^0-9.-]+/g, "")))
+      .filter((p) => !isNaN(p) && p > 0);
+    if (varPrices.length > 0) {
+      lowestPriceNum = Math.min(...varPrices);
+    }
+  }
+
   const regularPriceNum = parseFloat(String(product.regular_price || "").replace(/[^0-9.-]+/g, "")) || 0;
   const isOnSale = Boolean(
-    (product.on_sale && regularPriceNum > currentPriceNum) ||
-      (regularPriceNum > currentPriceNum && regularPriceNum > 0)
+    (product.on_sale && regularPriceNum > lowestPriceNum) ||
+      (regularPriceNum > lowestPriceNum && regularPriceNum > 0)
   );
 
-  const priceLabel = hasMultipleVariations
-    ? t("priceStarting", { price: formatRupiah(product.price) })
-    : formatRupiah(product.price);
+  const priceLabel = formatRupiah(lowestPriceNum || product.price);
 
   return (
     <article className="group flex flex-col bg-[var(--color-paper)] h-full">

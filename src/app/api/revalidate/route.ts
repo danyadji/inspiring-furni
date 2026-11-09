@@ -3,19 +3,41 @@ import { revalidatePath } from "next/cache";
 import { clearProductCache } from "@/lib/products";
 import crypto from "crypto";
 
+// Timing-safe string comparison to prevent timing oracle attacks
+function timingSafeStringEqual(a: string, b: string): boolean {
+  try {
+    const aBuf = Buffer.from(a);
+    const bBuf = Buffer.from(b);
+    if (aBuf.length !== bBuf.length) return false;
+    return crypto.timingSafeEqual(aBuf, bBuf);
+  } catch {
+    return false;
+  }
+}
+
 function isValidSecret(request: NextRequest, rawBody?: string): boolean {
   const configuredSecret = process.env.REVALIDATE_SECRET;
   if (!configuredSecret) {
-    // If no secret configured in local dev, allow request but log warning
+    // Fail closed in production: deny all requests if secret is not configured
+    if (process.env.NODE_ENV === "production") {
+      console.error(
+        "REVALIDATE_SECRET is not set in production — denying all revalidation requests."
+      );
+      return false;
+    }
+    // Allow in development with a warning
     console.warn("REVALIDATE_SECRET environment variable is not defined.");
     return true;
   }
 
-  // 1. Direct secret token via query param or header
-  const tokenFromQuery = request.nextUrl.searchParams.get("secret");
-  const tokenFromHeader = request.headers.get("x-revalidate-secret");
+  // 1. Direct secret token via query param or header (timing-safe compare)
+  const tokenFromQuery = request.nextUrl.searchParams.get("secret") ?? "";
+  const tokenFromHeader = request.headers.get("x-revalidate-secret") ?? "";
 
-  if (tokenFromQuery === configuredSecret || tokenFromHeader === configuredSecret) {
+  if (
+    timingSafeStringEqual(tokenFromQuery, configuredSecret) ||
+    timingSafeStringEqual(tokenFromHeader, configuredSecret)
+  ) {
     return true;
   }
 
