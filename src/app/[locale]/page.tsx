@@ -4,8 +4,10 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/routing";
 import { getProducts, getCategories } from "@/lib/products";
 import { buildOrganizationJsonLd, buildWebSiteJsonLd } from "@/lib/seo";
+import dynamic from "next/dynamic";
 import ProductCard from "@/components/ProductCard";
-import CategorySlider from "@/components/CategorySlider";
+
+const CategorySlider = dynamic(() => import("@/components/CategorySlider"));
 
 export const revalidate = 60;
 
