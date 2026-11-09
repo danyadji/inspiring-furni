@@ -1,5 +1,116 @@
 [
   {
+    "id": 223,
+    "name": "Jendela Kusen Bulat Hitam",
+    "name_en": "Black Round Teak Window Frame",
+    "slug": "jendela-kusen-bulat-hitam",
+    "description": "JENDELA BULAT KAYU JATI SISTEM PUTAR - JAPANDI & MINIMALIS\n\nJendela bulat kayu jati dengan kusen dan sistem buka putar, cocok untuk rumah Japandi, modern minimalis, villa, kafe, ruang tamu, dan kamar tidur. Dikirim 1-2 hari kerja / Dibuat per pesanan, estimasi produksi 7 hari.\n\nSPESIFIKASI:\n- Material: Kayu Jati\n- Bentuk: Bulat, diameter 60 cm / 70 cm / 80 cm\n- Kaca: Tebal 5 mm, pilihan Kaca Bening & Ryben\n- Sistem buka: Putar dengan engsel putar dan pengunci jendela\n- Finishing: NC halus dan rapi\n- Warna: Natural\n- Isi paket: Kusen jendela bulat\n- Tidak termasuk jasa pemasangan\n\nCARA MEMILIH UKURAN:\nUkur diameter lubang dinding, lalu pilih ukuran. Ragu soal ukuran? Chat kami via WhatsApp, kami siap bantu pilihkan.\n\nBISA CUSTOM:\nButuh ukuran atau warna lain? Hubungi kami untuk konsultasi custom order.\n\nPENGIRIMAN & PACKING:\nBubble wrap + kardus + peti kayu tebal untuk memastikan keamanan barang sampai di tempat Anda.",
+    "short_description": "Jendela bulat kayu jati dengan kusen sistem putar bergaya Japandi minimalis. Tersedia diameter 60, 70, 80 cm dengan kaca bening atau Ryben.",
+    "images": [
+      {
+        "src": "/images/products/jendela-bulat-1.png",
+        "alt": "Jendela Kusen Bulat Hitam Kayu Jati Minimalis"
+      },
+      {
+        "src": "/images/products/jendela-bulat-2.png",
+        "alt": "Detail Sistem Putar dan Kaca Jendela Bulat"
+      },
+      {
+        "src": "/images/products/jendela-bulat-3.png",
+        "alt": "Detail Kusen Kayu Jati Tampak Belakang"
+      }
+    ],
+    "price": "999000",
+    "regular_price": "1980000",
+    "on_sale": true,
+    "categories": [
+      {
+        "id": 18,
+        "name": "Jendela Bulat",
+        "slug": "jendela-bulat"
+      }
+    ],
+    "attributes": [
+      {
+        "name": "ukuran",
+        "options": [
+          "Diamater 60 cm",
+          "Diamater 70 cm",
+          "Diamater 80 cm"
+        ]
+      },
+      {
+        "name": "jenis kaca",
+        "options": [
+          "bening",
+          "Ryben"
+        ]
+      }
+    ],
+    "variations": [
+      {
+        "id": 224,
+        "price": "999000",
+        "regular_price": "1980000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "Diamater 60 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 231,
+        "price": "1160000",
+        "regular_price": "2240000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "Diamater 60 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 225,
+        "price": "1450000",
+        "regular_price": "2799000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "Diamater 70 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 232,
+        "price": "1580000",
+        "regular_price": "3050000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "Diamater 70 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 226,
+        "price": "1790000",
+        "regular_price": "3390000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "Diamater 80 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 233,
+        "price": "1950000",
+        "regular_price": "3690000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "Diamater 80 cm",
+          "jenis kaca": "Ryben"
+        }
+      }
+    ]
+  },
+  {
     "id": 1,
     "name": "Meja Makan Jati Minimalis",
     "slug": "meja-makan-jati-minimalis",

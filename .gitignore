@@ -41,6 +41,8 @@ AGENTS.md
 CLAUDE.md
 .codex/
 .claude/
+.agents/
+skills-lock.json
 
 # vercel
 .vercel

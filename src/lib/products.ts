@@ -84,6 +84,8 @@ const SAMPLE_PRODUCT_IMAGES: Record<string, string> = {
     "https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?auto=format&fit=crop&w=800&q=80",
   "jendela-bulat-jati-classic":
     "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80",
+  "jendela-kusen-bulat-hitam":
+    "/images/products/jendela-bulat-1.png",
   "pintu-utama-jati-panel-solid":
     "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=800&q=80",
 };
@@ -188,6 +190,15 @@ function normalizeProduct(
   variations: ProductVariation[] = [],
   locale: string = "id"
 ): Product {
+  const resolvedVariations: ProductVariation[] =
+    variations.length > 0
+      ? variations
+      : Array.isArray(raw.variations) &&
+        raw.variations.length > 0 &&
+        typeof raw.variations[0] === "object"
+      ? (raw.variations as ProductVariation[])
+      : [];
+
   const images: ProductImage[] =
     Array.isArray(raw.images) && raw.images.length > 0
       ? raw.images.map((img) => {
@@ -250,7 +261,7 @@ function normalizeProduct(
     "rank_math_description",
   ]);
 
-  const isVariableOnSale = variations.some(
+  const isVariableOnSale = resolvedVariations.some(
     (v) => v.on_sale || (v.regular_price && Number(v.regular_price) > Number(v.price))
   );
   const isOnSale = Boolean(
@@ -260,8 +271,8 @@ function normalizeProduct(
   );
 
   let regularPrice = raw.regular_price || raw.price || "0";
-  if (variations.length > 0) {
-    const sortedByPrice = [...variations].sort((a, b) => {
+  if (resolvedVariations.length > 0) {
+    const sortedByPrice = [...resolvedVariations].sort((a, b) => {
       const pA = parseFloat(a.price || "0");
       const pB = parseFloat(b.price || "0");
       return pA - pB;
@@ -285,7 +296,7 @@ function normalizeProduct(
     on_sale: isOnSale,
     categories,
     attributes,
-    variations,
+    variations: resolvedVariations,
     sku: raw.sku || undefined,
     stockStatus: (raw.stock_status as "instock" | "outofstock" | "onbackorder") || "instock",
     dateModified: raw.date_modified_gmt || raw.date_modified || undefined,
@@ -599,6 +610,7 @@ const CATEGORY_DEFAULT_IMAGES: Record<string, string> = {
   "kamar-tidur": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80",
   "pintu-jendela": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80",
   "ruang-kerja": "https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?auto=format&fit=crop&w=800&q=80",
+  "jendela-bulat": "/images/products/jendela-bulat-1.png",
 };
 
 async function fetchFreshCategories(locale: string = "id"): Promise<Category[]> {
