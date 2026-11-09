@@ -71,7 +71,7 @@ const SAMPLE_PRODUCT_IMAGES: Record<string, string> = {
   "kursi-makan-jati-ropan":
     "https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=800&q=80",
   "dipan-tempat-tidur-jati-spindle":
-    "https://images.unsplash.com/photo-1540518614846-7ede433c4550?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80",
   "nakas-samping-kasur-jati":
     "https://images.unsplash.com/photo-1532372320572-cda25653a26d?auto=format&fit=crop&w=800&q=80",
   "sofa-kursi-santai-jati-retro":
@@ -596,7 +596,7 @@ export async function getProductById(id: number, locale: string = "id"): Promise
 const CATEGORY_DEFAULT_IMAGES: Record<string, string> = {
   "ruang-tamu": "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80",
   "ruang-makan": "https://images.unsplash.com/photo-1617806118233-18e1de247200?auto=format&fit=crop&w=800&q=80",
-  "kamar-tidur": "https://images.unsplash.com/photo-1540518614846-7ede433c4550?auto=format&fit=crop&w=800&q=80",
+  "kamar-tidur": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80",
   "pintu-jendela": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80",
   "ruang-kerja": "https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?auto=format&fit=crop&w=800&q=80",
 };

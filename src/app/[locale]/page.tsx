@@ -61,8 +61,7 @@ export default async function HomePage({
             alt="Interior Kayu Jati Jepara Inspiring Furni"
             fill
             priority
-            sizes="100vw"
-            quality={90}
+            sizes="(max-width: 640px) 100vw, (max-width: 1200px) 100vw, 1920px"
             className="object-cover object-[center_60%] sm:object-center select-none"
           />
           {/* Subtle multi-layered gradient scrim for supreme legibility without drowning the photography */}
