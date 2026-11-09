@@ -85,7 +85,7 @@ const SAMPLE_PRODUCT_IMAGES: Record<string, string> = {
   "jendela-bulat-jati-classic":
     "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80",
   "jendela-kusen-bulat-hitam":
-    "/images/products/jendela-bulat-1.png",
+    "/images/products/jendela-kusen-bulat-hitam-1.png",
   "pintu-utama-jati-panel-solid":
     "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=800&q=80",
 };
@@ -610,7 +610,7 @@ const CATEGORY_DEFAULT_IMAGES: Record<string, string> = {
   "kamar-tidur": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80",
   "pintu-jendela": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80",
   "ruang-kerja": "https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?auto=format&fit=crop&w=800&q=80",
-  "jendela-bulat": "/images/products/jendela-bulat-1.png",
+  "jendela-bulat": "/images/products/jendela-kusen-bulat-hitam-1.png",
 };
 
 async function fetchFreshCategories(locale: string = "id"): Promise<Category[]> {

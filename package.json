@@ -6,7 +6,8 @@
         "dev": "next dev --turbopack",
         "build": "next build",
         "start": "next start",
-        "lint": "eslint"
+        "lint": "eslint",
+        "sync:products": "node scripts/sync-wp-products.mjs"
     },
     "dependencies": {
         "next": "15.5.29",

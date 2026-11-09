@@ -37,8 +37,8 @@ export default async function HomePage({
     .filter((c) => c.slug !== "tanpa-kategori" && (c.count === undefined || c.count > 0))
     .slice(0, 5);
 
-  // Produk Baru: 4 products (or next 4)
-  const newProducts = products.length > 4 ? products.slice(4, 8) : products.slice(0, 4);
+  // Produk Baru: hanya tampil jika ada produk lebih dari 4
+  const newProducts = products.length > 4 ? products.slice(4, 8) : [];
 
   const orgJsonLd = buildOrganizationJsonLd();
   const websiteJsonLd = buildWebSiteJsonLd(locale);
@@ -175,30 +175,32 @@ export default async function HomePage({
       </section>
 
       {/* 8. SECTION "PRODUK BARU" */}
-      <section className="max-w-[1280px] mx-auto px-4 sm:px-8">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-12 border-b border-[var(--color-line)] pb-4 gap-4">
-          <div className="max-w-2xl">
-            <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-[var(--color-muted)] block">
-              {t("newProductsBadge")}
-            </span>
-            <h2 className="text-2xl sm:text-4xl font-light text-[var(--color-ink)] tracking-tight mt-1 font-[family-name:var(--font-dm-sans)]">
-              {t("newProductsTitle")}
-            </h2>
+      {newProducts.length > 0 && (
+        <section className="max-w-[1280px] mx-auto px-4 sm:px-8">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-12 border-b border-[var(--color-line)] pb-4 gap-4">
+            <div className="max-w-2xl">
+              <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-[var(--color-muted)] block">
+                {t("newProductsBadge")}
+              </span>
+              <h2 className="text-2xl sm:text-4xl font-light text-[var(--color-ink)] tracking-tight mt-1 font-[family-name:var(--font-dm-sans)]">
+                {t("newProductsTitle")}
+              </h2>
+            </div>
+            <Link
+              href="/produk"
+              className="text-xs font-mono text-[var(--color-ink)] hover:text-[var(--color-accent)] uppercase tracking-wider hover:underline shrink-0"
+            >
+              {t("viewAll")} &rarr;
+            </Link>
           </div>
-          <Link
-            href="/produk"
-            className="text-xs font-mono text-[var(--color-ink)] hover:text-[var(--color-accent)] uppercase tracking-wider hover:underline shrink-0"
-          >
-            {t("viewAll")} &rarr;
-          </Link>
-        </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-          {newProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-      </section>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+            {newProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* 9. BANNER EDITORIAL */}
       <section className="max-w-[1280px] mx-auto px-4 sm:px-8 pb-10">
