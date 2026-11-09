@@ -7,6 +7,7 @@ import { Link } from "@/i18n/routing";
 import { Product, ProductVariation } from "@/lib/products";
 import { useCart } from "@/context/CartContext";
 import { getSiteUrl } from "@/lib/seo";
+import { formatProductDescription } from "@/lib/format";
 import ProductCard, { formatRupiah } from "@/components/ProductCard";
 
 interface ProductDetailViewProps {
@@ -806,9 +807,12 @@ export default function ProductDetailView({
                 <span>{openAccordion === "deskripsi" ? "−" : "+"}</span>
               </button>
               {openAccordion === "deskripsi" && (
-                <div className="pt-2 text-xs sm:text-sm text-[var(--color-muted)] leading-relaxed space-y-2">
-                  <p>{product.description || product.short_description}</p>
-                </div>
+                <div
+                  className="pt-2 text-xs sm:text-sm text-[var(--color-muted)] leading-relaxed space-y-1"
+                  dangerouslySetInnerHTML={{
+                    __html: formatProductDescription(product.description || product.short_description),
+                  }}
+                />
               )}
             </div>
 

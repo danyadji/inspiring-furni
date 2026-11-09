@@ -96,7 +96,19 @@ function basicAuth(key: string, secret: string): string {
 
 function stripHtml(html: string): string {
   if (!html) return "";
-  return html.replace(/<[^>]*>?/gm, "").trim();
+  return html
+    .replace(/<br\s*\/?>/gi, " ")
+    .replace(/<\/p>/gi, " ")
+    .replace(/<\/li>/gi, " ")
+    .replace(/<[^>]*>?/gm, "")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, '"')
+    .replace(/&#039;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function cleanImageSrc(src?: string): string {
@@ -287,8 +299,8 @@ function normalizeProduct(
     id: raw.id,
     name: resolvedName,
     slug: raw.slug,
-    description: stripHtml(rawDesc || ""),
-    short_description: stripHtml(rawShortDesc || ""),
+    description: rawDesc || "",
+    short_description: stripHtml(rawShortDesc || rawDesc || ""),
     images,
     price: raw.price || "0",
     regular_price: regularPrice,
