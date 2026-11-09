@@ -111,6 +111,30 @@ function stripHtml(html: string): string {
     .trim();
 }
 
+function extractShortDescription(shortDesc?: string, fullDesc?: string): string {
+  if (shortDesc && shortDesc.trim()) {
+    return stripHtml(shortDesc);
+  }
+  if (!fullDesc) return "";
+
+  // If fullDesc has HTML paragraphs, find the first descriptive intro paragraph
+  const pMatches = fullDesc.match(/<p>([\s\S]*?)<\/p>/gi) || [];
+  for (const pTag of pMatches) {
+    const text = stripHtml(pTag);
+    // Skip if it looks like a section title (e.g. SPESIFIKASI) or bullet point
+    if (text.length > 20 && !text.startsWith("-") && !text.startsWith("•") && text !== text.toUpperCase()) {
+      return text.length > 180 ? text.slice(0, 180).trim() + "..." : text;
+    }
+  }
+
+  const clean = stripHtml(fullDesc);
+  const firstSentence = clean.split(/[.!?]\s+/)[0];
+  if (firstSentence && firstSentence.length > 15) {
+    return firstSentence.length > 140 ? firstSentence.slice(0, 140) + "..." : firstSentence + ".";
+  }
+  return clean.slice(0, 140).trim();
+}
+
 function cleanImageSrc(src?: string): string {
   if (!src) return "/images/placeholder-product.svg";
   // Replace https://localhost with http://localhost on local development
@@ -300,7 +324,7 @@ function normalizeProduct(
     name: resolvedName,
     slug: raw.slug,
     description: rawDesc || "",
-    short_description: stripHtml(rawShortDesc || rawDesc || ""),
+    short_description: extractShortDescription(rawShortDesc, rawDesc),
     images,
     price: raw.price || "0",
     regular_price: regularPrice,
