@@ -74,7 +74,6 @@ export default function Navbar() {
               className={`h-6 sm:h-9 md:h-10 w-auto max-w-[140px] xs:max-w-[160px] sm:max-w-none object-contain transition-opacity duration-300 ${
                 isTransparent ? "opacity-100" : "opacity-0 absolute pointer-events-none"
               }`}
-              priority
             />
             {/* Dark Logo: Shown when scrolled or on solid background */}
             <Image
@@ -85,7 +84,6 @@ export default function Navbar() {
               className={`h-6 sm:h-9 md:h-10 w-auto max-w-[140px] xs:max-w-[160px] sm:max-w-none object-contain transition-opacity duration-300 ${
                 !isTransparent ? "opacity-100" : "opacity-0 absolute pointer-events-none"
               }`}
-              priority
             />
           </Link>
 
