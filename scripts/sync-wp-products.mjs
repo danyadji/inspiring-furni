@@ -14,13 +14,6 @@ if (!fs.existsSync(imagesDir)) {
   fs.mkdirSync(imagesDir, { recursive: true });
 }
 
-function cleanSlug(text) {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-}
-
 function stripHtml(html) {
   if (!html) return "";
   return html.replace(/<[^>]*>?/gm, "").trim();

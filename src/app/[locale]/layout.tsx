@@ -44,7 +44,7 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: "Metadata" });
   const siteUrl = getSiteUrl();
   const alternates = buildCanonicalAndAlternates("/", locale);
-  const ogImage = `${siteUrl}/images/placeholder-product.svg`;
+  const ogImage = `${siteUrl}/images/og-default.jpg`;
 
   return {
     metadataBase: new URL(siteUrl),
@@ -54,6 +54,17 @@ export async function generateMetadata({
     },
     description: t("homeDescription"),
     alternates,
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
     openGraph: {
       title: t("homeTitle"),
       description: t("homeDescription"),
@@ -66,7 +77,8 @@ export async function generateMetadata({
           url: ogImage,
           width: 1200,
           height: 630,
-          alt: "Inspiring Furni Jepara",
+          type: "image/jpeg",
+          alt: "Inspiring Furni - Furnitur Kayu Jati Asli Jepara",
         },
       ],
     },

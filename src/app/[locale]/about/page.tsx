@@ -24,7 +24,7 @@ export async function generateMetadata({
   const title = t("aboutTitle");
   const description = stripHtmlAndTruncate(t("aboutDescription"), 155);
   const alternates = buildCanonicalAndAlternates("/about", locale);
-  const ogImage = `${siteUrl}/images/placeholder-product.svg`;
+  const ogImage = `${siteUrl}/images/og-default.jpg`;
 
   return {
     title: { absolute: title },

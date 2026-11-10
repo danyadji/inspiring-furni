@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = t("catalogTitle");
   const description = stripHtmlAndTruncate(t("catalogDescription"), 155);
   const alternates = buildCanonicalAndAlternates("/produk", locale);
-  const heroImage = `${siteUrl}/images/placeholder-product.svg`;
+  const heroImage = `${siteUrl}/images/og-default.jpg`;
 
   return {
     title: { absolute: title },

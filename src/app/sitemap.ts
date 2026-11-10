@@ -1,12 +1,12 @@
 import { MetadataRoute } from "next";
 import { getProducts, getCategories } from "@/lib/products";
 import { routing } from "@/i18n/routing";
-import { getSiteUrl } from "@/lib/seo";
+import { PRIMARY_DOMAIN } from "@/lib/seo";
 
 export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = getSiteUrl();
+  const baseUrl = PRIMARY_DOMAIN;
 
   const [products, categories] = await Promise.all([
     getProducts("id"),
@@ -69,7 +69,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   for (const product of products) {
     if (!product.slug) continue;
 
-    const lastModified = product.dateModified ? new Date(product.dateModified) : new Date();
+    let lastModified = new Date();
+    if (product.dateModified) {
+      const parsed = new Date(product.dateModified);
+      if (!isNaN(parsed.getTime())) {
+        lastModified = parsed;
+      }
+    }
 
     for (const locale of routing.locales) {
       productEntries.push({
@@ -87,5 +93,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
-  return [...staticEntries, ...categoryEntries, ...productEntries];
+  // Deduplicate entries by URL
+  const seen = new Set<string>();
+  const finalEntries: MetadataRoute.Sitemap = [];
+
+  for (const entry of [...staticEntries, ...categoryEntries, ...productEntries]) {
+    if (!seen.has(entry.url)) {
+      seen.add(entry.url);
+      finalEntries.push(entry);
+    }
+  }
+
+  return finalEntries;
 }

@@ -1,15 +1,13 @@
 import { MetadataRoute } from "next";
-import { getSiteUrl } from "@/lib/seo";
+import { PRIMARY_DOMAIN } from "@/lib/seo";
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = getSiteUrl();
-
   return {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/api/", "/*/keranjang", "/keranjang"],
+      disallow: ["/api/", "/keranjang", "/*/keranjang"],
     },
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: `${PRIMARY_DOMAIN}/sitemap.xml`,
   };
 }

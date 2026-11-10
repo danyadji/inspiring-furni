@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = t("contactTitle");
   const description = stripHtmlAndTruncate(t("contactDescription"), 155);
   const alternates = buildCanonicalAndAlternates("/contact", locale);
-  const ogImage = `${siteUrl}/images/placeholder-product.svg`;
+  const ogImage = `${siteUrl}/images/og-default.jpg`;
 
   return {
     title: { absolute: title },

@@ -56,7 +56,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const mainImage = product.images[0]?.src
     ? sanitizePublicImage(product.images[0].src, siteUrl)
-    : `${siteUrl}/images/placeholder-product.svg`;
+    : `${siteUrl}/images/og-default.jpg`;
 
   return {
     title: { absolute: pageTitle },

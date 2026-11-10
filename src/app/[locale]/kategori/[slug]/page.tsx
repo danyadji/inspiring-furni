@@ -10,6 +10,7 @@ import {
   stripHtmlAndTruncate,
   buildCanonicalAndAlternates,
   buildBreadcrumbJsonLd,
+  sanitizePublicImage,
 } from "@/lib/seo";
 import ProductCard from "@/components/ProductCard";
 import CategorySlider from "@/components/CategorySlider";
@@ -54,7 +55,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description = stripHtmlAndTruncate(rawDesc, 155);
 
   const alternates = buildCanonicalAndAlternates(`/kategori/${slug}`, locale);
-  const imageUrl = category.image || `${siteUrl}/images/placeholder-product.svg`;
+  const imageUrl =
+    category.image && !category.image.endsWith(".svg")
+      ? sanitizePublicImage(category.image, siteUrl)
+      : `${siteUrl}/images/og-default.jpg`;
 
   return {
     title: { absolute: title },

@@ -1,13 +1,28 @@
 import { Product } from "@/lib/products";
 
+export const PRIMARY_DOMAIN = "https://inspiringfurni.web.id";
+
 export function getSiteUrl(): string {
   const envUrl = process.env.NEXT_PUBLIC_SITE_URL;
   if (envUrl && typeof envUrl === "string" && envUrl.trim()) {
-    return envUrl.trim().replace(/\/+$/, "");
+    const trimmed = envUrl.trim().replace(/\/+$/, "");
+    // In production, never leak localhost or vercel preview domains to search engines
+    if (process.env.NODE_ENV === "production") {
+      if (
+        trimmed.includes("localhost") ||
+        trimmed.includes("127.0.0.1") ||
+        trimmed.includes(".vercel.app")
+      ) {
+        return PRIMARY_DOMAIN;
+      }
+    }
+    return trimmed;
   }
-  if (process.env.VERCEL_URL) {
-    return `https://${process.env.VERCEL_URL}`;
+
+  if (process.env.NODE_ENV === "production") {
+    return PRIMARY_DOMAIN;
   }
+
   return "http://localhost:3000";
 }
 
@@ -56,7 +71,8 @@ export function buildCanonicalAndAlternates(pathWithoutLocale: string, locale: s
 }
 
 export function sanitizePublicImage(src: string, siteUrl: string): string {
-  if (!src) return `${siteUrl}/images/placeholder-product.svg`;
+  const fallback = `${siteUrl}/images/og-default.jpg`;
+  if (!src) return fallback;
   // Never expose internal WordPress/CMS localhost addresses to search engines
   if (
     src.includes("localhost") ||
@@ -64,7 +80,7 @@ export function sanitizePublicImage(src: string, siteUrl: string): string {
     src.includes("cms.") ||
     src.includes("/wordpress/")
   ) {
-    return `${siteUrl}/images/placeholder-product.svg`;
+    return fallback;
   }
   if (src.startsWith("http://") || src.startsWith("https://")) {
     return src;
@@ -177,7 +193,8 @@ export function buildOrganizationJsonLd() {
     "@type": "Organization",
     name: "Inspiring Furni",
     url: siteUrl,
-    logo: `${siteUrl}/images/placeholder-product.svg`,
+    logo: `${siteUrl}/images/logo/logo.png`,
+    image: `${siteUrl}/images/og-default.jpg`,
     description:
       "Workshop pengrajin furnitur kayu jati asli Jepara tanpa perantara. Spesialis meja makan, kursi, dipan, credenza, serta jendela dan pintu custom.",
     contactPoint: {
