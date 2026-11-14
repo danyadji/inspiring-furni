@@ -1,5 +1,978 @@
 [
   {
+    "id": 343,
+    "name": "Jendela Kusen Bulat Hitam A",
+    "slug": "jendela-kusen-bulat-hitam-a",
+    "description": "<p>SPESIFIKASI</p>\n<p>- Material: kayu jati</p>\n<p>- Bentuk: bulat, diameter 60 cm / 70 cm / 80 cm / 90 cm / 100 cm / 110 cm / 120 cm</p>\n<p>- Kaca: tebal 5 mm, pilihan Kaca Bening &amp; Ryben</p>\n<p>- Sistem buka: putar dengan engsel putar dan pengunci jendela</p>\n<p>- Finishing: NC halus dan rapi</p>\n<p>- Warna: Hitam</p>\n<p>- Isi paket: kusen jendela bulat</p>\n<p>- Tidak termasuk jasa pemasangan</p>\n<p>&nbsp;</p>\n<p>CARA MEMILIH UKURAN</p>\n<p>Ukur diameter lubang dinding, lalu pilih ukuran. Ragu soal ukuran? Chat kami, kirim foto dinding atau ukurannya, kami bantu pilihkan.</p>\n<p>&nbsp;</p>\n<p>BISA CUSTOM</p>\n<p>Butuh ukuran atau warna lain? Chat kami dengan ukuran yang dibutuhkan, nanti kami infokan kemungkinan dan harganya.</p>\n<p>&nbsp;</p>\n<p>COCOK UNTUK</p>\n<p>Rumah Japandi dan minimalis, villa, kafe, ruang tamu, kamar tidur, dan dekorasi dinding dalam ruangan atau area yang terlindung dari hujan dan panas langsung.</p>\n<p>&nbsp;</p>\n<p>PERAWATAN</p>\n<p>- Bersihkan kaca dengan lap microfiber kering; untuk noda gunakan pembersih kaca non-alkohol</p>\n<p>- Hindari menyiram air langsung ke frame kayu</p>\n<p>- Lap frame dengan kain lembap, lalu segera keringkan</p>\n<p>- Sesekali gunakan furniture polish agar kayu tetap berkilau</p>\n<p>&nbsp;</p>\n<p>PENGIRIMAN &amp; PACKING</p>\n<p>bubble wrap + kardus + peti kayu. Saat paket tiba, mohon cek kesesuaian produk dan rekam video unboxing agar jika ada kerusakan, klaim bisa kami proses cepat. Kami siap bantu lewat chat.</p>\n<p>&nbsp;</p>\n<p>CATATAN</p>\n<p>Serat dan warna kayu jati alami bisa sedikit berbeda antar unit.</p>\n",
+    "short_description": "<p>Kusen jendela bulat kayu jati dengan kaca 5 mm, sistem putar, finishing Hitam , dan pilihan diameter 60–120 cm.</p>\n",
+    "images": [
+      {
+        "src": "/images/products/jendela-kusen-bulat-hitam-a-1.png",
+        "alt": "Jendela Kusen Bulat Hitam A"
+      },
+      {
+        "src": "/images/products/jendela-kusen-bulat-hitam-a-2.png",
+        "alt": "Jendela Kusen Bulat Hitam A"
+      }
+    ],
+    "price": "999000",
+    "regular_price": "1998000",
+    "on_sale": true,
+    "categories": [
+      {
+        "id": 18,
+        "name": "Jendela Bulat",
+        "slug": "jendela-bulat"
+      }
+    ],
+    "attributes": [
+      {
+        "name": "ukuran",
+        "options": [
+          "60 cm",
+          "70 cm",
+          "80 cm",
+          "90 cm",
+          "100 cm",
+          "110 cm",
+          "120 cm"
+        ]
+      },
+      {
+        "name": "jenis kaca",
+        "options": [
+          "bening",
+          "Ryben"
+        ]
+      }
+    ],
+    "variations": [
+      {
+        "id": 357,
+        "price": "2850000",
+        "regular_price": "2850000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "120 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 356,
+        "price": "2890000",
+        "regular_price": "2890000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "110 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 355,
+        "price": "2600000",
+        "regular_price": "2600000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "100 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 354,
+        "price": "2600000",
+        "regular_price": "2600000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "110 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 353,
+        "price": "3150000",
+        "regular_price": "3150000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "120 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 352,
+        "price": "2160000",
+        "regular_price": "2160000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "90 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 351,
+        "price": "2400000",
+        "regular_price": "2400000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "100 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 350,
+        "price": "1999000",
+        "regular_price": "1999000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "90 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 349,
+        "price": "1955000",
+        "regular_price": "3690000",
+        "sale_price": "1955000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "80 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 348,
+        "price": "1790000",
+        "regular_price": "3390000",
+        "sale_price": "1790000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "80 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 347,
+        "price": "1580000",
+        "regular_price": "3050000",
+        "sale_price": "1580000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "70 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 346,
+        "price": "999000",
+        "regular_price": "1998000",
+        "sale_price": "999000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "60 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 345,
+        "price": "1160000",
+        "regular_price": "2248000",
+        "sale_price": "1160000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "60 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 344,
+        "price": "1455000",
+        "regular_price": "2799000",
+        "sale_price": "1455000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "70 cm",
+          "jenis kaca": "bening"
+        }
+      }
+    ],
+    "stockStatus": "instock"
+  },
+  {
+    "id": 326,
+    "name": "Jendela Kusen Bulat Natural A",
+    "slug": "jendela-kusen-bulat-natural-a",
+    "description": "<p>SPESIFIKASI</p>\n<p>- Material: kayu jati</p>\n<p>- Bentuk: bulat, diameter 60 cm / 70 cm / 80 cm / 90 cm / 100 cm / 110 cm / 120 cm</p>\n<p>- Kaca: tebal 5 mm, pilihan Kaca Bening &amp; Ryben</p>\n<p>- Sistem buka: putar dengan engsel putar dan pengunci jendela</p>\n<p>- Finishing: NC halus dan rapi</p>\n<p>- Warna:Natural</p>\n<p>- Isi paket: kusen jendela bulat</p>\n<p>- Tidak termasuk jasa pemasangan</p>\n<p>&nbsp;</p>\n<p>CARA MEMILIH UKURAN</p>\n<p>Ukur diameter lubang dinding, lalu pilih ukuran. Ragu soal ukuran? Chat kami, kirim foto dinding atau ukurannya, kami bantu pilihkan.</p>\n<p>&nbsp;</p>\n<p>BISA CUSTOM</p>\n<p>Butuh ukuran atau warna lain? Chat kami dengan ukuran yang dibutuhkan, nanti kami infokan kemungkinan dan harganya.</p>\n<p>&nbsp;</p>\n<p>COCOK UNTUK</p>\n<p>Rumah Japandi dan minimalis, villa, kafe, ruang tamu, kamar tidur, dan dekorasi dinding dalam ruangan atau area yang terlindung dari hujan dan panas langsung.</p>\n<p>&nbsp;</p>\n<p>PERAWATAN</p>\n<p>- Bersihkan kaca dengan lap microfiber kering; untuk noda gunakan pembersih kaca non-alkohol</p>\n<p>- Hindari menyiram air langsung ke frame kayu</p>\n<p>- Lap frame dengan kain lembap, lalu segera keringkan</p>\n<p>- Sesekali gunakan furniture polish agar kayu tetap berkilau</p>\n<p>&nbsp;</p>\n<p>PENGIRIMAN &amp; PACKING</p>\n<p>bubble wrap + kardus + peti kayu. Saat paket tiba, mohon cek kesesuaian produk dan rekam video unboxing agar jika ada kerusakan, klaim bisa kami proses cepat. Kami siap bantu lewat chat.</p>\n<p>&nbsp;</p>\n<p>CATATAN</p>\n<p>Serat dan warna kayu jati alami bisa sedikit berbeda antar unit.</p>\n",
+    "short_description": "<p>Kusen jendela bulat kayu jati dengan kaca 5 mm, sistem putar, finishing Natural, dan pilihan diameter 60–120 cm.</p>\n",
+    "images": [
+      {
+        "src": "/images/products/jendela-kusen-bulat-natural-a-1.png",
+        "alt": "Jendela Kusen Bulat Natural A"
+      }
+    ],
+    "price": "999000",
+    "regular_price": "1998000",
+    "on_sale": true,
+    "categories": [
+      {
+        "id": 18,
+        "name": "Jendela Bulat",
+        "slug": "jendela-bulat"
+      }
+    ],
+    "attributes": [
+      {
+        "name": "ukuran",
+        "options": [
+          "60 cm",
+          "70 cm",
+          "80 cm",
+          "90 cm",
+          "100 cm",
+          "110 cm",
+          "120 cm"
+        ]
+      },
+      {
+        "name": "jenis kaca",
+        "options": [
+          "bening",
+          "Ryben"
+        ]
+      }
+    ],
+    "variations": [
+      {
+        "id": 340,
+        "price": "2850000",
+        "regular_price": "2850000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "120 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 339,
+        "price": "2890000",
+        "regular_price": "2890000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "110 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 338,
+        "price": "2600000",
+        "regular_price": "2600000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "100 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 337,
+        "price": "2600000",
+        "regular_price": "2600000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "110 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 336,
+        "price": "3150000",
+        "regular_price": "3150000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "120 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 335,
+        "price": "2160000",
+        "regular_price": "2160000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "90 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 334,
+        "price": "2400000",
+        "regular_price": "2400000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "100 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 333,
+        "price": "1999000",
+        "regular_price": "1999000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "90 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 332,
+        "price": "1955000",
+        "regular_price": "3690000",
+        "sale_price": "1955000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "80 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 331,
+        "price": "1790000",
+        "regular_price": "3390000",
+        "sale_price": "1790000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "80 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 330,
+        "price": "1580000",
+        "regular_price": "3050000",
+        "sale_price": "1580000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "70 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 329,
+        "price": "999000",
+        "regular_price": "1998000",
+        "sale_price": "999000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "60 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 328,
+        "price": "1160000",
+        "regular_price": "2248000",
+        "sale_price": "1160000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "60 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 327,
+        "price": "1455000",
+        "regular_price": "2799000",
+        "sale_price": "1455000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "70 cm",
+          "jenis kaca": "bening"
+        }
+      }
+    ],
+    "stockStatus": "instock"
+  },
+  {
+    "id": 310,
+    "name": "Jendela Kusen Bulat Hitam D",
+    "slug": "jendela-kusen-bulat-hitam-d",
+    "description": "<p>SPESIFIKASI</p>\n<p>- Material: kayu jati</p>\n<p>- Bentuk: bulat, diameter 60 cm / 70 cm / 80 cm / 90 cm / 100 cm / 110 cm / 120 cm</p>\n<p>- Kaca: tebal 5 mm, pilihan Kaca Bening &amp; Ryben</p>\n<p>- Sistem buka: putar dengan engsel putar dan pengunci jendela</p>\n<p>- Finishing: NC halus dan rapi</p>\n<p>- Warna: Hitam</p>\n<p>- Isi paket: kusen jendela bulat</p>\n<p>- Tidak termasuk jasa pemasangan</p>\n<p>&nbsp;</p>\n<p>CARA MEMILIH UKURAN</p>\n<p>Ukur diameter lubang dinding, lalu pilih ukuran. Ragu soal ukuran? Chat kami, kirim foto dinding atau ukurannya, kami bantu pilihkan.</p>\n<p>&nbsp;</p>\n<p>BISA CUSTOM</p>\n<p>Butuh ukuran atau warna lain? Chat kami dengan ukuran yang dibutuhkan, nanti kami infokan kemungkinan dan harganya.</p>\n<p>&nbsp;</p>\n<p>COCOK UNTUK</p>\n<p>Rumah Japandi dan minimalis, villa, kafe, ruang tamu, kamar tidur, dan dekorasi dinding dalam ruangan atau area yang terlindung dari hujan dan panas langsung.</p>\n<p>&nbsp;</p>\n<p>PERAWATAN</p>\n<p>- Bersihkan kaca dengan lap microfiber kering; untuk noda gunakan pembersih kaca non-alkohol</p>\n<p>- Hindari menyiram air langsung ke frame kayu</p>\n<p>- Lap frame dengan kain lembap, lalu segera keringkan</p>\n<p>- Sesekali gunakan furniture polish agar kayu tetap berkilau</p>\n<p>&nbsp;</p>\n<p>PENGIRIMAN &amp; PACKING</p>\n<p>bubble wrap + kardus + peti kayu. Saat paket tiba, mohon cek kesesuaian produk dan rekam video unboxing agar jika ada kerusakan, klaim bisa kami proses cepat. Kami siap bantu lewat chat.</p>\n<p>&nbsp;</p>\n<p>CATATAN</p>\n<p>Serat dan warna kayu jati alami bisa sedikit berbeda antar unit.</p>\n",
+    "short_description": "<p>Kusen jendela bulat kayu jati dengan kaca 5 mm, sistem putar, finishing Hitam, dan pilihan diameter 60–120 cm.</p>\n",
+    "images": [
+      {
+        "src": "/images/products/jendela-kusen-bulat-hitam-d-1.png",
+        "alt": "Jendela Kusen Bulat Hitam D"
+      }
+    ],
+    "price": "999000",
+    "regular_price": "1998000",
+    "on_sale": true,
+    "categories": [
+      {
+        "id": 18,
+        "name": "Jendela Bulat",
+        "slug": "jendela-bulat"
+      }
+    ],
+    "attributes": [
+      {
+        "name": "ukuran",
+        "options": [
+          "60 cm",
+          "70 cm",
+          "80 cm",
+          "90 cm",
+          "100 cm",
+          "110 cm",
+          "120 cm"
+        ]
+      },
+      {
+        "name": "jenis kaca",
+        "options": [
+          "bening",
+          "Ryben"
+        ]
+      }
+    ],
+    "variations": [
+      {
+        "id": 324,
+        "price": "2850000",
+        "regular_price": "2850000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "120 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 323,
+        "price": "2890000",
+        "regular_price": "2890000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "110 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 322,
+        "price": "2600000",
+        "regular_price": "2600000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "100 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 321,
+        "price": "2600000",
+        "regular_price": "2600000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "110 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 320,
+        "price": "3150000",
+        "regular_price": "3150000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "120 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 319,
+        "price": "2160000",
+        "regular_price": "2160000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "90 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 318,
+        "price": "2400000",
+        "regular_price": "2400000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "100 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 317,
+        "price": "1999000",
+        "regular_price": "1999000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "90 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 316,
+        "price": "1955000",
+        "regular_price": "3690000",
+        "sale_price": "1955000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "80 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 315,
+        "price": "1790000",
+        "regular_price": "3390000",
+        "sale_price": "1790000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "80 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 314,
+        "price": "1580000",
+        "regular_price": "3050000",
+        "sale_price": "1580000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "70 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 313,
+        "price": "999000",
+        "regular_price": "1998000",
+        "sale_price": "999000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "60 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 312,
+        "price": "1160000",
+        "regular_price": "2248000",
+        "sale_price": "1160000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "60 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 311,
+        "price": "1455000",
+        "regular_price": "2799000",
+        "sale_price": "1455000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "70 cm",
+          "jenis kaca": "bening"
+        }
+      }
+    ],
+    "stockStatus": "instock"
+  },
+  {
+    "id": 294,
+    "name": "Jendela Kusen Bulat Dark Brown D",
+    "slug": "jendela-kusen-bulat-dark-brown-d",
+    "description": "<p>SPESIFIKASI</p>\n<p>- Material: kayu jati</p>\n<p>- Bentuk: bulat, diameter 60 cm / 70 cm / 80 cm / 90 cm / 100 cm / 110 cm / 120 cm</p>\n<p>- Kaca: tebal 5 mm, pilihan Kaca Bening &amp; Ryben</p>\n<p>- Sistem buka: putar dengan engsel putar dan pengunci jendela</p>\n<p>- Finishing: NC halus dan rapi</p>\n<p>- Warna: Dark Brown</p>\n<p>- Isi paket: kusen jendela bulat</p>\n<p>- Tidak termasuk jasa pemasangan</p>\n<p>&nbsp;</p>\n<p>CARA MEMILIH UKURAN</p>\n<p>Ukur diameter lubang dinding, lalu pilih ukuran. Ragu soal ukuran? Chat kami, kirim foto dinding atau ukurannya, kami bantu pilihkan.</p>\n<p>&nbsp;</p>\n<p>BISA CUSTOM</p>\n<p>Butuh ukuran atau warna lain? Chat kami dengan ukuran yang dibutuhkan, nanti kami infokan kemungkinan dan harganya.</p>\n<p>&nbsp;</p>\n<p>COCOK UNTUK</p>\n<p>Rumah Japandi dan minimalis, villa, kafe, ruang tamu, kamar tidur, dan dekorasi dinding dalam ruangan atau area yang terlindung dari hujan dan panas langsung.</p>\n<p>&nbsp;</p>\n<p>PERAWATAN</p>\n<p>- Bersihkan kaca dengan lap microfiber kering; untuk noda gunakan pembersih kaca non-alkohol</p>\n<p>- Hindari menyiram air langsung ke frame kayu</p>\n<p>- Lap frame dengan kain lembap, lalu segera keringkan</p>\n<p>- Sesekali gunakan furniture polish agar kayu tetap berkilau</p>\n<p>&nbsp;</p>\n<p>PENGIRIMAN &amp; PACKING</p>\n<p>bubble wrap + kardus + peti kayu. Saat paket tiba, mohon cek kesesuaian produk dan rekam video unboxing agar jika ada kerusakan, klaim bisa kami proses cepat. Kami siap bantu lewat chat.</p>\n<p>&nbsp;</p>\n<p>CATATAN</p>\n<p>Serat dan warna kayu jati alami bisa sedikit berbeda antar unit.</p>\n",
+    "short_description": "<p>Kusen jendela bulat kayu jati dengan kaca 5 mm, sistem putar, finishing dark brown, dan pilihan diameter 60–120 cm.</p>\n",
+    "images": [
+      {
+        "src": "/images/products/jendela-kusen-bulat-dark-brown-d-1.png",
+        "alt": "Jendela Kusen Bulat Dark Brown D"
+      },
+      {
+        "src": "/images/products/jendela-kusen-bulat-dark-brown-d-2.png",
+        "alt": "Jendela Kusen Bulat Dark Brown D"
+      }
+    ],
+    "price": "999000",
+    "regular_price": "1998000",
+    "on_sale": true,
+    "categories": [
+      {
+        "id": 18,
+        "name": "Jendela Bulat",
+        "slug": "jendela-bulat"
+      }
+    ],
+    "attributes": [
+      {
+        "name": "ukuran",
+        "options": [
+          "60 cm",
+          "70 cm",
+          "80 cm",
+          "90 cm",
+          "100 cm",
+          "110 cm",
+          "120 cm"
+        ]
+      },
+      {
+        "name": "jenis kaca",
+        "options": [
+          "bening",
+          "Ryben"
+        ]
+      }
+    ],
+    "variations": [
+      {
+        "id": 308,
+        "price": "2850000",
+        "regular_price": "2850000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "120 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 307,
+        "price": "2890000",
+        "regular_price": "2890000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "110 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 306,
+        "price": "2600000",
+        "regular_price": "2600000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "100 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 305,
+        "price": "2600000",
+        "regular_price": "2600000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "110 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 304,
+        "price": "3150000",
+        "regular_price": "3150000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "120 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 303,
+        "price": "2160000",
+        "regular_price": "2160000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "90 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 302,
+        "price": "2400000",
+        "regular_price": "2400000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "100 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 301,
+        "price": "1999000",
+        "regular_price": "1999000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "90 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 300,
+        "price": "1955000",
+        "regular_price": "3690000",
+        "sale_price": "1955000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "80 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 299,
+        "price": "1790000",
+        "regular_price": "3390000",
+        "sale_price": "1790000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "80 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 298,
+        "price": "1580000",
+        "regular_price": "3050000",
+        "sale_price": "1580000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "70 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 297,
+        "price": "999000",
+        "regular_price": "1998000",
+        "sale_price": "999000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "60 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 296,
+        "price": "1160000",
+        "regular_price": "2248000",
+        "sale_price": "1160000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "60 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 295,
+        "price": "1455000",
+        "regular_price": "2799000",
+        "sale_price": "1455000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "70 cm",
+          "jenis kaca": "bening"
+        }
+      }
+    ],
+    "stockStatus": "instock"
+  },
+  {
+    "id": 276,
+    "name": "Jendela Kusen Bulat Natural D",
+    "slug": "jendela-kusen-bulat-natural-d",
+    "description": "<p>SPESIFIKASI</p>\n<p>- Material: kayu jati</p>\n<p>- Bentuk: bulat, diameter 60 cm / 70 cm / 80 cm / 90 cm / 100 cm / 110 cm / 120 cm</p>\n<p>- Kaca: tebal 5 mm, pilihan Kaca Bening &amp; Ryben</p>\n<p>- Sistem buka: putar dengan engsel putar dan pengunci jendela</p>\n<p>- Finishing: NC halus dan rapi</p>\n<p>- Warna: Black</p>\n<p>- Isi paket: kusen jendela bulat</p>\n<p>- Tidak termasuk jasa pemasangan</p>\n<p>&nbsp;</p>\n<p>CARA MEMILIH UKURAN</p>\n<p>Ukur diameter lubang dinding, lalu pilih ukuran. Ragu soal ukuran? Chat kami, kirim foto dinding atau ukurannya, kami bantu pilihkan.</p>\n<p>&nbsp;</p>\n<p>BISA CUSTOM</p>\n<p>Butuh ukuran atau warna lain? Chat kami dengan ukuran yang dibutuhkan, nanti kami infokan kemungkinan dan harganya.</p>\n<p>&nbsp;</p>\n<p>COCOK UNTUK</p>\n<p>Rumah Japandi dan minimalis, villa, kafe, ruang tamu, kamar tidur, dan dekorasi dinding dalam ruangan atau area yang terlindung dari hujan dan panas langsung.</p>\n<p>&nbsp;</p>\n<p>PERAWATAN</p>\n<p>- Bersihkan kaca dengan lap microfiber kering; untuk noda gunakan pembersih kaca non-alkohol</p>\n<p>- Hindari menyiram air langsung ke frame kayu</p>\n<p>- Lap frame dengan kain lembap, lalu segera keringkan</p>\n<p>- Sesekali gunakan furniture polish agar kayu tetap berkilau</p>\n<p>&nbsp;</p>\n<p>PENGIRIMAN &amp; PACKING</p>\n<p>bubble wrap + kardus + peti kayu. Saat paket tiba, mohon cek kesesuaian produk dan rekam video unboxing agar jika ada kerusakan, klaim bisa kami proses cepat. Kami siap bantu lewat chat.</p>\n<p>&nbsp;</p>\n<p>CATATAN</p>\n<p>Serat dan warna kayu jati alami bisa sedikit berbeda antar unit.</p>\n",
+    "short_description": "<p>Kusen jendela bulat kayu jati dengan kaca 5 mm, sistem putar, finishing hitam, dan pilihan diameter 60–120 cm.</p>\n",
+    "images": [
+      {
+        "src": "/images/products/jendela-kusen-bulat-natural-d-1.png",
+        "alt": "Jendela Kusen Bulat Natural D"
+      }
+    ],
+    "price": "999000",
+    "regular_price": "1998000",
+    "on_sale": true,
+    "categories": [
+      {
+        "id": 18,
+        "name": "Jendela Bulat",
+        "slug": "jendela-bulat"
+      }
+    ],
+    "attributes": [
+      {
+        "name": "ukuran",
+        "options": [
+          "60 cm",
+          "70 cm",
+          "80 cm",
+          "90 cm",
+          "100 cm",
+          "110 cm",
+          "120 cm"
+        ]
+      },
+      {
+        "name": "jenis kaca",
+        "options": [
+          "bening",
+          "Ryben"
+        ]
+      }
+    ],
+    "variations": [
+      {
+        "id": 290,
+        "price": "2850000",
+        "regular_price": "2850000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "120 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 289,
+        "price": "2890000",
+        "regular_price": "2890000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "110 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 288,
+        "price": "2600000",
+        "regular_price": "2600000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "100 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 287,
+        "price": "2600000",
+        "regular_price": "2600000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "110 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 286,
+        "price": "3150000",
+        "regular_price": "3150000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "120 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 285,
+        "price": "2160000",
+        "regular_price": "2160000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "90 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 284,
+        "price": "2400000",
+        "regular_price": "2400000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "100 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 283,
+        "price": "1999000",
+        "regular_price": "1999000",
+        "on_sale": false,
+        "attributes": {
+          "ukuran": "90 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 282,
+        "price": "1955000",
+        "regular_price": "3690000",
+        "sale_price": "1955000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "80 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 281,
+        "price": "1790000",
+        "regular_price": "3390000",
+        "sale_price": "1790000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "80 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 280,
+        "price": "1580000",
+        "regular_price": "3050000",
+        "sale_price": "1580000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "70 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 279,
+        "price": "999000",
+        "regular_price": "1998000",
+        "sale_price": "999000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "60 cm",
+          "jenis kaca": "bening"
+        }
+      },
+      {
+        "id": 278,
+        "price": "1160000",
+        "regular_price": "2248000",
+        "sale_price": "1160000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "60 cm",
+          "jenis kaca": "Ryben"
+        }
+      },
+      {
+        "id": 277,
+        "price": "1455000",
+        "regular_price": "2799000",
+        "sale_price": "1455000",
+        "on_sale": true,
+        "attributes": {
+          "ukuran": "70 cm",
+          "jenis kaca": "bening"
+        }
+      }
+    ],
+    "stockStatus": "instock"
+  },
+  {
     "id": 260,
     "name": "Jendela Kusen Bulat Dark Brown C",
     "slug": "jendela-kusen-bulat-dark-brown-c",
