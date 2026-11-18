@@ -79,7 +79,8 @@ export function sanitizePublicImage(src: string, siteUrl: string): string {
   if (
     src.includes("localhost") ||
     src.includes("127.0.0.1") ||
-    src.includes("cms.") ||
+    src.includes(".local") ||
+    src.includes("::1") ||
     src.includes("/wordpress/")
   ) {
     return fallback;
