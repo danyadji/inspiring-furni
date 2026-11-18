@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { stripHtmlAndTruncate, buildCanonicalAndAlternates } from "@/lib/seo";
 import CartView from "@/components/CartView";
+import { siteConfig } from "@/config/site";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -32,7 +33,7 @@ export default async function KeranjangPage({ params }: Props) {
   setRequestLocale(locale);
 
   const t = await getTranslations({ locale, namespace: "Cart" });
-  const waNumber = process.env.NEXT_PUBLIC_WA_NUMBER || "6289518906727";
+  const waNumber = process.env.NEXT_PUBLIC_WA_NUMBER || siteConfig.whatsappNumber;
 
   return (
     <div className="max-w-[1280px] mx-auto px-4 sm:px-8 py-10 sm:py-16">

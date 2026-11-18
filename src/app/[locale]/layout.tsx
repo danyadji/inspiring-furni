@@ -5,6 +5,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { routing, Locale } from "@/i18n/routing";
 import { getSiteUrl, buildCanonicalAndAlternates } from "@/lib/seo";
+import { siteConfig } from "@/config/site";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CartDrawer from "@/components/CartDrawer";
@@ -44,13 +45,13 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: "Metadata" });
   const siteUrl = getSiteUrl();
   const alternates = buildCanonicalAndAlternates("/", locale);
-  const ogImage = `${siteUrl}/images/og-default.jpg`;
+  const ogImage = `${siteUrl}${siteConfig.logo.ogDefault}`;
 
   return {
     metadataBase: new URL(siteUrl),
     title: {
       default: t("homeTitle"),
-      template: "%s | Inspiring Furni",
+      template: `%s | ${siteConfig.name}`,
     },
     description: t("homeDescription"),
     alternates,
@@ -69,7 +70,7 @@ export async function generateMetadata({
       title: t("homeTitle"),
       description: t("homeDescription"),
       url: alternates.canonical,
-      siteName: "Inspiring Furni",
+      siteName: siteConfig.name,
       locale: locale === "en" ? "en_US" : "id_ID",
       type: "website",
       images: [
@@ -78,7 +79,7 @@ export async function generateMetadata({
           width: 1200,
           height: 630,
           type: "image/jpeg",
-          alt: "Inspiring Furni - Furnitur Kayu Jati Asli Jepara",
+          alt: `${siteConfig.name} - ${siteConfig.tagline}`,
         },
       ],
     },

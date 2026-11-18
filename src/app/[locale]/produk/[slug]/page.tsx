@@ -13,6 +13,7 @@ import {
   sanitizePublicImage,
 } from "@/lib/seo";
 import ProductDetailView from "@/components/ProductDetailView";
+import { siteConfig } from "@/config/site";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -140,7 +141,7 @@ export default async function ProductDetailPage({ params }: Props) {
   );
 
   const relatedProducts = [...sameCategoryProducts, ...otherProducts].slice(0, 4);
-  const waNumber = process.env.NEXT_PUBLIC_WA_NUMBER || "6289518906727";
+  const waNumber = process.env.NEXT_PUBLIC_WA_NUMBER || siteConfig.whatsappNumber;
 
   return (
     <>

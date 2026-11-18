@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/routing";
 import { useCart } from "@/context/CartContext";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { siteConfig } from "@/config/site";
 
 export default function Navbar() {
   const t = useTranslations("Nav");
@@ -63,12 +64,12 @@ export default function Navbar() {
           <Link
             href="/"
             className="flex items-center group py-2 relative"
-            aria-label="Inspiring Furni Home"
+            aria-label={`${siteConfig.name} Home`}
           >
             {/* White Logo: Shown when transparent (unscrolled over hero) */}
             <Image
-              src="/images/logo/logo.png"
-              alt="Inspiring Furni"
+              src={siteConfig.logo.light}
+              alt={siteConfig.name}
               width={240}
               height={40}
               className={`h-6 sm:h-9 md:h-10 w-auto max-w-[140px] xs:max-w-[160px] sm:max-w-none object-contain transition-opacity duration-300 ${
@@ -77,8 +78,8 @@ export default function Navbar() {
             />
             {/* Dark Logo: Shown when scrolled or on solid background */}
             <Image
-              src="/images/logo/logo-2.png"
-              alt="Inspiring Furni"
+              src={siteConfig.logo.dark}
+              alt={siteConfig.name}
               width={240}
               height={40}
               className={`h-6 sm:h-9 md:h-10 w-auto max-w-[140px] xs:max-w-[160px] sm:max-w-none object-contain transition-opacity duration-300 ${

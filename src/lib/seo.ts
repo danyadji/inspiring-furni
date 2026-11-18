@@ -1,6 +1,7 @@
 import { Product } from "@/lib/products";
+import { siteConfig } from "@/config/site";
 
-export const PRIMARY_DOMAIN = "https://inspiringfurni.web.id";
+export const PRIMARY_DOMAIN = siteConfig.domain;
 
 export function getSiteUrl(): string {
   const envUrl = process.env.NEXT_PUBLIC_SITE_URL;
@@ -8,6 +9,7 @@ export function getSiteUrl(): string {
     const trimmed = envUrl.trim().replace(/\/+$/, "");
     // In production, never leak localhost or vercel preview domains to search engines
     if (process.env.NODE_ENV === "production") {
+    
       if (
         trimmed.includes("localhost") ||
         trimmed.includes("127.0.0.1") ||
@@ -191,31 +193,27 @@ export function buildOrganizationJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "Inspiring Furni",
+    name: siteConfig.name,
     url: siteUrl,
-    logo: `${siteUrl}/images/logo/logo.png`,
-    image: `${siteUrl}/images/og-default.jpg`,
-    description:
-      "Workshop pengrajin furnitur kayu jati asli Jepara tanpa perantara. Spesialis meja makan, kursi, dipan, credenza, serta jendela dan pintu custom.",
+    logo: `${siteUrl}${siteConfig.logo.light}`,
+    image: `${siteUrl}${siteConfig.logo.ogDefault}`,
+    description: siteConfig.description,
     contactPoint: {
       "@type": "ContactPoint",
-      telephone: "+6289518906727",
+      telephone: `+${siteConfig.whatsappNumber}`,
       contactType: "customer service",
       areaServed: "ID",
       availableLanguage: ["Indonesian", "English"],
     },
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Kecamatan Tahunan",
-      addressLocality: "Jepara",
-      addressRegion: "Jawa Tengah",
-      postalCode: "59427",
-      addressCountry: "ID",
+      streetAddress: siteConfig.address.street,
+      addressLocality: siteConfig.address.city,
+      addressRegion: siteConfig.address.province,
+      postalCode: siteConfig.address.postalCode,
+      addressCountry: siteConfig.address.country,
     },
-    sameAs: [
-      "https://www.instagram.com/inspiringfurni",
-      "https://www.tiktok.com/@inspiringfurni",
-    ],
+    sameAs: Object.values(siteConfig.socials).filter(Boolean),
   };
 }
 
@@ -225,7 +223,7 @@ export function buildWebSiteJsonLd(locale: string) {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "Inspiring Furni",
+    name: siteConfig.name,
     url: `${siteUrl}/${locale}`,
     inLanguage: locale === "en" ? "en-US" : "id-ID",
     potentialAction: {

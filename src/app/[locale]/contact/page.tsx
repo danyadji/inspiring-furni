@@ -8,6 +8,7 @@ import {
   buildBreadcrumbJsonLd,
 } from "@/lib/seo";
 import ContactForm from "@/components/ContactForm";
+import { siteConfig } from "@/config/site";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -60,8 +61,8 @@ export default async function ContactPage({ params }: Props) {
 
   const t = await getTranslations({ locale, namespace: "Contact" });
   const tMeta = await getTranslations({ locale, namespace: "Metadata" });
-  const waNumber = process.env.NEXT_PUBLIC_WA_NUMBER || "6289518906727";
-  const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL || "inspirigfurni.id@gmail.com";
+  const waNumber = process.env.NEXT_PUBLIC_WA_NUMBER || siteConfig.whatsappNumber;
+  const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL || siteConfig.email;
 
   const breadcrumbsJsonLd = buildBreadcrumbJsonLd(
     [

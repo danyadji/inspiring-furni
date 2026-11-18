@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { usePathname } from "@/i18n/routing";
 import { useCart } from "@/context/CartContext";
+import { siteConfig } from "@/config/site";
 
 export default function FloatingWhatsApp() {
   const tWa = useTranslations("WhatsApp");
@@ -31,7 +32,7 @@ export default function FloatingWhatsApp() {
   // On product detail pages (/produk/[slug]), on mobile the sticky action bar handles WA inquiry specifically for that product
   const isProductDetailPage = pathname.startsWith("/produk/") && pathname !== "/produk";
 
-  const waNumber = process.env.NEXT_PUBLIC_WA_NUMBER || "6289518906727";
+  const waNumber = process.env.NEXT_PUBLIC_WA_NUMBER || siteConfig.whatsappNumber;
   const defaultMessage = tWa("inquiryGeneral");
   const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(defaultMessage)}`;
 

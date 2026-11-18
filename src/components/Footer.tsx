@@ -2,12 +2,13 @@ import React from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
+import { siteConfig } from "@/config/site";
 
 export default function Footer() {
   const t = useTranslations("Footer");
   const tNav = useTranslations("Nav");
   const tWa = useTranslations("WhatsApp");
-  const waNumber = process.env.NEXT_PUBLIC_WA_NUMBER || "6289518906727";
+  const waNumber = process.env.NEXT_PUBLIC_WA_NUMBER || siteConfig.whatsappNumber;
 
   return (
     <footer className="bg-[var(--color-ink)] text-stone-300 mt-20 border-t border-[var(--color-ink)] font-mono">
@@ -15,10 +16,10 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
           {/* Col 1: Identity */}
           <div className="md:col-span-5 space-y-4">
-            <Link href="/" className="inline-block py-1" aria-label="Inspiring Furni Home">
+            <Link href="/" className="inline-block py-1" aria-label={`${siteConfig.name} Home`}>
               <Image
-                src="/images/logo/logo.png"
-                alt="Inspiring Furni"
+                src={siteConfig.logo.light}
+                alt={siteConfig.name}
                 width={200}
                 height={45}
                 className="h-8 sm:h-9 w-auto object-contain"
@@ -77,32 +78,42 @@ export default function Footer() {
             </p>
 
             <div className="flex items-center space-x-4 text-xs text-stone-300">
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-white transition-colors underline underline-offset-4"
-              >
-                Instagram
-              </a>
-              <span>·</span>
-              <a
-                href="https://tiktok.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-white transition-colors underline underline-offset-4"
-              >
-                TikTok
-              </a>
-              <span>·</span>
-              <a
-                href="https://shopee.co.id"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-white transition-colors underline underline-offset-4"
-              >
-                Shopee
-              </a>
+              {siteConfig.socials.instagram && (
+                <a
+                  href={siteConfig.socials.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors underline underline-offset-4"
+                >
+                  Instagram
+                </a>
+              )}
+              {siteConfig.socials.tiktok && (
+                <>
+                  <span>·</span>
+                  <a
+                    href={siteConfig.socials.tiktok}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-white transition-colors underline underline-offset-4"
+                  >
+                    TikTok
+                  </a>
+                </>
+              )}
+              {siteConfig.socials.shopee && (
+                <>
+                  <span>·</span>
+                  <a
+                    href={siteConfig.socials.shopee}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-white transition-colors underline underline-offset-4"
+                  >
+                    Shopee
+                  </a>
+                </>
+              )}
             </div>
 
             <div className="pt-2">
@@ -123,7 +134,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-14 pt-8 border-t border-stone-800 flex flex-col sm:flex-row items-center justify-between text-[11px] text-stone-400 gap-4">
-          <p>&copy; {new Date().getFullYear()} Inspiring Furni Jepara. {t("rights")}</p>
+          <p>&copy; {new Date().getFullYear()} {siteConfig.name}. {t("rights")}</p>
           <div className="flex space-x-6">
             <span>{t("privacy")}</span>
             <span>{t("terms")}</span>
